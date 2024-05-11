@@ -3,6 +3,7 @@
     "manifest.json",
     "manifest.schema.json",
     "resources/strings.json",
-    "resources/strings.schema.json"
+    "resources/strings.schema.json",
+    ".env"
   ]
 }

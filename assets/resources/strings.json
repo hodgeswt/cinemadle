@@ -2,6 +2,7 @@
   "culture": "any",
   "resources": [
     { "title": "Cinemadle" },
-    { "caption": "The movie-guessing game" }
+    { "caption": "The movie-guessing game" },
+    { "loading": "Loading..." }
   ]
 }

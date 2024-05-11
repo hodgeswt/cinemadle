@@ -1,8 +1,14 @@
+import 'package:cinemadle/data_model/paginated_results.dart';
+import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
+import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
+import 'package:cinemadle/widgets/bottom_padded_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+Future main() async {
+  await dotenv.load(fileName: ".env");
   runApp(const CinemadleApp());
 }
 
@@ -15,7 +21,8 @@ class CinemadleApp extends StatelessWidget {
     return MaterialApp(
         title: "Cinemadle",
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 68, 150, 0)),
           useMaterial3: true,
         ),
         home: const CinemadleHome(
@@ -27,15 +34,6 @@ class CinemadleApp extends StatelessWidget {
 class CinemadleHome extends StatefulWidget {
   const CinemadleHome({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -43,56 +41,56 @@ class CinemadleHome extends StatefulWidget {
 }
 
 class _CinemadleHomeState extends State<CinemadleHome> {
-  final Future<bool> resourcesLoaded = ResourceManager.instance.loadResources();
+  final ResourceManager rm = ResourceManager.instance;
+  final MovieData md = MovieData.instance;
+
+  late final Future<bool> resourcesLoaded;
+
+  late Future<PaginatedResults> movieData;
+
+  String title = Utils.emptyString;
+  String caption = Utils.emptyString;
+
+  _updateState() {
+    setState(() {
+      title = rm.getResource(Resources.title);
+      caption = rm.getResource(Resources.caption);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    rm.loadResources().then((loaded) => {
+          if (loaded) {_updateState()}
+        });
+    movieData = md.getPopular();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: FutureBuilder<bool>(
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.requireData) {
-                return Text(
-                    ResourceManager.instance.getResource("title", null));
-              } else {
-                return const Text("Loading...");
-              }
-            },
-            future: resourcesLoaded),
+        title: Text(title),
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: Size.zero,
-          child: FutureBuilder<bool>(
-              builder: (context, snapshot) {
-                if (snapshot.hasData && snapshot.requireData) {
-                  return Text(
-                      ResourceManager.instance.getResource("caption", null));
-                } else {
-                  return const Text("Loading...");
-                }
-              },
-              future: resourcesLoaded),
+          child: BottomPaddedText(text: caption),
         ),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '3',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            FutureBuilder<PaginatedResults>(
+                future: movieData,
+                builder: (BuildContext context,
+                    AsyncSnapshot<PaginatedResults> snapshot) {
+                  if (snapshot.hasData) {
+                    return const Text("Loaded");
+                  } else {
+                    return Text(rm.getResource(Resources.loading));
+                  }
+                })
           ],
         ),
-      ),
-      floatingActionButton: const FloatingActionButton(
-        onPressed: null,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

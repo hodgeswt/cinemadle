@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
 import 'package:json_schema/json_schema.dart';
 import 'package:universal_io/io.dart';
@@ -38,7 +39,16 @@ class ResourceManager {
     culture = Platform.localeName;
   }
 
-  String getResource(String name, String? defaultReturn) {
+  String getResource(Resources name, {String? defaultReturn}) {
+    return _getResourceInternal(name.toString().split('.').last,
+        defaultReturn: defaultReturn);
+  }
+
+  String getResourceByString(String name, {String? defaultReturn}) {
+    return _getResourceInternal(name, defaultReturn: defaultReturn);
+  }
+
+  String _getResourceInternal(String name, {String? defaultReturn}) {
     defaultReturn ??= Utils.emptyString;
 
     if (panicMode) {
