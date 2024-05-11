@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hodgeswill.com/manifest.schema.json",
+  "title": "Asset Manifest",
+  "description": "A collection of paths to Dart assets",
+  "type": "object",
+  "properties": {
+    "assets": {
+      "description": "List of the assets",
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["assets"]
+}

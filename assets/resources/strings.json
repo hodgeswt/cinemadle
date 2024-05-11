@@ -1,0 +1,7 @@
+{
+  "culture": "any",
+  "resources": [
+    { "title": "Cinemadle" },
+    { "caption": "The movie-guessing game" }
+  ]
+}
