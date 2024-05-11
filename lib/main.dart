@@ -4,6 +4,7 @@ import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/widgets/bottom_padded_text.dart';
+import 'package:cinemadle/widgets/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -72,26 +73,47 @@ class _CinemadleHomeState extends State<CinemadleHome> {
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: Size.zero,
-          child: BottomPaddedText(text: caption),
+          child: Text(caption),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FutureBuilder<PaginatedResults>(
+      body: Align(
+        alignment: Alignment.center,
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return SizedBox(
+              height: constraints.maxHeight,
+              width: constraints.maxWidth,
+              child: FutureBuilder<PaginatedResults>(
                 future: movieData,
                 builder: (BuildContext context,
                     AsyncSnapshot<PaginatedResults> snapshot) {
                   if (snapshot.hasData) {
-                    return const Text("Loaded");
+                    PaginatedResults dat = snapshot.requireData;
+                    return ListView.builder(
+                        itemCount: dat.results.length,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MovieCard(
+                                maxHeight: constraints.maxHeight,
+                                maxWidth: constraints.maxWidth,
+                                movie: dat.results[index],
+                              ),
+                            ],
+                          );
+                        });
                   } else {
-                    return Text(rm.getResource(Resources.loading));
+                    return Text(
+                      rm.getResource(Resources.loading),
+                    );
                   }
-                })
-          ],
+                },
+              ),
+            );
+          },
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

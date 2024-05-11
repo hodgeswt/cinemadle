@@ -1,4 +1,4 @@
-import 'package:cinemadle/data_model/result_record.dart';
+import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'paginated_results.g.dart';
@@ -15,7 +15,7 @@ class PaginatedResults {
   final int totalResults;
 
   @JsonKey(name: "results")
-  final List<ResultRecord> results;
+  final List<MovieRecord> results;
 
   PaginatedResults({
     required this.results,

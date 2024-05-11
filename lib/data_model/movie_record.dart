@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'result_record.g.dart';
+part 'movie_record.g.dart';
 
 @JsonSerializable()
-class ResultRecord {
+class MovieRecord {
   @JsonKey(name: "adult")
   final bool adult;
 
@@ -46,7 +46,7 @@ class ResultRecord {
   @JsonKey(name: "vote_count")
   final int voteCount;
 
-  ResultRecord({
+  MovieRecord({
     required this.backdropPath,
     required this.genreIds,
     required this.id,
@@ -63,8 +63,8 @@ class ResultRecord {
     required this.adult,
   });
 
-  factory ResultRecord.fromJson(Map<String, dynamic> json) =>
-      _$ResultRecordFromJson(json);
+  factory MovieRecord.fromJson(Map<String, dynamic> json) =>
+      _$MovieRecordFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ResultRecordToJson(this);
+  Map<String, dynamic> toJson() => _$MovieRecordToJson(this);
 }

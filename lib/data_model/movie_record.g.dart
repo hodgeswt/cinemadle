@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'result_record.dart';
+part of 'movie_record.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ResultRecord _$ResultRecordFromJson(Map<String, dynamic> json) => ResultRecord(
+MovieRecord _$MovieRecordFromJson(Map<String, dynamic> json) => MovieRecord(
       backdropPath: json['backdrop_path'] as String?,
       genreIds: (json['genre_ids'] as List<dynamic>)
           .map((e) => (e as num).toInt())
@@ -25,7 +25,7 @@ ResultRecord _$ResultRecordFromJson(Map<String, dynamic> json) => ResultRecord(
       adult: json['adult'] as bool,
     );
 
-Map<String, dynamic> _$ResultRecordToJson(ResultRecord instance) =>
+Map<String, dynamic> _$MovieRecordToJson(MovieRecord instance) =>
     <String, dynamic>{
       'adult': instance.adult,
       'backdrop_path': instance.backdropPath,

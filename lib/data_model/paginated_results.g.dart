@@ -9,7 +9,7 @@ part of 'paginated_results.dart';
 PaginatedResults _$PaginatedResultsFromJson(Map<String, dynamic> json) =>
     PaginatedResults(
       results: (json['results'] as List<dynamic>)
-          .map((e) => ResultRecord.fromJson(e as Map<String, dynamic>))
+          .map((e) => MovieRecord.fromJson(e as Map<String, dynamic>))
           .toList(),
       page: (json['page'] as num).toInt(),
       totalPages: (json['total_pages'] as num).toInt(),

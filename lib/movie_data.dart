@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cinemadle/data_model/paginated_results.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
