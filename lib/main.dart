@@ -23,8 +23,7 @@ class CinemadleApp extends StatelessWidget {
     return MaterialApp(
         title: "Cinemadle",
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 53, 117, 0)),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
           useMaterial3: true,
         ),
         home: const CinemadleHome(
@@ -49,6 +48,7 @@ class _CinemadleHomeState extends State<CinemadleHome> {
   late final Future<bool> resourcesLoaded;
 
   late Future<MovieRecord> movieData;
+  MovieRecord? target;
 
   String title = Utils.emptyString;
   String caption = Utils.emptyString;
@@ -90,7 +90,10 @@ class _CinemadleHomeState extends State<CinemadleHome> {
     }
 
     setState(() {
-      userGuesses = [MovieCard(movie: search.results.first), ...userGuesses];
+      userGuesses = [
+        MovieCard(movie: search.results.first, target: target),
+        ...userGuesses
+      ];
       userGuessTitles = [search.results.first.title, ...userGuessTitles];
     });
   }
@@ -100,7 +103,13 @@ class _CinemadleHomeState extends State<CinemadleHome> {
     rm.loadResources().then((loaded) => {
           if (loaded) {_updateState()}
         });
-    movieData = md.getTargetMovie();
+    movieData = md.getTargetMovie().then((t) {
+      setState(() {
+        target = t;
+      });
+
+      return t;
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -139,6 +148,7 @@ class _CinemadleHomeState extends State<CinemadleHome> {
                                 ),
                               ),
                             ),
+                            Text(snapshot.requireData.title),
                           ],
                         ),
                         Column(

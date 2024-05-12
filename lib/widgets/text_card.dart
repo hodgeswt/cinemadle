@@ -10,6 +10,7 @@ class TextCard extends StatefulWidget {
     this.height = 100,
     this.widthScale = 1,
     this.heightScale = 1,
+    this.color = Colors.grey,
   });
 
   final String text;
@@ -21,6 +22,8 @@ class TextCard extends StatefulWidget {
   final double height;
   final double widthScale;
   final double heightScale;
+
+  final Color color;
 
   @override
   State<TextCard> createState() => _TextCardState();
@@ -43,7 +46,7 @@ class _TextCardState extends State<TextCard> {
             width: 1.0,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: Colors.blue,
+          color: widget.color,
         ),
         child: Align(
           alignment: Alignment.center,

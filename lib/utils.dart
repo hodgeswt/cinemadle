@@ -36,4 +36,33 @@ class Utils {
 
     return DateFormat.yMd(ResourceManager.instance.culture).format(dt);
   }
+
+  static DateTime parseDate(String? date) {
+    DateTime? dt = DateTime.tryParse(date ?? emptyString);
+
+    return dt ?? DateTime(1970, 1, 1);
+  }
+
+  static int mapMpaRatingToInt(String? mpaRating) {
+    if (mpaRating == null) {
+      return 0;
+    }
+
+    switch (mpaRating) {
+      case "G":
+        return 1;
+      case "PG":
+        return 2;
+      case "PG-13":
+        return 3;
+      case "R":
+        return 4;
+      case "NC-17":
+        return 5;
+      case "NR":
+        return 6;
+      default:
+        return 0;
+    }
+  }
 }
