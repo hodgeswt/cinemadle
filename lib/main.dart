@@ -1,3 +1,4 @@
+import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
@@ -88,9 +89,9 @@ class _CinemadleHomeState extends State<CinemadleHome> {
                 builder: (BuildContext context,
                     AsyncSnapshot<PaginatedResults> snapshot) {
                   if (snapshot.hasData) {
-                    PaginatedResults dat = snapshot.requireData;
+                    List<MovieRecord> dat = snapshot.requireData.results;
                     return ListView.builder(
-                        itemCount: dat.results.length,
+                        itemCount: dat.length,
                         itemBuilder: (context, index) {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +99,7 @@ class _CinemadleHomeState extends State<CinemadleHome> {
                               MovieCard(
                                 maxHeight: constraints.maxHeight,
                                 maxWidth: constraints.maxWidth,
-                                movie: dat.results[index],
+                                movie: dat[index],
                               ),
                             ],
                           );

@@ -1,4 +1,6 @@
+import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
+import 'package:cinemadle/resource_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
 import 'package:universal_io/io.dart';
@@ -41,6 +43,15 @@ class MovieData {
         "discover/movie?certification=G%7CPG%7CPG-13%7CR&include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=1950-01-01&primary_release_date.lte=$date&sort_by=popularity.desc");
 
     return PaginatedResults.fromJson(response);
+  }
+
+  Future<MovieDetails> getDetails(int movieId) async {
+    String endpoint =
+        "movie/$movieId?language=${ResourceManager.instance.culture}";
+
+    Map<String, dynamic> response = await _getRequest(endpoint);
+
+    return MovieDetails.fromJson(response);
   }
 
   Future<Map<String, dynamic>> _getRequest(String endpoint) async {
