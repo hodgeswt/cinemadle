@@ -234,8 +234,32 @@ class _MovieCardState extends State<MovieCard> {
   late Size size;
   late double subTilePadding;
 
+  bool isWin = false;
+
+  _setAllGreen() {
+    setState(() {
+      tileColors = {
+        "userScore": Colors.green,
+        "mpaRating": Colors.green,
+        "releaseDate": Colors.green,
+        "revenue": Colors.green,
+        "runtime": Colors.green,
+        "popularity": Colors.green,
+        "director": Colors.green,
+        "writer": Colors.green,
+        "lead": Colors.green,
+      };
+
+      isWin = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.target?.id != null && widget.movie.id == widget.target?.id) {
+      _setAllGreen();
+    }
+
     if (widget.target?.id != null) {
       md.getDetails(widget.target?.id ?? -1).then((movieDetails) => {
             if (mounted)
@@ -261,6 +285,11 @@ class _MovieCardState extends State<MovieCard> {
             {
               setState(() {
                 movie = movieDetails;
+
+                if (isWin) {
+                  _setAllGreen();
+                  return;
+                }
 
                 double voteDiff = ((movie?.voteAverage ?? 0) -
                         (widget.target?.voteAverage ?? 0))
@@ -320,6 +349,11 @@ class _MovieCardState extends State<MovieCard> {
             {
               setState(() {
                 credits = movieCredits;
+
+                if (isWin) {
+                  _setAllGreen();
+                  return;
+                }
 
                 Color director = _getMovieDirector() == _getTargetDirector()
                     ? Colors.green
