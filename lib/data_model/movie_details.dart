@@ -9,6 +9,12 @@ part 'movie_details.g.dart';
 
 @JsonSerializable()
 class MovieDetails {
+  @JsonKey(name: "adult")
+  final bool? adult;
+
+  @JsonKey(name: "belongs_to_collection")
+  final Map<String, dynamic>? belongsToCollection;
+
   @JsonKey(name: "backdrop_path")
   final String? backdropPath;
 
@@ -28,13 +34,13 @@ class MovieDetails {
   final String? imdbId;
 
   @JsonKey(name: "origin_country")
-  final List<String> originCountry;
+  final List<String>? originCountry;
 
   @JsonKey(name: "original_title")
   final String? originalTitle;
 
   @JsonKey(name: "original_language")
-  final String originalLanguage;
+  final String? originalLanguage;
 
   @JsonKey(name: "overview")
   final String overview;
@@ -110,6 +116,8 @@ class MovieDetails {
     required this.video,
     required this.voteAverage,
     required this.releaseDates,
+    required this.adult,
+    required this.belongsToCollection,
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) =>

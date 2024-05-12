@@ -16,10 +16,10 @@ MovieDetails _$MovieDetailsFromJson(Map<String, dynamic> json) => MovieDetails(
       homepage: json['homepage'] as String?,
       id: (json['id'] as num).toInt(),
       imdbId: json['imdb_id'] as String?,
-      originCountry: (json['origin_country'] as List<dynamic>)
-          .map((e) => e as String)
+      originCountry: (json['origin_country'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
-      originalLanguage: json['original_language'] as String,
+      originalLanguage: json['original_language'] as String?,
       originalTitle: json['original_title'] as String?,
       overview: json['overview'] as String,
       popularity: (json['popularity'] as num).toDouble(),
@@ -45,10 +45,15 @@ MovieDetails _$MovieDetailsFromJson(Map<String, dynamic> json) => MovieDetails(
           ? null
           : ReleaseDates.fromJson(
               json['release_dates'] as Map<String, dynamic>),
+      adult: json['adult'] as bool?,
+      belongsToCollection:
+          json['belongs_to_collection'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$MovieDetailsToJson(MovieDetails instance) =>
     <String, dynamic>{
+      'adult': instance.adult,
+      'belongs_to_collection': instance.belongsToCollection,
       'backdrop_path': instance.backdropPath,
       'budget': instance.budget,
       'genres': instance.genres,

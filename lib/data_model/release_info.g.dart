@@ -7,7 +7,7 @@ part of 'release_info.dart';
 // **************************************************************************
 
 ReleaseInfo _$ReleaseInfoFromJson(Map<String, dynamic> json) => ReleaseInfo(
-      iso: json['iso_3166_1'] as String?,
+      iso: json['iso_3166_1'] as String,
       releaseDates: (json['release_dates'] as List<dynamic>)
           .map((e) => ReleaseDate.fromJson(e as Map<String, dynamic>))
           .toList(),

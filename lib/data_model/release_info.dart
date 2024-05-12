@@ -6,7 +6,7 @@ part 'release_info.g.dart';
 @JsonSerializable()
 class ReleaseInfo {
   @JsonKey(name: "iso_3166_1")
-  final String? iso;
+  final String iso;
 
   @JsonKey(name: "release_dates")
   final List<ReleaseDate> releaseDates;

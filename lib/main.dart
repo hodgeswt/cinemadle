@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
 import 'package:cinemadle/movie_data.dart';
@@ -54,7 +57,7 @@ class _CinemadleHomeState extends State<CinemadleHome> {
   String caption = Utils.emptyString;
 
   List<MovieCard> userGuesses = [];
-  List<String> userGuessTitles = [];
+  List<int> userGuessRecords = [];
 
   _updateState() {
     setState(() {
@@ -64,22 +67,13 @@ class _CinemadleHomeState extends State<CinemadleHome> {
   }
 
   _addUserGuess(String guess) async {
-    if (!mounted) {
+    if (!mounted || int.tryParse(guess) == null) {
       return;
     }
-    PaginatedResults search = await md.searchMovie(guess);
+    MovieDetails search = await md.getDetails(int.parse(guess));
 
-    // Flutter tools don't care that we do the early
-    // return on mounted...
-    if (search.results.first.title != guess && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("${rm.getResource(Resources.guessDoesNotExist)}: $guess"),
-      ));
-      return;
-    }
-
-    if (userGuessTitles.any((x) {
-          return x == guess;
+    if (userGuessRecords.any((x) {
+          return x == search.id;
         }) &&
         mounted) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -90,11 +84,28 @@ class _CinemadleHomeState extends State<CinemadleHome> {
     }
 
     setState(() {
-      userGuesses = [
-        MovieCard(movie: search.results.first, target: target),
-        ...userGuesses
-      ];
-      userGuessTitles = [search.results.first.title, ...userGuessTitles];
+      // TODO: adjust the movie card so it just takes in
+      // the id, as that's all that it uses anyway...
+      // This is hacky but I'm too lazy to rewrite the whole app
+      MovieRecord rec = MovieRecord(
+        adult: false,
+        backdropPath: null,
+        genreIds: [],
+        id: search.id,
+        originalLanguage: "",
+        originalTitle: "",
+        overview: "",
+        popularity: 0.0,
+        releaseDate: "",
+        title: "",
+        video: false,
+        voteAverage: 0.0,
+        voteCount: 0,
+        posterPath: null,
+      );
+
+      userGuesses = [MovieCard(movie: rec, target: target), ...userGuesses];
+      userGuessRecords = [search.id, ...userGuessRecords];
     });
   }
 
@@ -142,8 +153,9 @@ class _CinemadleHomeState extends State<CinemadleHome> {
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width / 2,
                                 child: GuessBox(
-                                  inputCallback: (String movieName) {
-                                    _addUserGuess(movieName);
+                                  userGuessRecords: userGuessRecords,
+                                  inputCallback: (String movieId) {
+                                    _addUserGuess(movieId);
                                   },
                                 ),
                               ),

@@ -3,17 +3,20 @@ import 'package:cinemadle/data_model/paginated_results.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
-import 'package:cinemadle/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class GuessBox extends StatefulWidget {
   const GuessBox({
     super.key,
+    required this.userGuessRecords,
     required this.inputCallback,
   });
 
   final Function(String) inputCallback;
+
+  final List<int> userGuessRecords;
+
   @override
   State<GuessBox> createState() => _GuessBoxState();
 }
@@ -30,7 +33,8 @@ class _GuessBoxState extends State<GuessBox> {
   TextField? _guessBoxField;
 
   _submit(String data) {
-    widget.inputCallback(data);
+    String trimmed = data.split(" - (").last.replaceAll(')', '');
+    widget.inputCallback(trimmed);
     _guessBoxField?.controller?.clear();
   }
 
@@ -50,12 +54,17 @@ class _GuessBoxState extends State<GuessBox> {
           autofillHints = [];
         });
         if (value.isNotEmpty) {
+          suggestionsController.refresh();
           suggestionsController.isLoading = true;
           PaginatedResults search = await md.searchMovie(value);
 
           List<String> newTitles = [];
           for (MovieRecord movie in search.results.take(4)) {
-            newTitles.add(movie.title);
+            if (!widget.userGuessRecords.any((x) {
+              return x == movie.id;
+            })) {
+              newTitles.add("${movie.title} - (${movie.id})");
+            }
           }
 
           setState(() {

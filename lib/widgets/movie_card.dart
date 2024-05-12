@@ -36,21 +36,31 @@ class _MovieCardState extends State<MovieCard> {
   }
 
   String _getArbitraryMpaRating(MovieDetails? m) {
-    return m?.releaseDates?.results
-            .firstWhere((x) {
-              return x.iso == "US";
-            })
-            .releaseDates
-            .last
-            .certification ??
-        rm.getResource(Resources.unknown);
+    try {
+      String? cert = m?.releaseDates?.results
+          .firstWhere((x) {
+            return x.iso == "US";
+          })
+          .releaseDates
+          .last
+          .certification;
+      return (cert?.isEmpty ?? true)
+          ? rm.getResource(Resources.unknown)
+          : cert!;
+    } catch (_) {
+      return rm.getResource(Resources.unknown);
+    }
   }
 
   String _getArbitraryCrewRole(Credits? c, List<String> jobs) {
-    return c?.crew.firstWhere((x) {
-          return jobs.contains(x.job);
-        }).name ??
-        rm.getResource(Resources.unknown);
+    try {
+      return c?.crew.firstWhere((x) {
+            return jobs.contains(x.job);
+          }).name ??
+          rm.getResource(Resources.unknown);
+    } catch (_) {
+      return rm.getResource(Resources.unknown);
+    }
   }
 
   String _getMovieDirector() {
@@ -70,10 +80,28 @@ class _MovieCardState extends State<MovieCard> {
   }
 
   String _getArbitraryFirstInCast(Credits? c) {
-    return c?.cast.firstWhere((x) {
-          return x.order == 0;
-        }).name ??
-        rm.getResource(Resources.unknown);
+    try {
+      return c?.cast.firstWhere((x) {
+            return x.order == 0;
+          }).name ??
+          rm.getResource(Resources.unknown);
+    } catch (_) {
+      return rm.getResource(Resources.unknown);
+    }
+  }
+
+  bool _isGussedActorInCast() {
+    try {
+      return targetCredits?.cast.any((x) {
+            return credits?.cast.any((y) {
+                  return y.name == x.name;
+                }) ??
+                false;
+          }) ??
+          false;
+    } catch (_) {
+      return false;
+    }
   }
 
   String _getFirstInCast() {
@@ -295,17 +323,21 @@ class _MovieCardState extends State<MovieCard> {
 
                 Color director = _getMovieDirector() == _getTargetDirector()
                     ? Colors.green
-                    : Colors.grey;
+                    : (_getMovieDirector() == _getTargetWriter()
+                        ? Colors.yellow
+                        : Colors.grey);
                 tileColors["director"] = director;
 
                 Color writer = _getMovieWriter() == _getTargetWriter()
                     ? Colors.green
-                    : Colors.grey;
+                    : (_getMovieWriter() == _getTargetDirector()
+                        ? Colors.yellow
+                        : Colors.grey);
                 tileColors["writer"] = writer;
 
                 Color lead = _getFirstInCast() == _getTargetFirstInCast()
                     ? Colors.green
-                    : Colors.grey;
+                    : (_isGussedActorInCast() ? Colors.yellow : Colors.grey);
                 tileColors["lead"] = lead;
               })
             }
