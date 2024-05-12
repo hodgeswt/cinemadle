@@ -9,6 +9,7 @@ import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/widgets/guess_box.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
+import 'package:cinemadle/widgets/text_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -72,6 +73,10 @@ class _CinemadleHomeState extends State<CinemadleHome> {
     }
     MovieDetails search = await md.getDetails(int.parse(guess));
 
+    if (search.id == target?.id) {
+      isWin = true;
+    }
+
     if (userGuessRecords.any((x) {
           return x == search.id;
         }) &&
@@ -109,6 +114,8 @@ class _CinemadleHomeState extends State<CinemadleHome> {
     });
   }
 
+  bool isWin = false;
+
   @override
   Widget build(BuildContext context) {
     rm.loadResources().then((loaded) => {
@@ -143,34 +150,70 @@ class _CinemadleHomeState extends State<CinemadleHome> {
                 builder: (BuildContext context,
                     AsyncSnapshot<MovieRecord> snapshot) {
                   if (snapshot.hasData) {
-                    return ListView(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: GuessBox(
-                                  userGuessRecords: userGuessRecords,
-                                  inputCallback: (String movieId) {
-                                    _addUserGuess(movieId);
-                                  },
+                    if (!isWin) {
+                      return ListView(
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  child: GuessBox(
+                                    userGuessRecords: userGuessRecords,
+                                    inputCallback: (String movieId) {
+                                      _addUserGuess(movieId);
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(snapshot.requireData.title),
-                          ],
-                        ),
-                        Column(
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ...userGuesses,
+                            ],
+                          ),
+                        ],
+                      );
+                    }
+
+                    return ListView(children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          TextCard(
+                            text: rm.getResource(Resources.winText),
+                            width: MediaQuery.of(context).size.width / 2,
+                            color: Colors.lightGreen,
+                          )
+                        ],
+                      ),
+                      Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ...userGuesses,
-                          ],
-                        ),
-                      ],
-                    );
+                          children: <Widget>[
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  userGuessRecords = [];
+                                  userGuesses = [];
+                                  isWin = false;
+                                },
+                                child:
+                                    Text(rm.getResource(Resources.resetButton)),
+                              ),
+                            ),
+                          ]),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          MovieCard(movie: target!, target: target),
+                        ],
+                      ),
+                    ]);
                   } else {
                     return Text(
                       rm.getResource(Resources.loading),

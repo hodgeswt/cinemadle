@@ -16,5 +16,7 @@ enum Resources {
   movieFirstActingCreditCaption,
   minutesLabel,
   movieRatingCaption,
-  unknown
+  unknown,
+  winText,
+  resetButton
 }

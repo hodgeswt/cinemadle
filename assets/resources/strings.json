@@ -19,6 +19,8 @@
     { "unknown": "Unknown" },
     { "movieDirectorCaption": "Director:\n" },
     { "movieWriterCaption": "Writer:\n" },
-    { "movieFirstActingCreditCaption": "First in Cast:\n" }
+    { "movieFirstActingCreditCaption": "First in Cast:\n" },
+    { "winText": "You win!" },
+    { "resetButton": "Reset" }
   ]
 }

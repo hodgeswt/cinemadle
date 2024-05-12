@@ -36,6 +36,8 @@ class _GuessBoxState extends State<GuessBox> {
     String trimmed = data.split(" - (").last.replaceAll(')', '');
     widget.inputCallback(trimmed);
     _guessBoxField?.controller?.clear();
+    suggestionsController.refresh();
+    autofillHints = [];
   }
 
   TextField _getGuessBoxField(
