@@ -5,4 +5,16 @@ enum Resources {
   inputBoxHintText,
   guessDoesNotExist,
   guessAlreadyExists,
+  movieUserScoreCaption,
+  movieOriginalLanguageCaption,
+  movieReleaseDateCaption,
+  movieRevenueCaption,
+  movieRuntimeCaption,
+  moviePopularityCaption,
+  movieWriterCaption,
+  movieDirectorCaption,
+  movieFirstActingCreditCaption,
+  minutesLabel,
+  movieRatingCaption,
+  unknown
 }

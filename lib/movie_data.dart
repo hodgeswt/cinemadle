@@ -1,3 +1,4 @@
+import 'package:cinemadle/data_model/credits.dart';
 import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
@@ -74,11 +75,20 @@ class MovieData {
 
   Future<MovieDetails> getDetails(int movieId) async {
     String endpoint =
-        "movie/$movieId?language=${ResourceManager.instance.culture}";
+        "movie/$movieId?language=${ResourceManager.instance.culture}&append_to_response=release_dates";
 
     Map<String, dynamic> response = await _getRequest(endpoint);
 
     return MovieDetails.fromJson(response);
+  }
+
+  Future<Credits> getMovieCredits(int movieId) async {
+    String endpoint =
+        "movie/$movieId/credits?language=${ResourceManager.instance.culture}";
+
+    Map<String, dynamic> response = await _getRequest(endpoint);
+
+    return Credits.fromJson(response);
   }
 
   Future<Map<String, dynamic>> _getRequest(String endpoint) async {

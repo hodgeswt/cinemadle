@@ -49,7 +49,7 @@ class _GuessBoxState extends State<GuessBox> {
         setState(() {
           autofillHints = [];
         });
-        if (value.length > 3) {
+        if (value.isNotEmpty) {
           suggestionsController.isLoading = true;
           PaginatedResults search = await md.searchMovie(value);
 

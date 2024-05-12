@@ -47,7 +47,10 @@ class _TextCardState extends State<TextCard> {
         ),
         child: Align(
           alignment: Alignment.center,
-          child: Text(widget.text),
+          child: Text(
+            widget.text,
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

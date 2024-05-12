@@ -1,6 +1,7 @@
 import 'package:cinemadle/data_model/genre_detail.dart';
 import 'package:cinemadle/data_model/production_company.dart';
 import 'package:cinemadle/data_model/production_country.dart';
+import 'package:cinemadle/data_model/release_dates.dart';
 import 'package:cinemadle/data_model/spoken_language.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -80,6 +81,9 @@ class MovieDetails {
   @JsonKey(name: "vote_count")
   final int voteCount;
 
+  @JsonKey(name: "release_dates")
+  final ReleaseDates? releaseDates;
+
   MovieDetails({
     required this.voteCount,
     required this.backdropPath,
@@ -105,6 +109,7 @@ class MovieDetails {
     required this.title,
     required this.video,
     required this.voteAverage,
+    required this.releaseDates,
   });
 
   factory MovieDetails.fromJson(Map<String, dynamic> json) =>

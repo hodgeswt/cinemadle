@@ -1,7 +1,9 @@
+import 'package:cinemadle/data_model/credits.dart';
 import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
+import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/widgets/text_card.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +25,45 @@ class _MovieCardState extends State<MovieCard> {
   final MovieData md = MovieData.instance;
   final ResourceManager rm = ResourceManager.instance;
 
+  String _getMpaRating() {
+    return movie?.releaseDates?.results
+            .firstWhere((x) {
+              return x.iso == "US";
+            })
+            .releaseDates
+            .last
+            .certification ??
+        rm.getResource(Resources.unknown);
+  }
+
+  String _getMovieDirector() {
+    return credits?.crew.firstWhere((x) {
+          return x.job == "Director";
+        }).name ??
+        rm.getResource(Resources.unknown);
+  }
+
+  String _getMovieWriter() {
+    return credits?.crew.firstWhere((x) {
+          return x.job == "Screenplay" || x.job == "Writer";
+        }).name ??
+        rm.getResource(Resources.unknown);
+  }
+
+  String _getFirstInCast() {
+    return credits?.cast.firstWhere((x) {
+          return x.order == 0;
+        }).name ??
+        rm.getResource(Resources.unknown);
+  }
+
   List<Widget> get tiles => <Widget>[
         StaggeredGridTile.count(
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
           child: TextCard(
-            text: movies?.voteAverage.toString() ?? Utils.emptyString,
+            text:
+                "${rm.getResource(Resources.movieUserScoreCaption)}${movie?.voteAverage} / 10",
             horizontalPadding: subTilePadding,
             verticalPadding: subTilePadding,
           ),
@@ -37,7 +72,7 @@ class _MovieCardState extends State<MovieCard> {
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
           child: TextCard(
-            text: movies?.originalLanguage ?? Utils.emptyString,
+            text: _getMpaRating(),
             horizontalPadding: subTilePadding,
             verticalPadding: subTilePadding,
           ),
@@ -46,7 +81,8 @@ class _MovieCardState extends State<MovieCard> {
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
           child: TextCard(
-            text: movies?.releaseDate ?? Utils.emptyString,
+            text:
+                "${rm.getResource(Resources.movieReleaseDateCaption)}${Utils.formatDate(movie?.releaseDate)}",
             horizontalPadding: subTilePadding,
             verticalPadding: subTilePadding,
           ),
@@ -55,7 +91,8 @@ class _MovieCardState extends State<MovieCard> {
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
           child: TextCard(
-            text: movies?.revenue.toString() ?? Utils.emptyString,
+            text:
+                "${rm.getResource(Resources.movieRevenueCaption)}${Utils.formatIntToDollars(movie?.revenue)}",
             horizontalPadding: subTilePadding,
             verticalPadding: subTilePadding,
           ),
@@ -64,7 +101,8 @@ class _MovieCardState extends State<MovieCard> {
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
           child: TextCard(
-            text: movies?.runtime.toString() ?? Utils.emptyString,
+            text:
+                "${rm.getResource(Resources.movieRuntimeCaption)}${movie?.runtime}${rm.getResource(Resources.minutesLabel)}",
             horizontalPadding: subTilePadding,
             verticalPadding: subTilePadding,
           ),
@@ -73,14 +111,46 @@ class _MovieCardState extends State<MovieCard> {
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
           child: TextCard(
-            text: movies?.popularity.toString() ?? Utils.emptyString,
+            text:
+                "${rm.getResource(Resources.moviePopularityCaption)}${movie?.popularity}",
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: TextCard(
+            text:
+                "${rm.getResource(Resources.movieDirectorCaption)}${_getMovieDirector()}",
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: TextCard(
+            text:
+                "${rm.getResource(Resources.movieWriterCaption)}${_getMovieWriter()}",
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: TextCard(
+            text:
+                "${rm.getResource(Resources.movieFirstActingCreditCaption)}${_getFirstInCast()}",
             horizontalPadding: subTilePadding,
             verticalPadding: subTilePadding,
           ),
         ),
       ];
 
-  MovieDetails? movies;
+  MovieDetails? movie;
+  Credits? credits;
 
   late Size size;
   late double subTilePadding;
@@ -90,27 +160,31 @@ class _MovieCardState extends State<MovieCard> {
     md.getDetails(widget.movie.id).then((movieDetails) => {
           setState(() {
             if (mounted) {
-              movies = movieDetails;
+              movie = movieDetails;
+            }
+          })
+        });
+
+    md.getMovieCredits(widget.movie.id).then((movieCredits) => {
+          setState(() {
+            if (mounted) {
+              credits = movieCredits;
             }
           })
         });
 
     Size mqSize = MediaQuery.of(context).size;
     double width = mqSize.width / 2;
-    double height = mqSize.width / 2;
+    double height = mqSize.height / 2;
 
-    if (width > 350) {
-      width = 350;
+    double widthBox = (110 * 3) + 16;
+    if (width > widthBox || width < widthBox) {
+      width = widthBox;
     }
 
-    if (height > 350) {
-      height = 350;
-    }
-
-    if (width > height) {
-      width = height;
-    } else {
-      height = width;
+    double heightBox = (110 * 4) + 24;
+    if (height > heightBox || height < heightBox) {
+      height = heightBox;
     }
 
     size = Size(width, height);
@@ -141,7 +215,7 @@ class _MovieCardState extends State<MovieCard> {
                 crossAxisCellCount: 3,
                 mainAxisCellCount: 1,
                 child: TextCard(
-                  text: movies?.title ?? Utils.emptyString,
+                  text: movie?.title ?? Utils.emptyString,
                   horizontalPadding: subTilePadding,
                   verticalPadding: subTilePadding,
                 ),

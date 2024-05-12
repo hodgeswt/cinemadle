@@ -4,11 +4,21 @@
     { "title": "Cinemadle" },
     { "caption": "The movie-guessing game" },
     { "loading": "Loading..." },
-    { "movieTitleCaption": "Title: " },
-    { "movieRevenueCaption": "Revenue: " },
-    { "movieRatingCaption": "Rating: " },
     { "inputBoxHintText": "Enter a guess..." },
     { "guessDoesNotExist": "Guess does not exist" },
-    { "guessAlreadyExists": "Guess already exists" }
+    { "guessAlreadyExists": "Guess already exists" },
+    { "movieTitleCaption": "Title:\n" },
+    { "movieRevenueCaption": "Revenue:\n" },
+    { "movieRuntimeCaption": "Runtime:\n" },
+    { "moviePopularityCaption": "Popularity Score:\n" },
+    { "movieRatingCaption": "MPA Rating:\n" },
+    { "movieUserScoreCaption": "User Score:\n" },
+    { "movieReleaseDateCaption": "Release Date:\n" },
+    { "movieOriginalLanguageCaption": "Original Language:\n" },
+    { "minutesLabel": " minutes" },
+    { "unknown": "Unknown" },
+    { "movieDirectorCaption": "Director:\n" },
+    { "movieWriterCaption": "Writer:\n" },
+    { "movieFirstActingCreditCaption": "First in Cast:\n" }
   ]
 }
