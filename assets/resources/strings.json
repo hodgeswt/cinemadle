@@ -7,6 +7,8 @@
     { "movieTitleCaption": "Title: " },
     { "movieRevenueCaption": "Revenue: " },
     { "movieRatingCaption": "Rating: " },
-    { "inputBoxHintText": "Enter a guess..."}
+    { "inputBoxHintText": "Enter a guess..." },
+    { "guessDoesNotExist": "Guess does not exist" },
+    { "guessAlreadyExists": "Guess already exists" }
   ]
 }

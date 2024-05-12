@@ -54,11 +54,44 @@ class _CinemadleHomeState extends State<CinemadleHome> {
   String caption = Utils.emptyString;
 
   List<MovieCard> userGuesses = [];
+  List<String> userGuessTitles = [];
 
   _updateState() {
     setState(() {
       title = rm.getResource(Resources.title);
       caption = rm.getResource(Resources.caption);
+    });
+  }
+
+  _addUserGuess(String guess) async {
+    if (!mounted) {
+      return;
+    }
+    PaginatedResults search = await md.searchMovie(guess);
+
+    // Flutter tools don't care that we do the early
+    // return on mounted...
+    if (search.results.first.title != guess && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("${rm.getResource(Resources.guessDoesNotExist)}: $guess"),
+      ));
+      return;
+    }
+
+    if (userGuessTitles.any((x) {
+          return x == guess;
+        }) &&
+        mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:
+            Text("${rm.getResource(Resources.guessAlreadyExists)}: $guess"),
+      ));
+      return;
+    }
+
+    setState(() {
+      userGuesses = [MovieCard(movie: search.results.first), ...userGuesses];
+      userGuessTitles = [search.results.first.title, ...userGuessTitles];
     });
   }
 
@@ -95,15 +128,20 @@ class _CinemadleHomeState extends State<CinemadleHome> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: GuessBox(
-                                inputCallback: (String movieName) {},
+                            Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: GuessBox(
+                                  inputCallback: (String movieName) {
+                                    _addUserGuess(movieName);
+                                  },
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        Row(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ...userGuesses,

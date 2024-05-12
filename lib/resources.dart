@@ -1,1 +1,8 @@
-enum Resources { title, caption, loading, inputBoxHintText }
+enum Resources {
+  title,
+  caption,
+  loading,
+  inputBoxHintText,
+  guessDoesNotExist,
+  guessAlreadyExists,
+}
