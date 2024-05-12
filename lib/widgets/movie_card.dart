@@ -9,13 +9,9 @@ class MovieCard extends StatefulWidget {
   const MovieCard({
     super.key,
     required this.movie,
-    required this.maxWidth,
-    required this.maxHeight,
   });
 
   final MovieRecord movie;
-  final double maxWidth;
-  final double maxHeight;
 
   @override
   State<MovieCard> createState() => _MovieCardState();
@@ -24,10 +20,13 @@ class MovieCard extends StatefulWidget {
 class _MovieCardState extends State<MovieCard> {
   final MovieData md = MovieData.instance;
 
-  List<Widget> movies = <Widget>[
+  List<Widget> row1 = <Widget>[
     TextCard(text: Utils.emptyString),
     TextCard(text: Utils.emptyString),
     TextCard(text: Utils.emptyString),
+  ];
+
+  List<Widget> row2 = <Widget>[
     TextCard(text: Utils.emptyString),
     TextCard(text: Utils.emptyString),
     TextCard(text: Utils.emptyString),
@@ -40,10 +39,13 @@ class _MovieCardState extends State<MovieCard> {
       setState(
         () {
           title = movieDetails.title;
-          movies = <Widget>[
+          row1 = <Widget>[
             TextCard(text: "Languager: ${movieDetails.originalLanguage}"),
             TextCard(text: "Runtime: ${movieDetails.runtime} minutes"),
             TextCard(text: "Release Daste: ${movieDetails.releaseDate}"),
+          ];
+
+          row2 = <Widget>[
             TextCard(text: "Budget: ${movieDetails.budget}"),
             TextCard(text: "Rating: ${movieDetails.voteAverage}"),
             TextCard(text: "Tagline: ${movieDetails.tagline}"),
@@ -59,39 +61,15 @@ class _MovieCardState extends State<MovieCard> {
         .getDetails(widget.movie.id)
         .then((movieDetails) => {_updateState(movieDetails)});
 
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8.0,
-            vertical: 8.0,
-          ),
-          child: SizedBox(
-            width: (widget.maxWidth - 16.0) / 2,
-            height: (widget.maxHeight - 16.0),
-            child: Card(
-              clipBehavior: Clip.antiAlias,
-              color: Theme.of(context).cardColor,
-              child: GridView.count(
-                primary: false,
-                padding: const EdgeInsets.all(16.0),
-                crossAxisCount: 1,
-                crossAxisSpacing: 16,
-                children: <Widget>[
-                  TextCard(text: title),
-                  GridView.count(
-                    primary: false,
-                    padding: const EdgeInsets.all(16.0),
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 16,
-                    children: movies,
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+    return Card(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Row(children: <Widget>[TextCard(text: title, widthScale: 3)]),
+          Row(children: row1),
+          Row(children: row2),
+        ],
+      ),
     );
   }
 }

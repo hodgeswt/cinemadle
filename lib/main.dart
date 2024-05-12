@@ -4,8 +4,8 @@ import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
-import 'package:cinemadle/widgets/bottom_padded_text.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
+import 'package:cinemadle/widgets/text_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -24,7 +24,7 @@ class CinemadleApp extends StatelessWidget {
         title: "Cinemadle",
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 68, 150, 0)),
+              seedColor: const Color.fromARGB(255, 53, 117, 0)),
           useMaterial3: true,
         ),
         home: const CinemadleHome(
@@ -81,36 +81,30 @@ class _CinemadleHomeState extends State<CinemadleHome> {
         alignment: Alignment.center,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            return SizedBox(
-              height: constraints.maxHeight,
-              width: constraints.maxWidth,
-              child: FutureBuilder<PaginatedResults>(
-                future: movieData,
-                builder: (BuildContext context,
-                    AsyncSnapshot<PaginatedResults> snapshot) {
-                  if (snapshot.hasData) {
-                    List<MovieRecord> dat = snapshot.requireData.results;
-                    return ListView.builder(
-                        itemCount: dat.length,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MovieCard(
-                                maxHeight: constraints.maxHeight,
-                                maxWidth: constraints.maxWidth,
-                                movie: dat[index],
-                              ),
-                            ],
-                          );
-                        });
-                  } else {
-                    return Text(
-                      rm.getResource(Resources.loading),
-                    );
-                  }
-                },
-              ),
+            return FutureBuilder<PaginatedResults>(
+              future: movieData,
+              builder: (BuildContext context,
+                  AsyncSnapshot<PaginatedResults> snapshot) {
+                if (snapshot.hasData) {
+                  List<MovieRecord> dat = snapshot.requireData.results;
+                  return ListView.builder(
+                      itemCount: 1,
+                      itemBuilder: (context, index) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MovieCard(
+                              movie: dat[index],
+                            ),
+                          ],
+                        );
+                      });
+                } else {
+                  return Text(
+                    rm.getResource(Resources.loading),
+                  );
+                }
+              },
             );
           },
         ),
