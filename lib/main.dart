@@ -5,7 +5,6 @@ import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
-import 'package:cinemadle/widgets/text_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
