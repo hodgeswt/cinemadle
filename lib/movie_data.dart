@@ -65,6 +65,13 @@ class MovieData {
     return pageData.results[out];
   }
 
+  Future<PaginatedResults> searchMovie(String query) async {
+    Map<String, dynamic> response = await _getRequest(
+        "search/movie?query=$query&include_adult=false&language=en-US&page=1");
+
+    return PaginatedResults.fromJson(response);
+  }
+
   Future<MovieDetails> getDetails(int movieId) async {
     String endpoint =
         "movie/$movieId?language=${ResourceManager.instance.culture}";

@@ -92,16 +92,11 @@ class _CinemadleHomeState extends State<CinemadleHome> {
                   if (snapshot.hasData) {
                     return ListView(
                       children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width / 2,
-                              child: GuessBox(
-                                inputCallback: (String movieName) {},
-                              ),
-                            ),
-                          ],
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: GuessBox(
+                            inputCallback: (String movieName) {},
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

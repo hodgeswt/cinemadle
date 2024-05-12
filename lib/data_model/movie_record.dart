@@ -29,7 +29,7 @@ class MovieRecord {
   final double popularity;
 
   @JsonKey(name: "poster_path")
-  final String posterPath;
+  final String? posterPath;
 
   @JsonKey(name: "release_date")
   final String releaseDate;
