@@ -2,7 +2,9 @@ import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
+import 'package:cinemadle/resources.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class GuessBox extends StatefulWidget {
   const GuessBox({
@@ -21,33 +23,52 @@ class _GuessBoxState extends State<GuessBox> {
 
   List<String> autofillHints = [];
 
+  SuggestionsController<String> suggestionsController =
+      SuggestionsController<String>();
+
   @override
   Widget build(BuildContext context) {
-    return Autocomplete<String>(
-      optionsBuilder: (TextEditingValue textEditingValue) async {
-        if (textEditingValue.text.length < 4) {
-          return const Iterable<String>.empty();
-        }
+    return TypeAheadField<String>(
+      suggestionsCallback: (search) => autofillHints,
+      suggestionsController: suggestionsController,
+      builder: (context, controller, focusNode) {
+        return TextField(
+          controller: controller,
+          focusNode: focusNode,
+          decoration: InputDecoration(
+            labelText: rm.getResource(Resources.inputBoxHintText),
+          ),
+          onChanged: (value) async {
+            setState(() {
+              autofillHints = [];
+            });
+            if (value.length > 3) {
+              suggestionsController.isLoading = true;
+              PaginatedResults search = await md.searchMovie(value);
 
-        setState(() {
-          autofillHints = [];
-        });
+              List<String> newTitles = [];
+              for (MovieRecord movie in search.results.take(4)) {
+                newTitles.add(movie.title);
+              }
 
-        PaginatedResults searchResults =
-            await md.searchMovie(textEditingValue.text);
+              setState(() {
+                autofillHints = newTitles;
+              });
 
-        for (MovieRecord movie in searchResults.results) {
-          setState(() {
-            autofillHints = [...autofillHints, movie.title];
-          });
-        }
-
-        return autofillHints.where((String option) {
-          return option
-              .toLowerCase()
-              .contains(textEditingValue.text.toLowerCase());
-        });
+              suggestionsController.isLoading = false;
+            }
+          },
+        );
       },
+      loadingBuilder: (context) =>
+          ListTile(title: Text(rm.getResource(Resources.loading))),
+      itemBuilder: (context, data) {
+        return ListTile(
+          title: Text(data),
+        );
+      },
+      onSelected: (city) {},
+      hideOnEmpty: true,
     );
   }
 }
