@@ -6,6 +6,7 @@
     { "loading": "Loading..." },
     { "movieTitleCaption": "Title: " },
     { "movieRevenueCaption": "Revenue: " },
-    { "movieRatingCaption": "Rating: " }
+    { "movieRatingCaption": "Rating: " },
+    { "inputBoxHintText": "Enter a guess..."}
   ]
 }

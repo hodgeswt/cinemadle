@@ -1,1 +1,1 @@
-enum Resources { title, caption, loading }
+enum Resources { title, caption, loading, inputBoxHintText }

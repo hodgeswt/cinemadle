@@ -4,6 +4,7 @@ import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
+import 'package:cinemadle/widgets/guess_box.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -52,6 +53,8 @@ class _CinemadleHomeState extends State<CinemadleHome> {
   String title = Utils.emptyString;
   String caption = Utils.emptyString;
 
+  List<MovieCard> userGuesses = [];
+
   _updateState() {
     setState(() {
       title = rm.getResource(Resources.title);
@@ -92,7 +95,18 @@ class _CinemadleHomeState extends State<CinemadleHome> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            MovieCard(movie: snapshot.requireData),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: GuessBox(
+                                inputCallback: (String movieName) {},
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ...userGuesses,
                           ],
                         ),
                       ],
