@@ -6,8 +6,8 @@ class TextCard extends StatefulWidget {
     required this.text,
     this.horizontalPadding = 4.0,
     this.verticalPadding = 4.0,
-    this.width = 125,
-    this.height = 125,
+    this.width = 100,
+    this.height = 100,
     this.widthScale = 1,
     this.heightScale = 1,
   });

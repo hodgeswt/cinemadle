@@ -3,6 +3,9 @@
   "resources": [
     { "title": "Cinemadle" },
     { "caption": "The movie-guessing game" },
-    { "loading": "Loading..." }
+    { "loading": "Loading..." },
+    { "movieTitleCaption": "Title: " },
+    { "movieRevenueCaption": "Revenue: " },
+    { "movieRatingCaption": "Rating: " }
   ]
 }

@@ -76,36 +76,39 @@ class _CinemadleHomeState extends State<CinemadleHome> {
           child: Text(caption),
         ),
       ),
-      body: Align(
-        alignment: Alignment.center,
-        child: LayoutBuilder(
-          builder: (BuildContext context, BoxConstraints constraints) {
-            return FutureBuilder<PaginatedResults>(
-              future: movieData,
-              builder: (BuildContext context,
-                  AsyncSnapshot<PaginatedResults> snapshot) {
-                if (snapshot.hasData) {
-                  List<MovieRecord> dat = snapshot.requireData.results;
-                  return ListView.builder(
-                      itemCount: 1,
-                      itemBuilder: (context, index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            MovieCard(
-                              movie: dat[index],
-                            ),
-                          ],
-                        );
-                      });
-                } else {
-                  return Text(
-                    rm.getResource(Resources.loading),
-                  );
-                }
-              },
-            );
-          },
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+        child: Align(
+          alignment: Alignment.center,
+          child: LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              return FutureBuilder<PaginatedResults>(
+                future: movieData,
+                builder: (BuildContext context,
+                    AsyncSnapshot<PaginatedResults> snapshot) {
+                  if (snapshot.hasData) {
+                    List<MovieRecord> dat = snapshot.requireData.results;
+                    return ListView.builder(
+                        itemCount: 1,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MovieCard(
+                                movie: dat[index],
+                              ),
+                            ],
+                          );
+                        });
+                  } else {
+                    return Text(
+                      rm.getResource(Resources.loading),
+                    );
+                  }
+                },
+              );
+            },
+          ),
         ),
       ),
     );
