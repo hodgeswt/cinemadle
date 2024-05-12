@@ -47,7 +47,7 @@ class _CinemadleHomeState extends State<CinemadleHome> {
 
   late final Future<bool> resourcesLoaded;
 
-  late Future<PaginatedResults> movieData;
+  late Future<MovieRecord> movieData;
 
   String title = Utils.emptyString;
   String caption = Utils.emptyString;
@@ -64,7 +64,7 @@ class _CinemadleHomeState extends State<CinemadleHome> {
     rm.loadResources().then((loaded) => {
           if (loaded) {_updateState()}
         });
-    movieData = md.getPopular();
+    movieData = md.getTargetMovie();
 
     return Scaffold(
       appBar: AppBar(
@@ -82,24 +82,21 @@ class _CinemadleHomeState extends State<CinemadleHome> {
           alignment: Alignment.center,
           child: LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
-              return FutureBuilder<PaginatedResults>(
+              return FutureBuilder<MovieRecord>(
                 future: movieData,
                 builder: (BuildContext context,
-                    AsyncSnapshot<PaginatedResults> snapshot) {
+                    AsyncSnapshot<MovieRecord> snapshot) {
                   if (snapshot.hasData) {
-                    List<MovieRecord> dat = snapshot.requireData.results;
-                    return ListView.builder(
-                        itemCount: 1,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MovieCard(
-                                movie: dat[index],
-                              ),
-                            ],
-                          );
-                        });
+                    return ListView(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            MovieCard(movie: snapshot.requireData),
+                          ],
+                        ),
+                      ],
+                    );
                   } else {
                     return Text(
                       rm.getResource(Resources.loading),

@@ -1,9 +1,11 @@
 import 'package:cinemadle/data_model/movie_details.dart';
+import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
 import 'package:universal_io/io.dart';
+import 'dart:math';
 
 class MovieData {
   static MovieData? _instance;
@@ -35,14 +37,32 @@ class MovieData {
       };
   }
 
-  Future<PaginatedResults> getPopular() async {
+  Future<PaginatedResults> getPopular({int page = 1}) async {
     DateTime today = DateTime.now();
     String date = "${today.year}-${today.month}-${today.day}";
 
     Map<String, dynamic> response = await _getRequest(
-        "discover/movie?certification=G%7CPG%7CPG-13%7CR&include_adult=false&include_video=false&language=en-US&page=1&primary_release_date.gte=1950-01-01&primary_release_date.lte=$date&sort_by=popularity.desc");
+        "discover/movie?certification=G%7CPG%7CPG-13%7CR&include_adult=false&include_video=false&language=en-US&page=$page&primary_release_date.gte=1950-01-01&primary_release_date.lte=$date&sort_by=popularity.desc");
 
     return PaginatedResults.fromJson(response);
+  }
+
+  Future<MovieRecord> getTargetMovie() async {
+    DateTime now = DateTime.now();
+
+    // Normalize to top 1024
+    int m = (DateTime(now.year, now.month, now.day).millisecondsSinceEpoch /
+            86400000)
+        .round();
+    int out = (1 + (sin(m) + 1) * 1024 / 2).round();
+
+    // Pages have 20 results, so this is the page with the movie
+    int page = (out / 20).round();
+    out %= 20;
+
+    PaginatedResults pageData = await getPopular(page: page);
+
+    return pageData.results[out];
   }
 
   Future<MovieDetails> getDetails(int movieId) async {

@@ -29,6 +29,8 @@ class _MovieCardState extends State<MovieCard> {
           mainAxisCellCount: 1,
           child: TextCard(
             text: movies?.voteAverage.toString() ?? Utils.emptyString,
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
           ),
         ),
         StaggeredGridTile.count(
@@ -36,6 +38,8 @@ class _MovieCardState extends State<MovieCard> {
           mainAxisCellCount: 1,
           child: TextCard(
             text: movies?.originalLanguage ?? Utils.emptyString,
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
           ),
         ),
         StaggeredGridTile.count(
@@ -43,6 +47,8 @@ class _MovieCardState extends State<MovieCard> {
           mainAxisCellCount: 1,
           child: TextCard(
             text: movies?.releaseDate ?? Utils.emptyString,
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
           ),
         ),
         StaggeredGridTile.count(
@@ -50,6 +56,8 @@ class _MovieCardState extends State<MovieCard> {
           mainAxisCellCount: 1,
           child: TextCard(
             text: movies?.revenue.toString() ?? Utils.emptyString,
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
           ),
         ),
         StaggeredGridTile.count(
@@ -57,6 +65,8 @@ class _MovieCardState extends State<MovieCard> {
           mainAxisCellCount: 1,
           child: TextCard(
             text: movies?.runtime.toString() ?? Utils.emptyString,
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
           ),
         ),
         StaggeredGridTile.count(
@@ -64,13 +74,16 @@ class _MovieCardState extends State<MovieCard> {
           mainAxisCellCount: 1,
           child: TextCard(
             text: movies?.popularity.toString() ?? Utils.emptyString,
+            horizontalPadding: subTilePadding,
+            verticalPadding: subTilePadding,
           ),
         ),
       ];
 
   MovieDetails? movies;
 
-  Size? size;
+  late Size size;
+  late double subTilePadding;
 
   @override
   Widget build(BuildContext context) {
@@ -83,36 +96,59 @@ class _MovieCardState extends State<MovieCard> {
         });
 
     Size mqSize = MediaQuery.of(context).size;
-    size = Size((mqSize.width / 2) - 8 * 3, (mqSize.height / 2) - 8 * 3);
+    double width = mqSize.width / 2;
+    double height = mqSize.width / 2;
+
+    if (width > 350) {
+      width = 350;
+    }
+
+    if (height > 350) {
+      height = 350;
+    }
+
+    if (width > height) {
+      width = height;
+    } else {
+      height = width;
+    }
+
+    size = Size(width, height);
+
+    subTilePadding = 4.0;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
       child: Container(
-        width: size?.width,
-        height: size?.height,
+        width: size.width,
+        height: size.height,
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black,
             width: 1.0,
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           color: Colors.grey,
         ),
-        child: StaggeredGrid.count(
-          crossAxisCount: 3,
-          mainAxisSpacing: 2,
-          crossAxisSpacing: 2,
-          children: <Widget>[
-            StaggeredGridTile.count(
-              crossAxisCellCount: 3,
-              mainAxisCellCount: 1,
-              child: TextCard(
-                text: movies?.title ?? Utils.emptyString,
-                height: (size?.height ?? 3 / 3),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+          child: StaggeredGrid.count(
+            crossAxisCount: 3,
+            mainAxisSpacing: 2,
+            crossAxisSpacing: 2,
+            children: <Widget>[
+              StaggeredGridTile.count(
+                crossAxisCellCount: 3,
+                mainAxisCellCount: 1,
+                child: TextCard(
+                  text: movies?.title ?? Utils.emptyString,
+                  horizontalPadding: subTilePadding,
+                  verticalPadding: subTilePadding,
+                ),
               ),
-            ),
-            ...tiles,
-          ],
+              ...tiles,
+            ],
+          ),
         ),
       ),
     );

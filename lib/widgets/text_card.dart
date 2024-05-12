@@ -4,8 +4,8 @@ class TextCard extends StatefulWidget {
   const TextCard({
     super.key,
     required this.text,
-    this.horizontalPadding = 4.0,
-    this.verticalPadding = 4.0,
+    this.horizontalPadding = 0.0,
+    this.verticalPadding = 0.0,
     this.width = 100,
     this.height = 100,
     this.widthScale = 1,
@@ -31,17 +31,18 @@ class _TextCardState extends State<TextCard> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          vertical: widget.verticalPadding,
-          horizontal: widget.horizontalPadding),
+        vertical: widget.verticalPadding,
+        horizontal: widget.horizontalPadding,
+      ),
       child: Container(
-        height: widget.height * widget.heightScale,
-        width: widget.width * widget.widthScale,
+        height: (widget.height * widget.heightScale) - widget.horizontalPadding,
+        width: (widget.width * widget.widthScale) - widget.verticalPadding,
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black,
             width: 1.0,
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
           color: Colors.blue,
         ),
         child: Align(
