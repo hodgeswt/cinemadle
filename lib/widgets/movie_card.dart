@@ -340,7 +340,9 @@ class _MovieCardState extends State<MovieCard> {
             width: 1.0,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: Colors.black54,
+          color: movie?.title == targetDetails?.title
+              ? Colors.lightGreen
+              : Colors.black54,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
