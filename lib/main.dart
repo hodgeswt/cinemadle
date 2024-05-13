@@ -8,10 +8,8 @@ import 'package:cinemadle/widgets/guess_box.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
 import 'package:cinemadle/widgets/text_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-Future main() async {
-  await dotenv.load(fileName: ".env");
+main() {
   runApp(const CinemadleApp());
 }
 

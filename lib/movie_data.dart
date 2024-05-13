@@ -2,17 +2,15 @@ import 'package:cinemadle/data_model/credits.dart';
 import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
+import 'package:cinemadle/env.dart';
 import 'package:cinemadle/resource_manager.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dio/dio.dart';
-import 'package:universal_io/io.dart';
 import 'dart:math';
 
 class MovieData {
   static MovieData? _instance;
 
   late final Dio _dio;
-  late final String _apiKey;
 
   final String _host = "https://api.themoviedb.org/3/";
 
@@ -23,8 +21,6 @@ class MovieData {
   }
 
   MovieData._() {
-    _apiKey = dotenv.get('API_KEY', fallback: 'ERROR');
-
     _dio = Dio();
     _dio.options
       ..baseUrl = _host
@@ -32,7 +28,7 @@ class MovieData {
         return status != null && status > 0;
       }
       ..headers = {
-        "Authorization": "Bearer $_apiKey",
+        "Authorization": "Bearer ${Env.d}",
         "accept": "application/json"
       };
   }
