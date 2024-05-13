@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/data_model/movie_record.dart';
-import 'package:cinemadle/data_model/paginated_results.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';

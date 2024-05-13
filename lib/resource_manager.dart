@@ -10,6 +10,8 @@ import 'package:flutter/services.dart' show rootBundle;
 class ResourceManager {
   static ResourceManager? _instance;
 
+  static const String _manifestPrefix = "resource_strings/";
+
   String get panicModeMessage {
     if (panicMode) {
       return _panicModeMessage;
@@ -74,8 +76,8 @@ class ResourceManager {
     String currentError = "Failed loading asset manifest";
 
     // We just have to trust these two exist
-    String manifestAssetName = "manifest.json";
-    String manifestSchemaAssetName = "manifest.schema.json";
+    String manifestAssetName = "${_manifestPrefix}manifest.json";
+    String manifestSchemaAssetName = "${_manifestPrefix}manifest.schema.json";
 
     try {
       String manifestData = await rootBundle.loadString(manifestAssetName);
@@ -98,9 +100,12 @@ class ResourceManager {
       currentError = "Failed accessing manifest data.";
       List<String> assets = List.from(manifest["assets"] as List);
 
-      String resourcesAssetName = "resources/strings_$culture.json";
-      String defaultResourcesAssetName = "resources/strings.json";
-      String resourcesSchemaAssetName = "resources/strings.schema.json";
+      String resourcesAssetName =
+          "${_manifestPrefix}resources/strings_$culture.json";
+      String defaultResourcesAssetName =
+          "${_manifestPrefix}resources/strings.json";
+      String resourcesSchemaAssetName =
+          "${_manifestPrefix}resources/strings.schema.json";
 
       if (!assets.contains(resourcesSchemaAssetName)) {
         _enterPanicMode("Resource schema file not found in asset data");

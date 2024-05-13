@@ -32,7 +32,6 @@ class MovieData {
         return status != null && status > 0;
       }
       ..headers = {
-        HttpHeaders.userAgentHeader: 'dio',
         "Authorization": "Bearer $_apiKey",
         "accept": "application/json"
       };
