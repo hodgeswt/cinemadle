@@ -1,10 +1,10 @@
+import 'package:cinemadle/constants.dart';
 import 'package:cinemadle/data_model/movie_details.dart';
-import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/movie_card_data.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
-import 'package:cinemadle/utils.dart';
+import 'package:cinemadle/views/loading_view.dart';
 import 'package:cinemadle/widgets/guess_box.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
 import 'package:cinemadle/widgets/text_card.dart';
@@ -62,6 +62,14 @@ class _MainViewState extends State<MainView> {
 
   bool isWin = false;
 
+  _resetGame() {
+    setState(() {
+      userGuessRecords = [];
+      userGuesses = [];
+      isWin = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,6 +88,47 @@ class _MainViewState extends State<MainView> {
           alignment: Alignment.center,
           child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
+            if (userGuesses.length == 10) {
+              return ListView(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      TextCard(
+                        text: rm.getResource(Resources.lossText),
+                        width: MediaQuery.of(context).size.width / 2,
+                        color: Constants.red,
+                      )
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      MovieCard(
+                        movieData: widget.targetData,
+                        targetData: widget.targetData,
+                        isLoss: true,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _resetGame();
+                          },
+                          child: Text(rm.getResource(Resources.resetButton)),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              );
+            }
+
             if (!isWin) {
               return ListView(
                 children: <Widget>[
@@ -87,7 +136,17 @@ class _MainViewState extends State<MainView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(4.0),
+                        padding: Constants.halfPad,
+                        child: Text(
+                            "${rm.getResource(Resources.countLabel)}${10 - userGuesses.length}"),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: Constants.halfPad,
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width / 2,
                           child: GuessBox(
@@ -118,31 +177,30 @@ class _MainViewState extends State<MainView> {
                     TextCard(
                       text: rm.getResource(Resources.winText),
                       width: MediaQuery.of(context).size.width / 2,
-                      color: Colors.lightGreen,
+                      color: Constants.lightGreen,
                     )
                   ],
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            userGuessRecords = [];
-                            userGuesses = [];
-                            isWin = false;
-                          },
-                          child: Text(rm.getResource(Resources.resetButton)),
-                        ),
-                      ),
-                    ]),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     MovieCard(
                       movieData: widget.targetData,
                       targetData: widget.targetData,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _resetGame();
+                        },
+                        child: Text(rm.getResource(Resources.resetButton)),
+                      ),
                     ),
                   ],
                 ),

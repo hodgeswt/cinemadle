@@ -17,10 +17,12 @@ class MovieCard extends StatefulWidget {
     super.key,
     required this.movieData,
     required this.targetData,
+    this.isLoss = false,
   });
 
   final MovieCardData movieData;
   final MovieCardData targetData;
+  final bool isLoss;
 
   @override
   State<MovieCard> createState() => _MovieCardState();
@@ -94,10 +96,13 @@ class _MovieCardState extends State<MovieCard> {
   late Size size;
   late double subTilePadding;
 
-  bool isSameAsTarget = false;
-
   _setTileColors() {
-    if (isSameAsTarget) {
+    if (widget.isLoss) {
+      _setAllRed();
+      return;
+    }
+
+    if (widget.movieData.isSameAsTarget) {
       _setAllGreen();
       return;
     }
@@ -179,6 +184,22 @@ class _MovieCardState extends State<MovieCard> {
     });
   }
 
+  _setAllRed() {
+    setState(() {
+      tileColors = {
+        "userScore": Constants.red,
+        "mpaRating": Constants.red,
+        "releaseDate": Constants.red,
+        "revenue": Constants.red,
+        "runtime": Constants.red,
+        "genre": Constants.red,
+        "director": Constants.red,
+        "writer": Constants.red,
+        "lead": Constants.red,
+      };
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _setTileColors();
@@ -211,7 +232,11 @@ class _MovieCardState extends State<MovieCard> {
             width: 1.0,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: isSameAsTarget ? Constants.lightGreen : Constants.darkGrey,
+          color: widget.isLoss
+              ? Constants.darkRed
+              : (widget.movieData.isSameAsTarget
+                  ? Constants.lightGreen
+                  : Constants.darkGrey),
         ),
         child: Padding(
           padding: Constants.stdPad,
@@ -227,7 +252,11 @@ class _MovieCardState extends State<MovieCard> {
                   text: widget.movieData.title,
                   horizontalPadding: subTilePadding,
                   verticalPadding: subTilePadding,
-                  color: isSameAsTarget ? Constants.darkGreen : Constants.grey,
+                  color: widget.isLoss
+                      ? Constants.red
+                      : (widget.movieData.isSameAsTarget
+                          ? Constants.darkGreen
+                          : Constants.grey),
                 ),
               ),
               ...tiles,

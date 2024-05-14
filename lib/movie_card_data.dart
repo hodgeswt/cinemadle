@@ -155,6 +155,8 @@ class MovieCardData {
   loadData(int movieId, int targetId) async {
     if (movieId == targetId) {
       isSameAsTarget = true;
+    } else {
+      isSameAsTarget = false;
     }
 
     await _loadMovieData(movieId);

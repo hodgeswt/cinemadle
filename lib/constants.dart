@@ -10,6 +10,8 @@ class Constants {
   static const Color darkGrey = Colors.black54;
   static const Color black = Colors.black;
   static const Color yellow = Colors.yellow;
+  static const Color red = Colors.red;
+  static final Color darkRed = Colors.red.shade900;
 
   // Padding
   static const double verticalPadding = 8.0;
@@ -18,4 +20,6 @@ class Constants {
       vertical: verticalPadding, horizontal: horizontalPadding);
   static const EdgeInsetsGeometry doublePad = EdgeInsets.symmetric(
       vertical: verticalPadding * 2, horizontal: horizontalPadding * 2);
+  static const EdgeInsetsGeometry halfPad = EdgeInsets.symmetric(
+      vertical: verticalPadding / 2, horizontal: horizontalPadding / 2);
 }

@@ -19,6 +19,8 @@ enum Resources {
   movieRatingCaption,
   unknown,
   winText,
+  lossText,
+  countLabel,
   resetButton,
   startButtonText,
   gameDescription,
