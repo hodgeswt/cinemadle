@@ -4,7 +4,6 @@ import 'package:cinemadle/movie_card_data.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
-import 'package:cinemadle/views/loading_view.dart';
 import 'package:cinemadle/widgets/guess_box.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
 import 'package:cinemadle/widgets/text_card.dart';

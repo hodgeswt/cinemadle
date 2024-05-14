@@ -1,8 +1,4 @@
-import 'dart:async';
-
 import 'package:cinemadle/constants.dart';
-import 'package:cinemadle/data_model/credits.dart';
-import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/movie_card_data.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';

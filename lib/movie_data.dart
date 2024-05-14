@@ -1,6 +1,5 @@
 import 'package:cinemadle/data_model/credits.dart';
 import 'package:cinemadle/data_model/movie_details.dart';
-import 'package:cinemadle/data_model/movie_record.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
 import 'package:cinemadle/env.dart';
 import 'package:cinemadle/resource_manager.dart';
