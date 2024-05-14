@@ -13,10 +13,13 @@ enum Resources {
   moviePopularityCaption,
   movieWriterCaption,
   movieDirectorCaption,
+  movieGenreCaption,
   movieFirstActingCreditCaption,
   minutesLabel,
   movieRatingCaption,
   unknown,
   winText,
-  resetButton
+  resetButton,
+  startButtonText,
+  gameDescription,
 }

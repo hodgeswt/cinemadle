@@ -38,9 +38,12 @@ class Utils {
   }
 
   static DateTime parseDate(String? date) {
-    DateTime? dt = DateTime.tryParse(date ?? emptyString);
-
-    return dt ?? DateTime(1970, 1, 1);
+    try {
+      return DateFormat.yMd(ResourceManager.instance.culture)
+          .parse(date ?? emptyString);
+    } catch (_) {
+      return DateTime(1970, 1, 1);
+    }
   }
 
   static int mapMpaRatingToInt(String? mpaRating) {

@@ -43,7 +43,7 @@ class MovieData {
     return PaginatedResults.fromJson(response);
   }
 
-  Future<MovieRecord> getTargetMovie() async {
+  Future<int> getTargetMovie() async {
     DateTime now = DateTime.now();
 
     // Normalize to top 1024
@@ -58,7 +58,7 @@ class MovieData {
 
     PaginatedResults pageData = await getPopular(page: page);
 
-    return pageData.results[out];
+    return pageData.results[out].id;
   }
 
   Future<PaginatedResults> searchMovie(String query) async {
