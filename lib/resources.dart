@@ -1,6 +1,7 @@
 enum Resources {
   title,
   caption,
+  popularityLabel,
   loading,
   inputBoxHintText,
   guessDoesNotExist,

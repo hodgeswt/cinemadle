@@ -65,7 +65,8 @@ class _GuessBoxState extends State<GuessBox> {
             if (!widget.userGuessRecords.any((x) {
               return x == movie.id;
             })) {
-              newTitles.add("${movie.title} - (${movie.id})");
+              newTitles.add(
+                  "${movie.title}${rm.getResource(Resources.popularityLabel)} ${movie.popularity.round()}");
             }
           }
 

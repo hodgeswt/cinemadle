@@ -26,6 +26,7 @@
     { "countLabel": "Guesses Remaining: " },
     { "resetButton": "Reset" },
     { "startButtonText": "Start Game" },
+    { "popularityLabel": ", popularity: " },
     { "gameDescription": "Cinemadle is a movie-guessing game. There is a hidden movie you must guess in 10 tries or fewer.\nEnter your guess in the box, and nine clues appear below: its rating (out of 10) from users of TheMovieDB.org, its MPA rating, its release date, its total revenue, its runtime, its top genre, its director, its writer, and the first person listed in its cast.\n\nEach of these clues is in a color-coded square. A green square means that info is correct, yellow means it is close, and gray means it is wrong.\nA \"close\" guess is determined as follows:\n\nUser Score: Your guess is within 1 point.\nMPA Rating: Your guess is within 1 rating.\nRelease Date: Your guess is within 5 years.\nRevenue: Your guess is within $50m USD.\nRuntime: Your guess is within 20 minutes.\nGenre: Never appears yellow.\nDirector: Your director is the writer of the hidden movie.\nWriter: Your writer is the director of the hidden movie.\nFirst in Cast: Your actor is in the target movie." }
   ]
 }
