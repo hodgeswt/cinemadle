@@ -71,6 +71,21 @@ class _MainViewState extends State<MainView> {
     });
   }
 
+  Widget _getResetButton() {
+    return Padding(
+      padding: Constants.stdPad,
+      child: SizedBox(
+        width: Utils.widthCalculator(MediaQuery.of(context).size.width / 2),
+        child: ElevatedButton(
+          onPressed: () {
+            _resetGame();
+          },
+          child: Text(rm.getResource(Resources.resetButton)),
+        ),
+      ),
+    );
+  }
+
   Widget _getWinScreen() {
     return ListView(
       children: <Widget>[
@@ -101,28 +116,14 @@ class _MainViewState extends State<MainView> {
             ),
           ],
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[_getResetButton()],
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            MovieCard(
-              movieData: widget.targetData,
-              targetData: widget.targetData,
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width:
-                  Utils.widthCalculator(MediaQuery.of(context).size.width / 2),
-              child: ElevatedButton(
-                onPressed: () {
-                  _resetGame();
-                },
-                child: Text(rm.getResource(Resources.resetButton)),
-              ),
-            ),
+            ...userGuesses,
           ],
         ),
       ],
@@ -159,6 +160,10 @@ class _MainViewState extends State<MainView> {
             ),
           ],
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[_getResetButton()],
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -167,23 +172,9 @@ class _MainViewState extends State<MainView> {
               targetData: widget.targetData,
               isLoss: true,
             ),
+            ...userGuesses
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width:
-                  Utils.widthCalculator(MediaQuery.of(context).size.width / 2),
-              child: ElevatedButton(
-                onPressed: () {
-                  _resetGame();
-                },
-                child: Text(rm.getResource(Resources.resetButton)),
-              ),
-            ),
-          ],
-        )
       ],
     );
   }
@@ -214,7 +205,7 @@ class _MainViewState extends State<MainView> {
                       Padding(
                         padding: Constants.halfPad,
                         child: Text(
-                            "${rm.getResource(Resources.countLabel)}${10 - userGuesses.length}"),
+                            "${rm.getResource(Resources.countLabel)}${Constants.maxGuess - userGuesses.length}"),
                       ),
                     ],
                   ),
