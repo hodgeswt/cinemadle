@@ -101,7 +101,9 @@ class _MovieCardState extends State<MovieCard> {
     }
 
     double voteDiff =
-        (widget.movieData.voteAverage - widget.targetData.voteAverage).abs();
+        (double.parse(widget.movieData.voteAverage.toStringAsFixed(2)) -
+                double.parse(widget.targetData.voteAverage.toStringAsFixed(2)))
+            .abs();
     Color? userScore = voteDiff == 0
         ? Constants.lightGreen
         : (voteDiff <= 1 ? Constants.goldYellow : null);
