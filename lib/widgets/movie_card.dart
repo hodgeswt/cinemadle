@@ -182,15 +182,15 @@ class _MovieCardState extends State<MovieCard> {
   _setAllRed() {
     setState(() {
       tileColors = {
-        "userScore": Constants.darkRed,
-        "mpaRating": Constants.darkRed,
-        "releaseDate": Constants.darkRed,
-        "revenue": Constants.darkRed,
-        "runtime": Constants.darkRed,
-        "genre": Constants.darkRed,
-        "director": Constants.darkRed,
-        "writer": Constants.darkRed,
-        "lead": Constants.darkRed,
+        "userScore": Constants.lightRed,
+        "mpaRating": Constants.lightRed,
+        "releaseDate": Constants.lightRed,
+        "revenue": Constants.lightRed,
+        "runtime": Constants.lightRed,
+        "genre": Constants.lightRed,
+        "director": Constants.lightRed,
+        "writer": Constants.lightRed,
+        "lead": Constants.lightRed,
       };
     });
   }
@@ -227,7 +227,7 @@ class _MovieCardState extends State<MovieCard> {
                     textAlign: TextAlign.center,
                     widget.movieData.title,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

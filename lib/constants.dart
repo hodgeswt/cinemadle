@@ -17,7 +17,7 @@ class Constants {
   static const Color darkYellow = Color(0xFFFFD600);
   static const Color goldYellow = Color(0xFFFFD700);
 
-  static const Color lightRed = Color(0xFFF44336);
+  static const Color lightRed = Color.fromARGB(255, 255, 90, 90);
   static const Color darkRed = Color(0xFFC62828);
   static const Color crimsonRed = Color(0xFFE53935);
 

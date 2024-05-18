@@ -176,7 +176,11 @@ class MovieCardData {
       out += "${genre.name},\n";
     }
 
-    return out.substring(0, out.length - 2);
+    if (out.isNotEmpty) {
+      return out.substring(0, out.length - 2);
+    }
+
+    return _rm.getResource(Resources.unknown);
   }
 
   /// Loads the data from the movie IDs

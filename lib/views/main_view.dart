@@ -95,7 +95,7 @@ class _MainViewState extends State<MainView> {
                     children: <Widget>[
                       TextCard(
                         text: rm.getResource(Resources.lossText),
-                        color: Constants.darkRed,
+                        color: Constants.lightRed,
                       )
                     ],
                   ),
