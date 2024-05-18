@@ -62,12 +62,14 @@ class _MainViewState extends State<MainView> {
   }
 
   bool isWin = false;
+  bool _isTargetVisible = false;
 
   _resetGame() {
     setState(() {
       userGuessRecords = [];
       userGuesses = [];
       isWin = false;
+      _isTargetVisible = false;
     });
   }
 
@@ -132,6 +134,11 @@ class _MainViewState extends State<MainView> {
   }
 
   Widget _getLossScreen() {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      setState(() {
+        _isTargetVisible = true;
+      });
+    });
     return ListView(
       children: <Widget>[
         Row(
@@ -168,10 +175,14 @@ class _MainViewState extends State<MainView> {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            MovieCard(
-              movieData: widget.targetData,
-              targetData: widget.targetData,
-              isLoss: true,
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: !_isTargetVisible ? 0 : 1,
+              child: MovieCard(
+                movieData: widget.targetData,
+                targetData: widget.targetData,
+                isLoss: true,
+              ),
             ),
             ...userGuesses
           ],
@@ -194,11 +205,11 @@ class _MainViewState extends State<MainView> {
           alignment: Alignment.center,
           child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-            if (userGuesses.length == Constants.maxGuess) {
-              return _getLossScreen();
-            }
-
             if (!isWin) {
+              if (userGuesses.length == Constants.maxGuess) {
+                return _getLossScreen();
+              }
+
               return ListView(
                 children: <Widget>[
                   Row(

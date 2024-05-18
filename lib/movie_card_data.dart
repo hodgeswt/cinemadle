@@ -117,7 +117,8 @@ class MovieCardData {
 
             return (base.year == y.year) &&
                 (base.day == y.day) &&
-                (base.month == y.month);
+                (base.month == y.month) &&
+                x.certification != Utils.emptyString;
           })
           .certification;
       return (cert?.isEmpty ?? false)
