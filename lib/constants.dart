@@ -4,8 +4,10 @@ class Constants {
   static const Duration pollingDelay = Duration(milliseconds: 200);
 
   static const Color blue = Colors.blue;
+
   static const Color grey = Colors.grey;
   static const Color darkGrey = Colors.black54;
+  static final Color lightGrey = Colors.grey[200] ?? Colors.grey;
   static const Color black = Colors.black;
 
   static const Color lightGreen = Color(0xFF8BC34A);

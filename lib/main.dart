@@ -1,3 +1,4 @@
+import 'package:cinemadle/constants.dart';
 import 'package:cinemadle/views/loading_view.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class CinemadleApp extends StatelessWidget {
     return MaterialApp(
       title: "Cinemadle",
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
+        colorScheme: ColorScheme.fromSeed(seedColor: Constants.lightGrey),
         useMaterial3: true,
       ),
       home: const LoadingView(),

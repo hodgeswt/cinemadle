@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 
 AppBar get cinemadleAppbar {
   return AppBar(
-    backgroundColor: Constants.blue,
+    backgroundColor: Constants.darkGrey,
     title: Text(
       ResourceManager.instance.getResource(Resources.title),
-      style: const TextStyle(
-        color: Colors.white,
+      style: TextStyle(
+        color: Constants.lightGrey,
         fontSize: 20,
         fontWeight: FontWeight.bold,
       ),
@@ -19,8 +19,8 @@ AppBar get cinemadleAppbar {
       preferredSize: Size.zero,
       child: Text(
         ResourceManager.instance.getResource(Resources.caption),
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: Constants.lightGrey,
           fontSize: 16,
           fontStyle: FontStyle.italic,
         ),
