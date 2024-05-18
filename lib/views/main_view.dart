@@ -25,12 +25,12 @@ class _MainViewState extends State<MainView> {
   List<MovieCard> userGuesses = [];
   List<int> userGuessRecords = [];
 
-  _addUserGuess(String guess) async {
-    if (!mounted || int.tryParse(guess) == null) {
+  _addUserGuess(int guess) async {
+    if (!mounted) {
       return;
     }
 
-    MovieDetails search = await md.getDetails(int.parse(guess));
+    MovieDetails search = await md.getDetails(guess);
 
     if (search.id == widget.targetData.id) {
       isWin = true;
@@ -149,7 +149,7 @@ class _MainViewState extends State<MainView> {
                           width: MediaQuery.of(context).size.width / 2,
                           child: GuessBox(
                             userGuessRecords: userGuessRecords,
-                            inputCallback: (String movieId) {
+                            inputCallback: (int movieId) {
                               _addUserGuess(movieId);
                             },
                           ),

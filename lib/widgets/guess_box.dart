@@ -13,7 +13,7 @@ class GuessBox extends StatefulWidget {
     required this.inputCallback,
   });
 
-  final Function(String) inputCallback;
+  final Function(int) inputCallback;
 
   final List<int> userGuessRecords;
 
@@ -26,6 +26,7 @@ class _GuessBoxState extends State<GuessBox> {
   final MovieData md = MovieData.instance;
 
   List<String> autofillHints = [];
+  Map<String, int> ids = {};
 
   SuggestionsController<String> suggestionsController =
       SuggestionsController<String>();
@@ -33,8 +34,8 @@ class _GuessBoxState extends State<GuessBox> {
   TextField? _guessBoxField;
 
   _submit(String data) {
-    String trimmed = data.split(" - (").last.replaceAll(')', '');
-    widget.inputCallback(trimmed);
+    int id = ids[data] ?? -1;
+    widget.inputCallback(id);
     _guessBoxField?.controller?.clear();
     suggestionsController.refresh();
     autofillHints = [];
@@ -65,8 +66,10 @@ class _GuessBoxState extends State<GuessBox> {
             if (!widget.userGuessRecords.any((x) {
               return x == movie.id;
             })) {
-              newTitles.add(
-                  "${movie.title}${rm.getResource(Resources.popularityLabel)} ${movie.popularity.round()}");
+              String title =
+                  "${movie.title}${rm.getResource(Resources.popularityLabel)} ${movie.popularity.round()}";
+              ids[title] = movie.id;
+              newTitles.add(title);
             }
           }
 
