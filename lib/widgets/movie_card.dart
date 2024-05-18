@@ -101,8 +101,8 @@ class _MovieCardState extends State<MovieCard> {
     }
 
     double voteDiff =
-        (double.parse(widget.movieData.voteAverage.toStringAsFixed(2)) -
-                double.parse(widget.targetData.voteAverage.toStringAsFixed(2)))
+        (double.parse(widget.movieData.voteAverage.toStringAsFixed(1)) -
+                double.parse(widget.targetData.voteAverage.toStringAsFixed(1)))
             .abs();
     Color? userScore = voteDiff == 0
         ? Constants.lightGreen
@@ -120,9 +120,12 @@ class _MovieCardState extends State<MovieCard> {
     Duration dateDiff = Utils.parseDate(widget.movieData.releaseDate)
         .difference(Utils.parseDate(widget.targetData.releaseDate))
         .abs();
+    int yellowDateDiff = (Utils.parseDate(widget.movieData.releaseDate).year -
+            Utils.parseDate(widget.targetData.releaseDate).year)
+        .abs();
     Color? releaseDate = dateDiff.inDays == 0
         ? Constants.lightGreen
-        : (dateDiff.inDays <= (365 * 5) ? Constants.goldYellow : null);
+        : (yellowDateDiff <= 5 ? Constants.goldYellow : null);
     tileColors["releaseDate"] = releaseDate;
 
     int revenueDiff =
