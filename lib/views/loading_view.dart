@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:cinemadle/constants.dart';
 import 'package:cinemadle/movie_card_data.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
-import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/widgets/cinemadle_app_bar.dart';
 import 'package:cinemadle/widgets/game_start.dart';
 import 'package:flutter/material.dart';

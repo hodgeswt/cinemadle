@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Constants {
+  static const popularityListLength = 512;
+  static const pageSize = 20;
+
   static const int maxGuess = 10;
   static const Duration pollingDelay = Duration(milliseconds: 200);
 

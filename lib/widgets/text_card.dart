@@ -2,8 +2,6 @@ import 'package:cinemadle/constants.dart';
 import 'package:cinemadle/utils.dart';
 import 'package:flutter/material.dart';
 
-//
-
 class TextCard extends StatefulWidget {
   const TextCard({
     super.key,

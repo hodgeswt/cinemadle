@@ -1,3 +1,4 @@
+import 'package:cinemadle/constants.dart';
 import 'package:cinemadle/data_model/credits.dart';
 import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/data_model/paginated_results.dart';
@@ -8,6 +9,8 @@ import 'dart:math';
 
 class MovieData {
   static MovieData? _instance;
+
+  static List<int> searchableIds = [];
 
   late final Dio _dio;
 
@@ -33,6 +36,7 @@ class MovieData {
   }
 
   Future<PaginatedResults> getPopular({int page = 1}) async {
+    page = page == 0 ? 1 : page;
     DateTime today = DateTime.now();
     String date = "${today.year}-${today.month}-${today.day}";
 
@@ -49,7 +53,7 @@ class MovieData {
     int m = (DateTime(now.year, now.month, now.day).millisecondsSinceEpoch /
             86400000)
         .round();
-    int out = (1 + (sin(m) + 1) * 1024 / 2).round();
+    int out = (1 + (sin(m) + 1) * Constants.popularityListLength / 2).round();
 
     // Pages have 20 results, so this is the page with the movie
     int page = (out / 20).round();

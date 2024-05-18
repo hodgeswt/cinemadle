@@ -8,7 +8,6 @@ import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/widgets/cinemadle_app_bar.dart';
 import 'package:cinemadle/widgets/guess_box.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
-import 'package:cinemadle/widgets/text_card.dart';
 import 'package:flutter/material.dart';
 
 class MainView extends StatefulWidget {
