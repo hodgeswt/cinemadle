@@ -71,6 +71,123 @@ class _MainViewState extends State<MainView> {
     });
   }
 
+  Widget _getWinScreen() {
+    return ListView(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Container(
+                padding: Constants.stdPad,
+                decoration: BoxDecoration(
+                  color: Constants.lightGreen,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      rm.getResource(Resources.winText),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            MovieCard(
+              movieData: widget.targetData,
+              targetData: widget.targetData,
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              width:
+                  Utils.widthCalculator(MediaQuery.of(context).size.width / 2),
+              child: ElevatedButton(
+                onPressed: () {
+                  _resetGame();
+                },
+                child: Text(rm.getResource(Resources.resetButton)),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _getLossScreen() {
+    return ListView(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Center(
+              child: Container(
+                padding: Constants.stdPad,
+                decoration: BoxDecoration(
+                  color: Constants.lightRed,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(
+                      rm.getResource(Resources.lossText),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            MovieCard(
+              movieData: widget.targetData,
+              targetData: widget.targetData,
+              isLoss: true,
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              width:
+                  Utils.widthCalculator(MediaQuery.of(context).size.width / 2),
+              child: ElevatedButton(
+                onPressed: () {
+                  _resetGame();
+                },
+                child: Text(rm.getResource(Resources.resetButton)),
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double guessWidth =
@@ -84,44 +201,8 @@ class _MainViewState extends State<MainView> {
           alignment: Alignment.center,
           child: LayoutBuilder(
               builder: (BuildContext context, BoxConstraints constraints) {
-            if (userGuesses.length == 10) {
-              return ListView(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      TextCard(
-                        text: rm.getResource(Resources.lossText),
-                        color: Constants.lightRed,
-                      )
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      MovieCard(
-                        movieData: widget.targetData,
-                        targetData: widget.targetData,
-                        isLoss: true,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 2,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _resetGame();
-                          },
-                          child: Text(rm.getResource(Resources.resetButton)),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              );
+            if (userGuesses.length == Constants.maxGuess) {
+              return _getLossScreen();
             }
 
             if (!isWin) {
@@ -164,42 +245,7 @@ class _MainViewState extends State<MainView> {
               );
             }
 
-            return ListView(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    TextCard(
-                      text: rm.getResource(Resources.winText),
-                      color: Constants.lightGreen,
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    MovieCard(
-                      movieData: widget.targetData,
-                      targetData: widget.targetData,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _resetGame();
-                        },
-                        child: Text(rm.getResource(Resources.resetButton)),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
+            return _getWinScreen();
           }),
         ),
       ),

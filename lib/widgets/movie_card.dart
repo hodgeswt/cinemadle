@@ -92,7 +92,6 @@ class _MovieCardState extends State<MovieCard> {
 
   _setTileColors() {
     if (widget.isLoss) {
-      _setAllRed();
       return;
     }
 
@@ -179,22 +178,6 @@ class _MovieCardState extends State<MovieCard> {
     });
   }
 
-  _setAllRed() {
-    setState(() {
-      tileColors = {
-        "userScore": Constants.lightRed,
-        "mpaRating": Constants.lightRed,
-        "releaseDate": Constants.lightRed,
-        "revenue": Constants.lightRed,
-        "runtime": Constants.lightRed,
-        "genre": Constants.lightRed,
-        "director": Constants.lightRed,
-        "writer": Constants.lightRed,
-        "lead": Constants.lightRed,
-      };
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     _setTileColors();
@@ -211,7 +194,9 @@ class _MovieCardState extends State<MovieCard> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          color: Colors.grey[200],
+          color: widget.movieData.isSameAsTarget
+              ? (widget.isLoss ? Constants.lightGrey : Constants.otherGreen)
+              : Constants.lightGrey,
           child: Padding(
             padding: Constants.doublePad,
             child: Column(
