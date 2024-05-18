@@ -2,6 +2,7 @@ import 'package:cinemadle/constants.dart';
 import 'package:cinemadle/movie_card_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
+import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/views/main_view.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +40,7 @@ class _GameStartState extends State<GameStart> {
     );
   }
 
-  Widget _gameDescription(Size size) {
+  Widget _gameDescription() {
     return Padding(
       padding: Constants.stdPad,
       child: Text(
@@ -51,19 +52,18 @@ class _GameStartState extends State<GameStart> {
 
   @override
   Widget build(BuildContext context) {
+    double width = Utils.widthCalculator(MediaQuery.of(context).size.width);
     return Padding(
       padding: Constants.stdPad,
       child: Align(
         alignment: Alignment.center,
         child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-            Size size = MediaQuery.of(context).size;
-
             return SizedBox(
-              height: size.height,
-              width: size.width / 2,
+              height: MediaQuery.of(context).size.height,
+              width: width,
               child: ListView(
-                children: <Widget>[_gameDescription(size), _startGameButton()],
+                children: <Widget>[_gameDescription(), _startGameButton()],
               ),
             );
           },

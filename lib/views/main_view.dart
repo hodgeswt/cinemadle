@@ -4,6 +4,7 @@ import 'package:cinemadle/movie_card_data.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
+import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/widgets/guess_box.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
 import 'package:cinemadle/widgets/text_card.dart';
@@ -71,6 +72,9 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
+    double guessWidth =
+        Utils.widthCalculator(MediaQuery.of(context).size.width);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -146,7 +150,7 @@ class _MainViewState extends State<MainView> {
                       Padding(
                         padding: Constants.halfPad,
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 2,
+                          width: guessWidth,
                           child: GuessBox(
                             userGuessRecords: userGuessRecords,
                             inputCallback: (int movieId) {

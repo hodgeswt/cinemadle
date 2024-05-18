@@ -198,12 +198,7 @@ class _MovieCardState extends State<MovieCard> {
   @override
   Widget build(BuildContext context) {
     _setTileColors();
-    double width = MediaQuery.of(context).size.width;
-
-    double widthBox = (110 * 3) + 24;
-    if (width > widthBox || width < widthBox) {
-      width = widthBox;
-    }
+    double width = Utils.widthCalculator(MediaQuery.of(context).size.width);
 
     subTilePadding = 4.0;
 

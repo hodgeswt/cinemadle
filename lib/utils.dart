@@ -27,6 +27,16 @@ class Utils {
     ).format(val);
   }
 
+  static double widthCalculator(double width) {
+    double w = width;
+    double widthBox = (110 * 3) + 24;
+    if (w > widthBox || w < widthBox) {
+      w = widthBox;
+    }
+
+    return w;
+  }
+
   static String formatDate(String? date) {
     DateTime? dt = DateTime.tryParse(date ?? emptyString);
 
