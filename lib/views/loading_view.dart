@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:cinemadle/constants.dart';
 import 'package:cinemadle/movie_card_data.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
+import 'package:cinemadle/widgets/cinemadle_app_bar.dart';
 import 'package:cinemadle/widgets/game_start.dart';
 import 'package:flutter/material.dart';
 
@@ -47,15 +49,7 @@ class _LoadingViewState extends State<LoadingView> {
         }
 
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: Text(rm.getResource(Resources.title)),
-            centerTitle: true,
-            bottom: PreferredSize(
-              preferredSize: Size.zero,
-              child: Text(rm.getResource(Resources.caption)),
-            ),
-          ),
+          appBar: cinemadleAppbar,
           body: GameStart(targetData: targetData),
         );
       },

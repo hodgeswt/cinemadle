@@ -2,7 +2,7 @@
   "culture": "any",
   "resources": [
     { "title": "Cinemadle" },
-    { "caption": "The movie-guessing game" },
+    { "caption": "the movie-guessing game" },
     { "loading": "Loading..." },
     { "inputBoxHintText": "Enter a guess..." },
     { "guessDoesNotExist": "Guess does not exist" },
