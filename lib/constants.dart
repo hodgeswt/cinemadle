@@ -4,14 +4,22 @@ class Constants {
   static const Duration pollingDelay = Duration(milliseconds: 200);
 
   // Tile colors
-  static const Color darkGreen = Colors.green;
-  static const Color lightGreen = Colors.lightGreen;
   static const Color grey = Colors.grey;
   static const Color darkGrey = Colors.black54;
   static const Color black = Colors.black;
   static const Color yellow = Colors.yellow;
-  static const Color red = Colors.red;
-  static final Color darkRed = Colors.red.shade900;
+
+  static const Color lightGreen = Color(0xFF8BC34A);
+  static const Color darkGreen = Color(0xFF388E3C);
+  static const Color oliveGreen = Color(0xFF689F38);
+
+  static const Color lightYellow = Color(0xFFFFEB3B);
+  static const Color darkYellow = Color(0xFFFFD600);
+  static const Color goldYellow = Color(0xFFFFD700);
+
+  static const Color lightRed = Color(0xFFF44336);
+  static const Color darkRed = Color(0xFFC62828);
+  static const Color crimsonRed = Color(0xFFE53935);
 
   // Padding
   static const double verticalPadding = 8.0;

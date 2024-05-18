@@ -95,8 +95,7 @@ class _MainViewState extends State<MainView> {
                     children: <Widget>[
                       TextCard(
                         text: rm.getResource(Resources.lossText),
-                        width: MediaQuery.of(context).size.width / 2,
-                        color: Constants.red,
+                        color: Constants.darkRed,
                       )
                     ],
                   ),
@@ -175,7 +174,6 @@ class _MainViewState extends State<MainView> {
                   children: <Widget>[
                     TextCard(
                       text: rm.getResource(Resources.winText),
-                      width: MediaQuery.of(context).size.width / 2,
                       color: Constants.lightGreen,
                     )
                   ],

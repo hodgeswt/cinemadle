@@ -28,28 +28,23 @@ class _MovieCardState extends State<MovieCard> {
   final MovieData md = MovieData.instance;
   final ResourceManager rm = ResourceManager.instance;
 
-  Map<String, Color> tileColors = {
-    "userScore": Constants.grey,
-    "mpaRating": Constants.grey,
-    "releaseDate": Constants.grey,
-    "revenue": Constants.grey,
-    "runtime": Constants.grey,
-    "genre": Constants.grey,
-    "director": Constants.grey,
-    "writer": Constants.grey,
-    "lead": Constants.grey,
+  Map<String, Color?> tileColors = {
+    "userScore": null,
+    "mpaRating": null,
+    "releaseDate": null,
+    "revenue": null,
+    "runtime": null,
+    "genre": null,
+    "director": null,
+    "writer": null,
+    "lead": null,
   };
 
   StaggeredGridTile _tileBuilder(String text, String colorName) {
     return StaggeredGridTile.count(
       crossAxisCellCount: 1,
       mainAxisCellCount: 1,
-      child: TextCard(
-        text: text,
-        horizontalPadding: subTilePadding,
-        verticalPadding: subTilePadding,
-        color: tileColors[colorName] ?? Constants.grey,
-      ),
+      child: TextCard(text: text, color: tileColors[colorName]),
     );
   }
 
@@ -108,78 +103,78 @@ class _MovieCardState extends State<MovieCard> {
 
     double voteDiff =
         (widget.movieData.voteAverage - widget.targetData.voteAverage).abs();
-    Color userScore = voteDiff == 0
-        ? Constants.darkGreen
-        : (voteDiff <= 1 ? Constants.yellow : Constants.grey);
+    Color? userScore = voteDiff == 0
+        ? Constants.lightGreen
+        : (voteDiff <= 1 ? Constants.goldYellow : null);
     tileColors["userScore"] = userScore;
 
     int mpaDiff = (Utils.mapMpaRatingToInt(widget.movieData.mpaRating) -
             Utils.mapMpaRatingToInt(widget.targetData.mpaRating))
         .abs();
-    Color mpaRating = mpaDiff == 0
-        ? Constants.darkGreen
-        : (mpaDiff <= 1 ? Constants.yellow : Constants.grey);
+    Color? mpaRating = mpaDiff == 0
+        ? Constants.lightGreen
+        : (mpaDiff <= 1 ? Constants.goldYellow : null);
     tileColors["mpaRating"] = mpaRating;
 
     Duration dateDiff = Utils.parseDate(widget.movieData.releaseDate)
         .difference(Utils.parseDate(widget.targetData.releaseDate))
         .abs();
-    Color releaseDate = dateDiff.inDays == 0
-        ? Constants.darkGreen
-        : (dateDiff.inDays <= (365 * 5) ? Constants.yellow : Constants.grey);
+    Color? releaseDate = dateDiff.inDays == 0
+        ? Constants.lightGreen
+        : (dateDiff.inDays <= (365 * 5) ? Constants.goldYellow : null);
     tileColors["releaseDate"] = releaseDate;
 
     int revenueDiff =
         (widget.movieData.revenueInt - widget.targetData.revenueInt).abs();
-    Color revenue = revenueDiff == 0
-        ? Constants.darkGreen
-        : (revenueDiff <= 50000000 ? Constants.yellow : Constants.grey);
+    Color? revenue = revenueDiff == 0
+        ? Constants.lightGreen
+        : (revenueDiff <= 50000000 ? Constants.goldYellow : null);
     tileColors["revenue"] = revenue;
 
     int runtimeDiff =
         (widget.movieData.runtime - widget.targetData.runtime).abs();
-    Color runtime = runtimeDiff == 0
-        ? Constants.darkGreen
-        : (runtimeDiff <= 20 ? Constants.yellow : Constants.grey);
+    Color? runtime = runtimeDiff == 0
+        ? Constants.lightGreen
+        : (runtimeDiff <= 20 ? Constants.goldYellow : null);
     tileColors["runtime"] = runtime;
 
     bool genreMatch = widget.movieData.genre.toLowerCase() ==
         widget.targetData.genre.toLowerCase();
-    Color popularity = genreMatch ? Constants.darkGreen : Constants.grey;
+    Color? popularity = genreMatch ? Constants.lightGreen : null;
     tileColors["genre"] = popularity;
 
-    Color director = widget.movieData.director == widget.targetData.director
-        ? Constants.darkGreen
+    Color? director = widget.movieData.director == widget.targetData.director
+        ? Constants.lightGreen
         : (widget.movieData.director == widget.targetData.writer
-            ? Constants.yellow
-            : Constants.grey);
+            ? Constants.goldYellow
+            : null);
     tileColors["director"] = director;
 
-    Color writer = widget.movieData.writer == widget.targetData.writer
-        ? Constants.darkGreen
+    Color? writer = widget.movieData.writer == widget.targetData.writer
+        ? Constants.lightGreen
         : (widget.movieData.writer == widget.targetData.director
-            ? Constants.yellow
-            : Constants.grey);
+            ? Constants.goldYellow
+            : null);
     tileColors["writer"] = writer;
 
-    Color lead = widget.movieData.lead == widget.targetData.lead
-        ? Constants.darkGreen
-        : (widget.movieData.isLeadInTarget ? Constants.yellow : Constants.grey);
+    Color? lead = widget.movieData.lead == widget.targetData.lead
+        ? Constants.lightGreen
+        : (widget.movieData.isLeadInTarget ? Constants.goldYellow : null);
     tileColors["lead"] = lead;
   }
 
   _setAllGreen() {
     setState(() {
       tileColors = {
-        "userScore": Constants.darkGreen,
-        "mpaRating": Constants.darkGreen,
-        "releaseDate": Constants.darkGreen,
-        "revenue": Constants.darkGreen,
-        "runtime": Constants.darkGreen,
-        "genre": Constants.darkGreen,
-        "director": Constants.darkGreen,
-        "writer": Constants.darkGreen,
-        "lead": Constants.darkGreen,
+        "userScore": Constants.lightGreen,
+        "mpaRating": Constants.lightGreen,
+        "releaseDate": Constants.lightGreen,
+        "revenue": Constants.lightGreen,
+        "runtime": Constants.lightGreen,
+        "genre": Constants.lightGreen,
+        "director": Constants.lightGreen,
+        "writer": Constants.lightGreen,
+        "lead": Constants.lightGreen,
       };
     });
   }
@@ -187,15 +182,15 @@ class _MovieCardState extends State<MovieCard> {
   _setAllRed() {
     setState(() {
       tileColors = {
-        "userScore": Constants.red,
-        "mpaRating": Constants.red,
-        "releaseDate": Constants.red,
-        "revenue": Constants.red,
-        "runtime": Constants.red,
-        "genre": Constants.red,
-        "director": Constants.red,
-        "writer": Constants.red,
-        "lead": Constants.red,
+        "userScore": Constants.darkRed,
+        "mpaRating": Constants.darkRed,
+        "releaseDate": Constants.darkRed,
+        "revenue": Constants.darkRed,
+        "runtime": Constants.darkRed,
+        "genre": Constants.darkRed,
+        "director": Constants.darkRed,
+        "writer": Constants.darkRed,
+        "lead": Constants.darkRed,
       };
     });
   }
@@ -203,64 +198,49 @@ class _MovieCardState extends State<MovieCard> {
   @override
   Widget build(BuildContext context) {
     _setTileColors();
-    Size mqSize = MediaQuery.of(context).size;
-    double width = mqSize.width / 2;
-    double height = mqSize.height / 2;
+    double width = MediaQuery.of(context).size.width;
 
-    double widthBox = (110 * 3) + 16;
+    double widthBox = (110 * 3) + 24;
     if (width > widthBox || width < widthBox) {
       width = widthBox;
     }
-
-    double heightBox = (110 * 4) + 24;
-    if (height > heightBox || height < heightBox) {
-      height = heightBox;
-    }
-
-    size = Size(width, height);
 
     subTilePadding = 4.0;
 
     return Padding(
       padding: Constants.stdPad,
-      child: Container(
-        width: size.width,
-        height: size.height,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Constants.black,
-            width: 1.0,
+      child: SizedBox(
+        width: width,
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: widget.isLoss
-              ? Constants.darkRed
-              : (widget.movieData.isSameAsTarget
-                  ? Constants.lightGreen
-                  : Constants.darkGrey),
-        ),
-        child: Padding(
-          padding: Constants.stdPad,
-          child: StaggeredGrid.count(
-            crossAxisCount: 3,
-            mainAxisSpacing: 2,
-            crossAxisSpacing: 2,
-            children: <Widget>[
-              StaggeredGridTile.count(
-                crossAxisCellCount: 3,
-                mainAxisCellCount: 1,
-                child: TextCard(
-                  text: widget.movieData.title,
-                  horizontalPadding: subTilePadding,
-                  verticalPadding: subTilePadding,
-                  color: widget.isLoss
-                      ? Constants.red
-                      : (widget.movieData.isSameAsTarget
-                          ? Constants.darkGreen
-                          : Constants.grey),
+          color: Colors.grey[200],
+          child: Padding(
+            padding: Constants.doublePad,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    widget.movieData.title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
-              ...tiles,
-            ],
+                const Divider(),
+                StaggeredGrid.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 2,
+                  crossAxisSpacing: 2,
+                  children: tiles,
+                ),
+              ],
+            ),
           ),
         ),
       ),
