@@ -2,6 +2,7 @@
   "culture": "any",
   "resources": [
     { "title": "Cinemadle" },
+    { "poweredByLabel": "Powered by" },
     { "caption": "the movie-guessing game" },
     { "loading": "Loading..." },
     { "inputBoxHintText": "Enter a guess..." },

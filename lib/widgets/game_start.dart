@@ -4,6 +4,7 @@ import 'package:cinemadle/resource_manager.dart';
 import 'package:cinemadle/resources.dart';
 import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/views/main_view.dart';
+import 'package:cinemadle/widgets/tmdb_logo.dart';
 import 'package:flutter/material.dart';
 
 class GameStart extends StatefulWidget {
@@ -63,7 +64,11 @@ class _GameStartState extends State<GameStart> {
               height: MediaQuery.of(context).size.height,
               width: width,
               child: ListView(
-                children: <Widget>[_gameDescription(), _startGameButton()],
+                children: <Widget>[
+                  _gameDescription(),
+                  _startGameButton(),
+                  tmdbLogo(MediaQuery.of(context).size.width / 2),
+                ],
               ),
             );
           },

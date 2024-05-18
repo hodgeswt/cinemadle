@@ -1,6 +1,7 @@
 enum Resources {
   title,
   caption,
+  poweredByLabel,
   popularityLabel,
   loading,
   inputBoxHintText,

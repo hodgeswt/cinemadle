@@ -8,6 +8,7 @@ import 'package:cinemadle/utils.dart';
 import 'package:cinemadle/widgets/cinemadle_app_bar.dart';
 import 'package:cinemadle/widgets/guess_box.dart';
 import 'package:cinemadle/widgets/movie_card.dart';
+import 'package:cinemadle/widgets/tmdb_logo.dart';
 import 'package:flutter/material.dart';
 
 class MainView extends StatefulWidget {
@@ -125,6 +126,7 @@ class _MainViewState extends State<MainView> {
             ...userGuesses,
           ],
         ),
+        tmdbLogo(MediaQuery.of(context).size.width / 2),
       ],
     );
   }
@@ -174,6 +176,7 @@ class _MainViewState extends State<MainView> {
             ...userGuesses
           ],
         ),
+        tmdbLogo(MediaQuery.of(context).size.width / 2),
       ],
     );
   }
@@ -227,10 +230,11 @@ class _MainViewState extends State<MainView> {
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: <Widget>[
                       ...userGuesses,
                     ],
                   ),
+                  tmdbLogo(MediaQuery.of(context).size.width / 2),
                 ],
               );
             }
