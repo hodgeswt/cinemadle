@@ -58,6 +58,10 @@ class _MovieCardState extends State<MovieCard> {
       return [];
     }
 
+    int r = widget.movieData.revenueInt;
+    String rev =
+        r == 0 ? rm.getResource(Resources.unknown) : widget.movieData.revenue;
+
     return <Widget>[
       _tileBuilder(
           "${rm.getResource(Resources.movieUserScoreCaption)}${widget.movieData.voteAverage} / 10",
@@ -69,8 +73,7 @@ class _MovieCardState extends State<MovieCard> {
           "${rm.getResource(Resources.movieReleaseDateCaption)}${widget.movieData.releaseDate}",
           "releaseDate"),
       _tileBuilder(
-          "${rm.getResource(Resources.movieRevenueCaption)}${widget.movieData.revenue}",
-          "revenue"),
+          "${rm.getResource(Resources.movieRevenueCaption)}$rev", "revenue"),
       _tileBuilder(
           "${rm.getResource(Resources.movieRuntimeCaption)}${widget.movieData.runtime}${rm.getResource(Resources.minutesLabel)}",
           "runtime"),
@@ -110,8 +113,9 @@ class _MovieCardState extends State<MovieCard> {
         : (voteDiff <= 1 ? Constants.yellow : Constants.grey);
     tileColors["userScore"] = userScore;
 
-    int mpaDiff = Utils.mapMpaRatingToInt(widget.movieData.mpaRating) -
-        Utils.mapMpaRatingToInt(widget.targetData.mpaRating).abs();
+    int mpaDiff = (Utils.mapMpaRatingToInt(widget.movieData.mpaRating) -
+            Utils.mapMpaRatingToInt(widget.targetData.mpaRating))
+        .abs();
     Color mpaRating = mpaDiff == 0
         ? Constants.darkGreen
         : (mpaDiff <= 1 ? Constants.yellow : Constants.grey);

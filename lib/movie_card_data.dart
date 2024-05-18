@@ -1,4 +1,5 @@
 import 'package:cinemadle/data_model/credits.dart';
+import 'package:cinemadle/data_model/genre_detail.dart';
 import 'package:cinemadle/data_model/movie_details.dart';
 import 'package:cinemadle/movie_data.dart';
 import 'package:cinemadle/resource_manager.dart';
@@ -97,13 +98,27 @@ class MovieCardData {
 
   /// Pulls the MPA rating of a movie from its details
   String _getArbitraryMpaRating(MovieDetails? m) {
+    if (m == null) {
+      return _rm.getResource(Resources.unknown);
+    }
+
     try {
-      String? cert = m?.releaseDates?.results
+      DateTime? base = DateTime.tryParse(m.releaseDate);
+      String? cert = m.releaseDates?.results
           .firstWhere((x) {
             return x.iso == "US";
           })
           .releaseDates
-          .first
+          .firstWhere((x) {
+            DateTime? y = DateTime.tryParse(m.releaseDate);
+            if (base == null || y == null) {
+              return x.certification != Utils.emptyString;
+            }
+
+            return (base.year == y.year) &&
+                (base.day == y.day) &&
+                (base.month == y.month);
+          })
           .certification;
       return (cert?.isEmpty ?? false)
           ? _rm.getResource(Resources.unknown)
@@ -151,6 +166,19 @@ class MovieCardData {
     }
   }
 
+  /// Grab the first three genres and concatenate
+  /// them into a comma-separated list
+  String _getGenre(MovieDetails movieDetails) {
+    Iterable<GenreDetail> genres = movieDetails.genres.take(3);
+    String out = Utils.emptyString;
+
+    for (GenreDetail genre in genres) {
+      out += "${genre.name},\n";
+    }
+
+    return out.substring(0, out.length - 2);
+  }
+
   /// Loads the data from the movie IDs
   loadData(int movieId, int targetId) async {
     if (movieId == targetId) {
@@ -189,7 +217,7 @@ class MovieCardData {
     mpaRating = _getArbitraryMpaRating(movieDetails);
     releaseDate = movieDetails!.releaseDate;
     _revenue = movieDetails!.revenue;
-    genre = movieDetails!.genres.first.name;
+    genre = _getGenre(movieDetails!);
     director = _getArbitraryCrewRole(movieCredits, ["Director"]);
     writer = _getArbitraryCrewRole(movieCredits, ["Screenplay", "Writer"]);
     lead = _getArbitraryFirstInCast(movieCredits);
