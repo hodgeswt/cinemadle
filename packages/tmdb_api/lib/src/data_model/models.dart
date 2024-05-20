@@ -1,0 +1,11 @@
+export 'credits.dart';
+export 'genre_detail.dart';
+export 'movie_credit.dart';
+export 'movie_details.dart';
+export 'movie_record.dart';
+export 'paginated_results.dart';
+export 'production_company.dart';
+export 'production_country.dart';
+export 'release_date.dart';
+export 'release_dates.dart';
+export 'release_info.dart';
