@@ -133,6 +133,15 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
         : (movie.writer == targetMovie.director ? Constants.goldYellow : null);
     tileColors.writer = writer;
 
+    Color? genres;
+    for (String genre in movie.genre) {
+      if (targetMovie.genre.contains(genre)) {
+        genres = Constants.goldYellow;
+        break;
+      }
+    }
+    tileColors.genre = genres;
+
     Color? lead = movie.lead == targetMovie.lead
         ? Constants.lightGreen
         : (await _isGuessedLeadInTargetCast(movie.lead)

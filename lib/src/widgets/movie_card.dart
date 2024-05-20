@@ -19,7 +19,7 @@ class MovieCard extends StatelessWidget {
   final MovieTileColors tileColors;
 
   Color? _getCardColor(MainViewState state) {
-    if (state.status == MainViewStatus.win) {
+    if (state.status == MainViewStatus.win && movieData.id == targetMovie.id) {
       return Constants.otherGreen;
     }
 
@@ -69,6 +69,7 @@ class MovieCard extends StatelessWidget {
               Padding(
                 padding: Constants.stdPad,
                 child: GridView.count(
+                  primary: true,
                   crossAxisCount: 3,
                   shrinkWrap: true,
                   children: [

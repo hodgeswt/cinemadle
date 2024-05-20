@@ -22,6 +22,8 @@ class _GuessBoxState extends State<GuessBox> {
   List<String> autofillHints = [];
   Map<String, int> ids = {};
 
+  bool preventSubmit = false;
+
   SuggestionsController<String> suggestionsController =
       SuggestionsController<String>();
 
@@ -82,13 +84,17 @@ class _GuessBoxState extends State<GuessBox> {
                   idMap[res.title] = res.id;
                 }
 
+                bool empty = false;
+
                 if (newTitles.isEmpty) {
+                  empty = true;
                   newTitles.add("No results found.");
                 }
 
                 setState(() {
                   autofillHints = newTitles;
                   ids.addAll(idMap);
+                  preventSubmit = empty;
                 });
 
                 suggestionsController.isLoading = false;
