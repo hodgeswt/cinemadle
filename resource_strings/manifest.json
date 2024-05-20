@@ -1,8 +1,0 @@
-{
-  "assets": [
-    "resource_strings/manifest.json",
-    "resource_strings/manifest.schema.json",
-    "resource_strings/resources/strings.json",
-    "resource_strings/resources/strings.schema.json"
-  ]
-}

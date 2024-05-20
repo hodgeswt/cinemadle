@@ -1,15 +1,16 @@
 # cinemadle
-A movie-guessing game powered by The Movie Database
 
-## This project is incomplete
+A new Flutter project.
 
-## Building
-1. Provide an environment variable `API_KEY` containing your
-TheMovieDb.org API key, or a root-level `.env` file with
-this.
+## Getting Started
 
-1. Run `dart run build_runner build`
+This project is a starting point for a Flutter application.
 
-1. Run `flutter build web --release --source-maps` and then edit
-the generated `flutter.js` file in the output directory to remove
-the final line referencing a source map.
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
