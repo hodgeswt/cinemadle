@@ -37,7 +37,7 @@ class Utilities {
 
   static DateTime parseDate(String? date) {
     try {
-      return DateFormat('yyyy-MM-dd', Platform.localeName).parse(date ?? "");
+      return DateFormat('yyyy', Platform.localeName).parse(date ?? "");
     } catch (_) {
       return DateTime(1970, 1, 1);
     }

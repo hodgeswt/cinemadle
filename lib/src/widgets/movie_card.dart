@@ -86,7 +86,7 @@ class MovieCard extends StatelessWidget {
                     ),
                     TextCard(
                       text:
-                          'Release Date:${Utilities.formatDate(movieData.releaseDate)}',
+                          'Release Year:${Utilities.formatDate(movieData.releaseDate)}',
                       color: tileData.releaseDate,
                       arrow: tileData.releaseDateArrow,
                     ),

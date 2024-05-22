@@ -103,7 +103,7 @@ class Movie extends Equatable {
       runtime: details.runtime,
       voteAverage: details.voteAverage,
       mpaRating: _getArbitraryMpaRating(details),
-      releaseDate: details.releaseDate,
+      releaseDate: details.releaseDate.split('-').first,
       revenue: details.revenue,
       genre: _getGenre(details),
       director: _getArbitraryCrewRole(credits, ["Director"]),
