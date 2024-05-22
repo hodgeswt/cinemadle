@@ -108,27 +108,26 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     tileData.mpaRating = mpaRating;
 
     int dateDiff = (Utilities.parseDate(movie.releaseDate).year -
-            Utilities.parseDate(targetMovie.releaseDate).year)
-        .abs();
+        Utilities.parseDate(targetMovie.releaseDate).year);
     Color? releaseDate = dateDiff == 0
         ? Constants.lightGreen
         : (dateDiff.abs() <= 5 ? Constants.goldYellow : null);
     tileData.releaseDate = releaseDate;
 
     if (dateDiff != 0) {
-      if (dateDiff > 0) {
-        if (dateDiff < 10) {
-          tileData.releaseDateArrow = singleDownArrow;
-        } else if (dateDiff > 10) {
+      if (dateDiff < 0) {
+        if (dateDiff > -10) {
+          tileData.releaseDateArrow = singleUpArrow;
+        } else if (dateDiff <= 10) {
           tileData.releaseDateArrow = doubleUpArrow;
         }
       }
 
-      if (dateDiff < 0) {
-        if (dateDiff > -10) {
+      if (dateDiff > 0) {
+        if (dateDiff < 10) {
           tileData.releaseDateArrow = singleDownArrow;
-        } else if (dateDiff < -10) {
-          tileData.releaseDateArrow = doubleUpArrow;
+        } else if (dateDiff >= 10) {
+          tileData.releaseDateArrow = doubleDownArrow;
         }
       }
     }
@@ -140,7 +139,7 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     tileData.revenue = revenue;
 
     if (revenueDiff > 0) {
-      if (revenueDiff < 50000000) {
+      if (revenueDiff <= 50000000) {
         tileData.revenueArrow = singleDownArrow;
       } else {
         tileData.revenueArrow = doubleDownArrow;
@@ -148,7 +147,7 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     }
 
     if (revenueDiff < 0) {
-      if (revenueDiff > -50000000) {
+      if (revenueDiff >= -50000000) {
         tileData.revenueArrow = singleUpArrow;
       } else {
         tileData.revenueArrow = doubleUpArrow;
@@ -162,7 +161,7 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     tileData.runtime = runtime;
 
     if (runtimeDiff > 0) {
-      if (runtimeDiff < 40) {
+      if (runtimeDiff <= 40) {
         tileData.runtimeArrow = singleDownArrow;
       } else {
         tileData.runtimeArrow = doubleDownArrow;
@@ -170,7 +169,7 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     }
 
     if (runtimeDiff < 0) {
-      if (runtimeDiff > -40) {
+      if (runtimeDiff >= -40) {
         tileData.runtimeArrow = singleUpArrow;
       } else {
         tileData.runtimeArrow = doubleUpArrow;
