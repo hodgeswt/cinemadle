@@ -97,9 +97,9 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
         : (userScoreDiff.abs() <= 1 ? Constants.goldYellow : null);
     tileData.userScore = userScore;
 
-    tileData.userScoreArrow = userScoreDiff < 0
+    tileData.userScoreArrow = userScoreDiff > 0
         ? singleDownArrow
-        : (userScoreDiff > 0 ? singleUpArrow : null);
+        : (userScoreDiff < 0 ? singleUpArrow : null);
 
     int mpaDiff = (Utilities.mapMpaRatingToInt(movie.mpaRating) -
         Utilities.mapMpaRatingToInt(targetMovie.mpaRating));
@@ -109,7 +109,7 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     tileData.mpaRating = mpaRating;
 
     tileData.mpaRatingArrow =
-        mpaDiff < 0 ? singleDownArrow : (mpaDiff > 0 ? singleUpArrow : null);
+        mpaDiff > 0 ? singleDownArrow : (mpaDiff < 0 ? singleUpArrow : null);
 
     Duration dateDiff = Utilities.parseDate(movie.releaseDate)
         .difference(Utilities.parseDate(targetMovie.releaseDate));
@@ -121,19 +121,21 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
         : (yellowDateDiff.abs() <= 5 ? Constants.goldYellow : null);
     tileData.releaseDate = releaseDate;
 
-    if (dateDiff.inDays < 0) {
-      if (dateDiff.inDays > -365) {
-        tileData.releaseDateArrow = singleDownArrow;
-      } else {
-        tileData.releaseDateArrow = doubleUpArrow;
+    if (dateDiff.inDays != 0) {
+      if (dateDiff.inDays > 0) {
+        if (dateDiff.inDays < 365) {
+          tileData.releaseDateArrow = singleDownArrow;
+        } else if (dateDiff.inDays > 365) {
+          tileData.releaseDateArrow = doubleUpArrow;
+        }
       }
-    }
 
-    if (dateDiff.inDays > 0) {
-      if (dateDiff.inDays < -365) {
-        tileData.releaseDateArrow = singleUpArrow;
-      } else {
-        tileData.releaseDateArrow = doubleUpArrow;
+      if (dateDiff.inDays < 0) {
+        if (dateDiff.inDays > -365) {
+          tileData.releaseDateArrow = singleDownArrow;
+        } else if (dateDiff.inDays < -365) {
+          tileData.releaseDateArrow = doubleUpArrow;
+        }
       }
     }
 
@@ -143,16 +145,16 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
         : (revenueDiff.abs() <= 50000000 ? Constants.goldYellow : null);
     tileData.revenue = revenue;
 
-    if (revenueDiff < 0) {
-      if (revenueDiff > -50000000) {
+    if (revenueDiff > 0) {
+      if (revenueDiff < 50000000) {
         tileData.revenueArrow = singleDownArrow;
       } else {
         tileData.revenueArrow = doubleDownArrow;
       }
     }
 
-    if (revenueDiff > 0) {
-      if (revenueDiff < 50000000) {
+    if (revenueDiff < 0) {
+      if (revenueDiff > -50000000) {
         tileData.revenueArrow = singleUpArrow;
       } else {
         tileData.revenueArrow = doubleUpArrow;
@@ -165,16 +167,16 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
         : (runtimeDiff <= 20 ? Constants.goldYellow : null);
     tileData.runtime = runtime;
 
-    if (runtimeDiff < 0) {
-      if (runtimeDiff > -20) {
+    if (runtimeDiff > 0) {
+      if (runtimeDiff < 20) {
         tileData.runtimeArrow = singleDownArrow;
       } else {
         tileData.runtimeArrow = doubleDownArrow;
       }
     }
 
-    if (runtimeDiff > 0) {
-      if (runtimeDiff < 20) {
+    if (runtimeDiff < 0) {
+      if (runtimeDiff > -20) {
         tileData.runtimeArrow = singleUpArrow;
       } else {
         tileData.runtimeArrow = doubleUpArrow;
