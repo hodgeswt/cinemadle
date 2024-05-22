@@ -15,6 +15,11 @@ part 'movie_tile_colors.dart';
 class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
   final Movie targetMovie;
 
+  final String singleUpArrow = "↑ ";
+  final String doubleUpArrow = "↑↑ ";
+  final String singleDownArrow = "↓ ";
+  final String doubleDownArrow = "↓↓ ";
+
   MainViewBloc(this.targetMovie)
       : super(const MainViewState(status: MainViewStatus.playing)) {
     on<ResetRequested>((event, emit) {
@@ -34,8 +39,8 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
         int newRemainingGuesses =
             state.remainingGuesses - 1 >= 0 ? state.remainingGuesses - 1 : 0;
 
-        MovieTileColors tileColors = await _computeTileColors(guess);
-        Map<int, MovieTileColors> newTileColors = {};
+        MovieTileData tileColors = await _computeTileData(guess);
+        Map<int, MovieTileData> newTileColors = {};
         newTileColors.addAll(state.tileColors ?? {});
         newTileColors[guess.id] = tileColors;
 
@@ -44,7 +49,7 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
           newGuesses = [targetMovie, ...newGuesses];
           newGuessesIds = [targetMovie.id, ...newGuessesIds];
 
-          MovieTileColors targetColors = await _computeTileColors(targetMovie);
+          MovieTileData targetColors = await _computeTileData(targetMovie);
           newTileColors[targetMovie.id] = targetColors;
         } else if (guess.id == targetMovie.id) {
           newStatus = MainViewStatus.win;
@@ -73,65 +78,118 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     });
   }
 
-  Future<MovieTileColors> _computeTileColors(Movie movie) async {
+  Future<MovieTileData> _computeTileData(Movie movie) async {
     if (state.status == MainViewStatus.loss) {
-      return MovieTileColors.all(color: Constants.lightRed);
+      return MovieTileData.all(color: Constants.lightRed);
     }
 
     if (movie.id == targetMovie.id) {
-      return MovieTileColors.all(color: Constants.lightGreen);
+      return MovieTileData.all(color: Constants.lightGreen);
     }
 
-    MovieTileColors tileColors = MovieTileColors();
+    MovieTileData tileData = MovieTileData();
 
-    double voteDiff = (double.parse(movie.voteAverage.toStringAsFixed(1)) -
-            double.parse(targetMovie.voteAverage.toStringAsFixed(1)))
-        .abs();
-    Color? userScore = voteDiff == 0
+    double userScoreDiff = (double.parse(movie.voteAverage.toStringAsFixed(1)) -
+        double.parse(targetMovie.voteAverage.toStringAsFixed(1)));
+    ;
+    Color? userScore = userScoreDiff == 0
         ? Constants.lightGreen
-        : (voteDiff <= 1 ? Constants.goldYellow : null);
-    tileColors.userScore = userScore;
+        : (userScoreDiff.abs() <= 1 ? Constants.goldYellow : null);
+    tileData.userScore = userScore;
+
+    tileData.userScoreArrow = userScoreDiff < 0
+        ? singleDownArrow
+        : (userScoreDiff > 0 ? singleUpArrow : null);
 
     int mpaDiff = (Utilities.mapMpaRatingToInt(movie.mpaRating) -
-            Utilities.mapMpaRatingToInt(targetMovie.mpaRating))
-        .abs();
+        Utilities.mapMpaRatingToInt(targetMovie.mpaRating));
     Color? mpaRating = mpaDiff == 0
         ? Constants.lightGreen
-        : (mpaDiff <= 1 ? Constants.goldYellow : null);
-    tileColors.mpaRating = mpaRating;
+        : (mpaDiff.abs() <= 1 ? Constants.goldYellow : null);
+    tileData.mpaRating = mpaRating;
+
+    tileData.mpaRatingArrow =
+        mpaDiff < 0 ? singleDownArrow : (mpaDiff > 0 ? singleUpArrow : null);
 
     Duration dateDiff = Utilities.parseDate(movie.releaseDate)
-        .difference(Utilities.parseDate(targetMovie.releaseDate))
-        .abs();
+        .difference(Utilities.parseDate(targetMovie.releaseDate));
     int yellowDateDiff = (Utilities.parseDate(movie.releaseDate).year -
             Utilities.parseDate(targetMovie.releaseDate).year)
         .abs();
     Color? releaseDate = dateDiff.inDays == 0
         ? Constants.lightGreen
-        : (yellowDateDiff <= 5 ? Constants.goldYellow : null);
-    tileColors.releaseDate = releaseDate;
+        : (yellowDateDiff.abs() <= 5 ? Constants.goldYellow : null);
+    tileData.releaseDate = releaseDate;
 
-    int revenueDiff = (movie.revenue - targetMovie.revenue).abs();
-    Color? revenue = revenueDiff == 0
+    if (dateDiff.inDays < 0) {
+      if (dateDiff.inDays > -365) {
+        tileData.releaseDateArrow = singleDownArrow;
+      } else {
+        tileData.releaseDateArrow = doubleUpArrow;
+      }
+    }
+
+    if (dateDiff.inDays > 0) {
+      if (dateDiff.inDays < -365) {
+        tileData.releaseDateArrow = singleUpArrow;
+      } else {
+        tileData.releaseDateArrow = doubleUpArrow;
+      }
+    }
+
+    int revenueDiff = (movie.revenue - targetMovie.revenue);
+    Color? revenue = revenueDiff.abs() == 0
         ? Constants.lightGreen
-        : (revenueDiff <= 50000000 ? Constants.goldYellow : null);
-    tileColors.revenue = revenue;
+        : (revenueDiff.abs() <= 50000000 ? Constants.goldYellow : null);
+    tileData.revenue = revenue;
+
+    if (revenueDiff < 0) {
+      if (revenueDiff > -50000000) {
+        tileData.revenueArrow = singleDownArrow;
+      } else {
+        tileData.revenueArrow = doubleDownArrow;
+      }
+    }
+
+    if (revenueDiff > 0) {
+      if (revenueDiff < 50000000) {
+        tileData.revenueArrow = singleUpArrow;
+      } else {
+        tileData.revenueArrow = doubleUpArrow;
+      }
+    }
 
     int runtimeDiff = (movie.runtime - targetMovie.runtime).abs();
     Color? runtime = runtimeDiff == 0
         ? Constants.lightGreen
         : (runtimeDiff <= 20 ? Constants.goldYellow : null);
-    tileColors.runtime = runtime;
+    tileData.runtime = runtime;
+
+    if (runtimeDiff < 0) {
+      if (runtimeDiff > -20) {
+        tileData.runtimeArrow = singleDownArrow;
+      } else {
+        tileData.runtimeArrow = doubleDownArrow;
+      }
+    }
+
+    if (runtimeDiff > 0) {
+      if (runtimeDiff < 20) {
+        tileData.runtimeArrow = singleUpArrow;
+      } else {
+        tileData.runtimeArrow = doubleUpArrow;
+      }
+    }
 
     Color? director = movie.director == targetMovie.director
         ? Constants.lightGreen
         : (movie.director == targetMovie.writer ? Constants.goldYellow : null);
-    tileColors.director = director;
+    tileData.director = director;
 
     Color? writer = movie.writer == targetMovie.writer
         ? Constants.lightGreen
         : (movie.writer == targetMovie.director ? Constants.goldYellow : null);
-    tileColors.writer = writer;
+    tileData.writer = writer;
 
     Color? genres;
     for (String genre in movie.genre) {
@@ -140,16 +198,16 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
         break;
       }
     }
-    tileColors.genre = genres;
+    tileData.genre = genres;
 
     Color? lead = movie.lead == targetMovie.lead
         ? Constants.lightGreen
         : (await _isGuessedLeadInTargetCast(movie.lead)
             ? Constants.goldYellow
             : null);
-    tileColors.firstInCast = lead;
+    tileData.firstInCast = lead;
 
-    return tileColors;
+    return tileData;
   }
 
   Future<bool> _isGuessedLeadInTargetCast(String? lead) async {

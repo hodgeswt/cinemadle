@@ -33,8 +33,8 @@ class GuessList extends StatelessWidget {
                         child: MovieCard(
                           movieData: item,
                           targetMovie: targetMovie,
-                          tileColors: state.tileColors?[item.id] ??
-                              MovieTileColors.all(color: null),
+                          tileData: state.tileColors?[item.id] ??
+                              MovieTileData.all(color: null),
                         ),
                       )
                   ],

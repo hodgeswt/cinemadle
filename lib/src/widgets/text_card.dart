@@ -6,11 +6,14 @@ class TextCard extends StatelessWidget {
     super.key,
     required this.text,
     this.color,
+    this.arrow,
   });
 
   final String text;
 
   final Color? color;
+
+  final String? arrow;
 
   String get titleSplit {
     return "${text.split(':').first}:";
@@ -34,12 +37,21 @@ class TextCard extends StatelessWidget {
               text: "",
               children: <TextSpan>[
                 TextSpan(
-                  text: titleSplit,
+                  text: "$titleSplit\n",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Constants.black,
                   ),
                 ),
+                arrow != null
+                    ? TextSpan(
+                        text: "$arrow\n",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Constants.black,
+                        ),
+                      )
+                    : const TextSpan(text: ""),
                 TextSpan(
                   text: textSplit,
                   style: const TextStyle(

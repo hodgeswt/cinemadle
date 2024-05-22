@@ -10,13 +10,13 @@ class MovieCard extends StatelessWidget {
   const MovieCard({
     super.key,
     required this.movieData,
-    required this.tileColors,
+    required this.tileData,
     required this.targetMovie,
   });
 
   final Movie movieData;
   final Movie targetMovie;
-  final MovieTileColors tileColors;
+  final MovieTileData tileData;
 
   Color? _getCardColor(MainViewState state) {
     if (state.status == MainViewStatus.win && movieData.id == targetMovie.id) {
@@ -74,41 +74,46 @@ class MovieCard extends StatelessWidget {
                   shrinkWrap: true,
                   children: [
                     TextCard(
-                      text: 'User Score:\n${movieData.voteAverage}',
-                      color: tileColors.userScore,
+                      text: 'User Score:${movieData.voteAverage}',
+                      color: tileData.userScore,
+                      arrow: tileData.userScoreArrow,
                     ),
                     TextCard(
-                      text: 'MPA Rating:\n${movieData.mpaRating}',
-                      color: tileColors.mpaRating,
-                    ),
-                    TextCard(
-                      text:
-                          'Release Date:\n${Utilities.formatDate(movieData.releaseDate)}',
-                      color: tileColors.releaseDate,
+                      text: 'MPA Rating:${movieData.mpaRating}',
+                      color: tileData.mpaRating,
+                      arrow: tileData.mpaRatingArrow,
                     ),
                     TextCard(
                       text:
-                          'Revenue:\n${Utilities.formatIntToDollars(movieData.revenue)}',
-                      color: tileColors.revenue,
+                          'Release Date:${Utilities.formatDate(movieData.releaseDate)}',
+                      color: tileData.releaseDate,
+                      arrow: tileData.releaseDateArrow,
                     ),
                     TextCard(
-                      text: 'Runtime:\n${movieData.runtime}',
-                      color: tileColors.runtime,
+                      text:
+                          'Revenue:${Utilities.formatIntToDollars(movieData.revenue)}',
+                      color: tileData.revenue,
+                      arrow: tileData.revenueArrow,
                     ),
                     TextCard(
-                      text: 'Genre:\n${movieData.genre.join(', ')}',
-                      color: tileColors.genre,
+                      text: 'Runtime:${movieData.runtime} min',
+                      color: tileData.runtime,
+                      arrow: tileData.runtimeArrow,
                     ),
                     TextCard(
-                        text: 'Director:\n${movieData.director}',
-                        color: tileColors.director),
-                    TextCard(
-                      text: 'Writer:\n${movieData.writer}',
-                      color: tileColors.writer,
+                      text: 'Genre:${movieData.genre.join(', ')}',
+                      color: tileData.genre,
                     ),
                     TextCard(
-                      text: 'First in Cast:\n${movieData.lead}',
-                      color: tileColors.firstInCast,
+                        text: 'Director:${movieData.director}',
+                        color: tileData.director),
+                    TextCard(
+                      text: 'Writer:${movieData.writer}',
+                      color: tileData.writer,
+                    ),
+                    TextCard(
+                      text: 'First in Cast:${movieData.lead}',
+                      color: tileData.firstInCast,
                     ),
                   ],
                 ),

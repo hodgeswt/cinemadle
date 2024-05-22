@@ -19,7 +19,7 @@ MainViewState _$MainViewStateFromJson(Map<String, dynamic> json) =>
       remainingGuesses: (json['remainingGuesses'] as num?)?.toInt() ?? 10,
       tileColors: (json['tileColors'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(
-            int.parse(k), MovieTileColors.fromJson(e as Map<String, dynamic>)),
+            int.parse(k), MovieTileData.fromJson(e as Map<String, dynamic>)),
       ),
     );
 
@@ -41,8 +41,8 @@ const _$MainViewStatusEnumMap = {
   MainViewStatus.fatalError: 'fatalError',
 };
 
-MovieTileColors _$MovieTileColorsFromJson(Map<String, dynamic> json) =>
-    MovieTileColors(
+MovieTileData _$MovieTileColorsFromJson(Map<String, dynamic> json) =>
+    MovieTileData(
       userScore: _$JsonConverterFromJson<String, Color?>(
           json['userScore'], const ColorJsonConverter().fromJson),
       mpaRating: _$JsonConverterFromJson<String, Color?>(
@@ -63,7 +63,7 @@ MovieTileColors _$MovieTileColorsFromJson(Map<String, dynamic> json) =>
           json['firstInCast'], const ColorJsonConverter().fromJson),
     );
 
-Map<String, dynamic> _$MovieTileColorsToJson(MovieTileColors instance) =>
+Map<String, dynamic> _$MovieTileColorsToJson(MovieTileData instance) =>
     <String, dynamic>{
       'userScore': const ColorJsonConverter().toJson(instance.userScore),
       'mpaRating': const ColorJsonConverter().toJson(instance.mpaRating),

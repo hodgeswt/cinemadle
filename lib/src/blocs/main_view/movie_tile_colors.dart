@@ -2,7 +2,7 @@ part of 'main_view_bloc.dart';
 
 @JsonSerializable()
 @ColorJsonConverter()
-class MovieTileColors {
+class MovieTileData {
   Color? userScore;
   Color? mpaRating;
   Color? releaseDate;
@@ -13,7 +13,13 @@ class MovieTileColors {
   Color? writer;
   Color? firstInCast;
 
-  MovieTileColors({
+  String? userScoreArrow;
+  String? mpaRatingArrow;
+  String? releaseDateArrow;
+  String? runtimeArrow;
+  String? revenueArrow;
+
+  MovieTileData({
     this.userScore,
     this.mpaRating,
     this.releaseDate,
@@ -23,10 +29,15 @@ class MovieTileColors {
     this.director,
     this.writer,
     this.firstInCast,
+    this.userScoreArrow,
+    this.mpaRatingArrow,
+    this.releaseDateArrow,
+    this.runtimeArrow,
+    this.revenueArrow,
   });
 
-  static MovieTileColors all({Color? color}) {
-    return MovieTileColors(
+  static MovieTileData all({Color? color}) {
+    return MovieTileData(
       userScore: color,
       mpaRating: color,
       releaseDate: color,
@@ -36,11 +47,16 @@ class MovieTileColors {
       director: color,
       writer: color,
       firstInCast: color,
+      userScoreArrow: null,
+      mpaRatingArrow: null,
+      releaseDateArrow: null,
+      runtimeArrow: null,
+      revenueArrow: null,
     );
   }
 
   Map<String, dynamic> toJson() => _$MovieTileColorsToJson(this);
 
-  factory MovieTileColors.fromJson(Map<String, dynamic> json) =>
+  factory MovieTileData.fromJson(Map<String, dynamic> json) =>
       _$MovieTileColorsFromJson(json);
 }

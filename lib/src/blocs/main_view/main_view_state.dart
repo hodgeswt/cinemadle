@@ -16,7 +16,7 @@ class MainViewState extends Equatable {
   final List<Movie>? userGuesses;
   final List<int>? userGuessesIds;
   final int remainingGuesses;
-  final Map<int, MovieTileColors>? tileColors;
+  final Map<int, MovieTileData>? tileColors;
 
   static MainViewState get empty {
     return const MainViewState(
@@ -33,7 +33,7 @@ class MainViewState extends Equatable {
     List<int>? userGuessesIds,
     int? remainingGuesses,
     MainViewStatus? status,
-    Map<int, MovieTileColors>? tileColors,
+    Map<int, MovieTileData>? tileColors,
   }) {
     return MainViewState(
       userGuesses: userGuesses ?? this.userGuesses,
