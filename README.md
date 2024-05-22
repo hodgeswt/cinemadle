@@ -1,16 +1,12 @@
 # cinemadle
 
-A new Flutter project.
+A movie guessing game that is still in development.
 
-## Getting Started
+## Building
 
-This project is a starting point for a Flutter application.
+To build cinemadle, do the following:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Ensure you have an `API_KEY` defined in a root-level `.env` file.
+1. Run `dart run build_runner build`
+1. Run `flutter build web --release --source-maps --web-renderer canvaskit`
+1. Open the build `flutter.js` file and remove the source map off the final line.
