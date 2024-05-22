@@ -70,6 +70,7 @@ class MovieCard extends StatelessWidget {
                 padding: Constants.stdPad,
                 child: GridView.count(
                   primary: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: 3,
                   shrinkWrap: true,
                   children: [
