@@ -18,6 +18,7 @@ class Movie extends Equatable {
     required this.title,
     required this.voteAverage,
     required this.writer,
+    required this.posterPath,
   });
 
   final int id;
@@ -31,6 +32,7 @@ class Movie extends Equatable {
   final String director;
   final String writer;
   final String lead;
+  final String posterPath;
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
 
@@ -110,6 +112,7 @@ class Movie extends Equatable {
       writer: _getArbitraryCrewRole(credits, ["Screenplay", "Writer"]),
       lead: _getArbitraryFirstInCast(credits),
       id: details.id,
+      posterPath: details.posterPath ?? "",
     );
   }
 
@@ -127,6 +130,7 @@ class Movie extends Equatable {
         genre,
         director,
         writer,
-        lead
+        lead,
+        posterPath,
       ];
 }
