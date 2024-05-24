@@ -55,8 +55,8 @@ class MovieTileData {
     );
   }
 
-  Map<String, dynamic> toJson() => _$MovieTileColorsToJson(this);
+  Map<String, dynamic> toJson() => _$MovieTileDataToJson(this);
 
   factory MovieTileData.fromJson(Map<String, dynamic> json) =>
-      _$MovieTileColorsFromJson(json);
+      _$MovieTileDataFromJson(json);
 }

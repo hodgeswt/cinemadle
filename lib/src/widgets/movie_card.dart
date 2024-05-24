@@ -4,6 +4,9 @@ import 'package:cinemadle/src/utilities.dart';
 import 'package:cinemadle/src/widgets/text_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
+import 'package:flutter_flip_card/flipcard/flip_card.dart';
+import 'package:flutter_flip_card/modal/flip_side.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
 class MovieCard extends StatelessWidget {
@@ -12,11 +15,13 @@ class MovieCard extends StatelessWidget {
     required this.movieData,
     required this.tileData,
     required this.targetMovie,
+    required this.allowFlip,
   });
 
   final Movie movieData;
   final Movie targetMovie;
   final MovieTileData tileData;
+  final bool allowFlip;
 
   Color? _getCardColor(MainViewState state) {
     if (state.status == MainViewStatus.win && movieData.id == targetMovie.id) {
@@ -41,8 +46,39 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _getBackWidget() {
+    return BlocBuilder<MainViewBloc, MainViewState>(
+      builder: (context, state) {
+        return Card(
+          shape: _getCardOutline(state),
+          elevation: 3,
+          color: _getCardColor(state),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: Constants.stdPad,
+                child: Center(
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    "Hidden Movie Poster",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(),
+              state.blur?[movieData.id] ?? const Text("Poster not found.")
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _getFrontWidget() {
     return BlocBuilder<MainViewBloc, MainViewState>(
       builder: (context, state) {
         return Card(
@@ -55,12 +91,29 @@ class MovieCard extends StatelessWidget {
               Padding(
                 padding: Constants.stdPad,
                 child: Center(
-                  child: Text(
+                  child: RichText(
                     textAlign: TextAlign.center,
-                    movieData.title,
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                    text: TextSpan(
+                      text: "",
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: "${movieData.title}${allowFlip ? "\n" : ""}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Constants.black,
+                            fontSize: 24,
+                          ),
+                        ),
+                        allowFlip
+                            ? const TextSpan(
+                                text: "(flip to see hidden poster)",
+                                style: TextStyle(
+                                  color: Constants.black,
+                                  fontSize: 12,
+                                ),
+                              )
+                            : const TextSpan(text: ""),
+                      ],
                     ),
                   ),
                 ),
@@ -121,6 +174,24 @@ class MovieCard extends StatelessWidget {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<MainViewBloc, MainViewState>(
+      builder: (context, state) {
+        return FlipCard(
+          key: Key("${movieData.id}"),
+          controller:
+              state.cardFlipControllers?[movieData.id] ?? FlipCardController(),
+          onTapFlipping: allowFlip,
+          frontWidget: _getFrontWidget(),
+          backWidget: _getBackWidget(),
+          rotateSide: RotateSide.bottom,
+          animationDuration: const Duration(milliseconds: 500),
         );
       },
     );

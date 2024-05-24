@@ -17,7 +17,7 @@ MainViewState _$MainViewStateFromJson(Map<String, dynamic> json) =>
           ?.map((e) => (e as num).toInt())
           .toList(),
       remainingGuesses: (json['remainingGuesses'] as num?)?.toInt() ?? 10,
-      tileColors: (json['tileColors'] as Map<String, dynamic>?)?.map(
+      tileData: (json['tileData'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(
             int.parse(k), MovieTileData.fromJson(e as Map<String, dynamic>)),
       ),
@@ -29,8 +29,7 @@ Map<String, dynamic> _$MainViewStateToJson(MainViewState instance) =>
       'userGuesses': instance.userGuesses,
       'userGuessesIds': instance.userGuessesIds,
       'remainingGuesses': instance.remainingGuesses,
-      'tileColors':
-          instance.tileColors?.map((k, e) => MapEntry(k.toString(), e)),
+      'tileData': instance.tileData?.map((k, e) => MapEntry(k.toString(), e)),
     };
 
 const _$MainViewStatusEnumMap = {
@@ -41,7 +40,7 @@ const _$MainViewStatusEnumMap = {
   MainViewStatus.fatalError: 'fatalError',
 };
 
-MovieTileData _$MovieTileColorsFromJson(Map<String, dynamic> json) =>
+MovieTileData _$MovieTileDataFromJson(Map<String, dynamic> json) =>
     MovieTileData(
       userScore: _$JsonConverterFromJson<String, Color?>(
           json['userScore'], const ColorJsonConverter().fromJson),
@@ -61,9 +60,14 @@ MovieTileData _$MovieTileColorsFromJson(Map<String, dynamic> json) =>
           json['writer'], const ColorJsonConverter().fromJson),
       firstInCast: _$JsonConverterFromJson<String, Color?>(
           json['firstInCast'], const ColorJsonConverter().fromJson),
+      userScoreArrow: json['userScoreArrow'] as String?,
+      mpaRatingArrow: json['mpaRatingArrow'] as String?,
+      releaseDateArrow: json['releaseDateArrow'] as String?,
+      runtimeArrow: json['runtimeArrow'] as String?,
+      revenueArrow: json['revenueArrow'] as String?,
     );
 
-Map<String, dynamic> _$MovieTileColorsToJson(MovieTileData instance) =>
+Map<String, dynamic> _$MovieTileDataToJson(MovieTileData instance) =>
     <String, dynamic>{
       'userScore': const ColorJsonConverter().toJson(instance.userScore),
       'mpaRating': const ColorJsonConverter().toJson(instance.mpaRating),
@@ -74,6 +78,11 @@ Map<String, dynamic> _$MovieTileColorsToJson(MovieTileData instance) =>
       'director': const ColorJsonConverter().toJson(instance.director),
       'writer': const ColorJsonConverter().toJson(instance.writer),
       'firstInCast': const ColorJsonConverter().toJson(instance.firstInCast),
+      'userScoreArrow': instance.userScoreArrow,
+      'mpaRatingArrow': instance.mpaRatingArrow,
+      'releaseDateArrow': instance.releaseDateArrow,
+      'runtimeArrow': instance.runtimeArrow,
+      'revenueArrow': instance.revenueArrow,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

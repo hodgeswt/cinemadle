@@ -18,6 +18,9 @@ class GuessList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MainViewBloc, MainViewState>(
+      buildWhen: (previous, current) {
+        return previous.cardFlipControllers != current.cardFlipControllers;
+      },
       builder: (context, state) {
         return Expanded(
           child: Row(
@@ -27,13 +30,14 @@ class GuessList extends StatelessWidget {
                 child: ListView(
                   controller: scrollController,
                   children: [
-                    for (Movie item in state.userGuesses ?? [])
+                    for (int i = 0; i < (state.userGuesses ?? []).length; i++)
                       Padding(
                         padding: Constants.stdPad,
                         child: MovieCard(
-                          movieData: item,
+                          allowFlip: i == 0,
+                          movieData: state.userGuesses![i],
                           targetMovie: targetMovie,
-                          tileData: state.tileColors?[item.id] ??
+                          tileData: state.tileData?[state.userGuessesIds![i]] ??
                               MovieTileData.all(color: null),
                         ),
                       )

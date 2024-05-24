@@ -23,6 +23,13 @@ class ResetRequested extends MainViewEvent {
   List<Object> get props => [];
 }
 
+class FlipAllRequested extends MainViewEvent {
+  const FlipAllRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
 class GuessNotFoundPopupDismissed extends MainViewEvent {
   const GuessNotFoundPopupDismissed();
 

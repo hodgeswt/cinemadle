@@ -19,6 +19,11 @@ class TmdbApiClient {
 
   final String _host = "https://api.themoviedb.org/3/";
 
+  // Trailing slash needs to be absent
+  // Since API returns image paths with a leading
+  // slash
+  final String imageEndpoint = "https://images.tmdb.org/t/p/w500";
+
   static TmdbApiClient get instance {
     _instance ??= TmdbApiClient._();
 

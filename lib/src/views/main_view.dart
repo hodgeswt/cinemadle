@@ -34,7 +34,8 @@ class _MainViewState extends State<MainView> {
           create: (context) => MainViewBloc(widget.targetMovie),
           child: BlocConsumer<MainViewBloc, MainViewState>(
             buildWhen: (previous, current) {
-              return previous.status != current.status;
+              return previous.status != current.status ||
+                  previous.userGuessesIds != current.userGuessesIds;
             },
             listener: (context, state) {
               if (state.status == MainViewStatus.fatalError) {
@@ -52,7 +53,8 @@ class _MainViewState extends State<MainView> {
               }
 
               if (state.status == MainViewStatus.playing ||
-                  state.status == MainViewStatus.guessNotFound) {
+                  state.status == MainViewStatus.guessNotFound ||
+                  state.status == MainViewStatus.guessLoading) {
                 return Align(
                   alignment: Alignment.center,
                   child: SizedBox(
@@ -71,14 +73,23 @@ class _MainViewState extends State<MainView> {
                           },
                         ),
                         GuessBox(
-                          inputCallback: (int x) {
-                            context.read<MainViewBloc>().add(UserGuessAdded(x));
+                          inputCallback: (int x) async {
+                            MainViewBloc bloc = context.read<MainViewBloc>();
+                            bloc.add(const FlipAllRequested());
+
+                            await bloc.stream.firstWhere(
+                                (x) => x.status != MainViewStatus.guessLoading);
+
+                            bloc.add(
+                              UserGuessAdded(x),
+                            );
                           },
                           scrollController: _scrollController,
                         ),
                         GuessList(
-                            targetMovie: widget.targetMovie,
-                            scrollController: _scrollController)
+                          targetMovie: widget.targetMovie,
+                          scrollController: _scrollController,
+                        )
                       ],
                     ),
                   ),

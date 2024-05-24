@@ -2,7 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:cinemadle/src/color_json_converter.dart';
 import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/utilities.dart';
+import 'package:cinemadle/src/widgets/blurred_image.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,7 @@ import 'package:flutter/material.dart';
 part 'main_view_event.dart';
 part 'main_view_state.dart';
 part 'main_view_bloc.g.dart';
-part 'movie_tile_colors.dart';
+part 'movie_tile_data.dart';
 
 class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
   final Movie targetMovie;
@@ -25,6 +27,13 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     on<ResetRequested>((event, emit) {
       emit(MainViewState.empty);
     });
+
+    on<FlipAllRequested>((event, emit) async {
+      emit(state.copyWith(status: MainViewStatus.guessLoading));
+      await _flipAll(state.cardFlipControllers ?? {});
+      emit(state.copyWith(status: MainViewStatus.playing));
+    });
+
     on<UserGuessAdded>((event, emit) async {
       if (state.userGuessesIds?.contains(event.id) ?? false) {
         return;
@@ -41,8 +50,19 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
 
         MovieTileData tileColors = await _computeTileData(guess);
         Map<int, MovieTileData> newTileColors = {};
-        newTileColors.addAll(state.tileColors ?? {});
+        newTileColors.addAll(state.tileData ?? {});
         newTileColors[guess.id] = tileColors;
+
+        Map<int, FlipCardController> newCardFlipControllers = {};
+        newCardFlipControllers.addAll(state.cardFlipControllers ?? {});
+        newCardFlipControllers[guess.id] = FlipCardController();
+
+        Map<int, BlurredImage> newBlur = {};
+        newBlur.addAll(state.blur ?? {});
+        newBlur[guess.id] = BlurredImage(
+          imageBlur: newRemainingGuesses >= 9 ? 100.0 : newRemainingGuesses * 2,
+          imagePath: targetMovie.posterPath,
+        );
 
         if (newRemainingGuesses == 0 && guess.id != targetMovie.id) {
           newStatus = MainViewStatus.loss;
@@ -61,7 +81,9 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
             status: newStatus,
             remainingGuesses: newRemainingGuesses,
             userGuessesIds: newGuessesIds,
-            tileColors: newTileColors,
+            tileData: newTileColors,
+            blur: newBlur,
+            cardFlipControllers: newCardFlipControllers,
           ),
         );
       } catch (err) {
@@ -76,6 +98,14 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
         state.copyWith(status: MainViewStatus.playing),
       );
     });
+  }
+
+  _flipAll(Map<int, FlipCardController> controllers) async {
+    for (MapEntry<int, FlipCardController> x in controllers.entries) {
+      if (!(x.value.state?.isFront ?? false)) {
+        await x.value.flipcard();
+      }
+    }
   }
 
   Future<MovieTileData> _computeTileData(Movie movie) async {

@@ -112,7 +112,9 @@ class Movie extends Equatable {
       writer: _getArbitraryCrewRole(credits, ["Screenplay", "Writer"]),
       lead: _getArbitraryFirstInCast(credits),
       id: details.id,
-      posterPath: details.posterPath ?? "",
+      posterPath: details.posterPath == null
+          ? ""
+          : "${TmdbApiClient.instance.imageEndpoint}${details.posterPath}",
     );
   }
 
