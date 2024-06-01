@@ -15,6 +15,7 @@ InstructionsState _$InstructionsStateFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String? ?? "Loading...",
       content: json['content'] as String? ?? "Loading...",
       canGoBack: json['canGoBack'] as bool? ?? false,
+      canGoForward: json['canGoForward'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$InstructionsStateToJson(InstructionsState instance) =>
@@ -24,6 +25,7 @@ Map<String, dynamic> _$InstructionsStateToJson(InstructionsState instance) =>
       'title': instance.title,
       'content': instance.content,
       'canGoBack': instance.canGoBack,
+      'canGoForward': instance.canGoForward,
     };
 
 const _$InstructionsStateStatusEnumMap = {

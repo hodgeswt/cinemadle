@@ -3,6 +3,7 @@ import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/utilities.dart';
 import 'package:cinemadle/src/views/failed_loading_view.dart';
 import 'package:cinemadle/src/widgets/cinemadle_app_bar.dart';
+import 'package:cinemadle/src/widgets/drawer.dart';
 import 'package:cinemadle/src/widgets/guess_box.dart';
 import 'package:cinemadle/src/widgets/guess_list.dart';
 import 'package:cinemadle/src/widgets/header_card.dart';
@@ -28,6 +29,7 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CinemadleAppBar(),
+      drawer: drawer(context, Views.game),
       body: Padding(
         padding: Constants.stdPad,
         child: BlocProvider<MainViewBloc>(

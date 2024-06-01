@@ -1,0 +1,7 @@
+Cinemadle v0.2.4
+
+Additions:
+- Cinemadle now remembers guesses on refresh + browser close
+- Cinemadle now has an info page with release notes and version info
+- Cinemadle now appropriately displays the TMDB logo on all pages
+- Cinemadle now has a share sheet on game end

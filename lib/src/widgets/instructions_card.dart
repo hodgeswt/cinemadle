@@ -57,10 +57,10 @@ class InstructionsCard extends StatelessWidget {
                           goesForward: false,
                         ),
                       ),
-                      const Expanded(
+                      Expanded(
                         child: InstructionsCardButton(
                           text: "Next",
-                          disabled: false,
+                          disabled: !state.canGoForward,
                           goesForward: true,
                         ),
                       ),

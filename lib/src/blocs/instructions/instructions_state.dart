@@ -25,6 +25,7 @@ class InstructionsState extends Equatable {
     this.title = "Loading...",
     this.content = "Loading...",
     this.canGoBack = false,
+    this.canGoForward = true,
   });
 
   final InstructionsStateStatus status;
@@ -32,16 +33,7 @@ class InstructionsState extends Equatable {
   final String title;
   final String content;
   final bool canGoBack;
-
-  static InstructionsState get completed {
-    return const InstructionsState(
-      content: "",
-      title: "",
-      status: InstructionsStateStatus.completed,
-      index: 0,
-      canGoBack: false,
-    );
-  }
+  final bool canGoForward;
 
   InstructionsState copyWith({
     InstructionsStateStatus? status,
@@ -49,6 +41,7 @@ class InstructionsState extends Equatable {
     String? title,
     String? content,
     bool? canGoBack,
+    bool? canGoForward,
   }) {
     return InstructionsState(
       status: status ?? this.status,
@@ -56,6 +49,7 @@ class InstructionsState extends Equatable {
       title: title ?? this.title,
       content: content ?? this.content,
       canGoBack: canGoBack ?? this.canGoBack,
+      canGoForward: canGoForward ?? this.canGoForward,
     );
   }
 
@@ -65,5 +59,12 @@ class InstructionsState extends Equatable {
       _$InstructionsStateFromJson(json);
 
   @override
-  List<Object> get props => [status, index, title, content];
+  List<Object> get props => [
+        status,
+        index,
+        title,
+        content,
+        canGoBack,
+        canGoForward,
+      ];
 }

@@ -1,6 +1,6 @@
 import 'package:cinemadle/src/blocs/target_movie/target_movie_bloc.dart';
 import 'package:cinemadle/src/views/failed_loading_view.dart';
-import 'package:cinemadle/src/views/instructions_view.dart';
+import 'package:cinemadle/src/views/main_view.dart';
 import 'package:cinemadle/src/widgets/cinemadle_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,8 +29,7 @@ class LoadingView extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      InstructionsView(targetMovie: state.movie!),
+                  builder: (context) => MainView(targetMovie: state.movie!),
                 ),
               );
               return;

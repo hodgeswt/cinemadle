@@ -7,6 +7,13 @@ sealed class InstructionsEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class InitialLoadRequested extends InstructionsEvent {
+  const InitialLoadRequested();
+
+  @override
+  List<Object> get props => [];
+}
+
 class NextInstructionRequested extends InstructionsEvent {
   const NextInstructionRequested();
 
@@ -16,13 +23,6 @@ class NextInstructionRequested extends InstructionsEvent {
 
 class PreviousInstructionRequested extends InstructionsEvent {
   const PreviousInstructionRequested();
-
-  @override
-  List<Object> get props => [];
-}
-
-class SkipInstructionsRequested extends InstructionsEvent {
-  const SkipInstructionsRequested();
 
   @override
   List<Object> get props => [];
