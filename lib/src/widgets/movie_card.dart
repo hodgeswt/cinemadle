@@ -61,7 +61,7 @@ class MovieCard extends StatelessWidget {
                 child: Center(
                   child: Text(
                     textAlign: TextAlign.center,
-                    "Hidden Movie Poster",
+                    "Visual Clue",
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -70,7 +70,7 @@ class MovieCard extends StatelessWidget {
                 ),
               ),
               const Divider(),
-              state.blur?[movieData.id] ?? const Text("Poster not found.")
+              state.blur?[movieData.id] ?? const Text("Image not found.")
             ],
           ),
         );
@@ -106,7 +106,7 @@ class MovieCard extends StatelessWidget {
                         ),
                         allowFlip
                             ? const TextSpan(
-                                text: "(flip to see hidden poster)",
+                                text: "(flip to see visual clue)",
                                 style: TextStyle(
                                   color: Constants.black,
                                   fontSize: 12,

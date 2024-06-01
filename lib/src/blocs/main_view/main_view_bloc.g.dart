@@ -21,6 +21,17 @@ MainViewState _$MainViewStateFromJson(Map<String, dynamic> json) =>
         (k, e) => MapEntry(
             int.parse(k), MovieTileData.fromJson(e as Map<String, dynamic>)),
       ),
+      cardFlipControllers:
+          (json['cardFlipControllers'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(int.parse(k),
+            const FlipCardControllerJsonConverter().fromJson(e as String)),
+      ),
+      blur: (json['blur'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(int.parse(k),
+            const BlurredImageJsonConverter().fromJson(e as String)),
+      ),
+      allowFlip:
+          (json['allowFlip'] as List<dynamic>?)?.map((e) => e as bool).toList(),
     );
 
 Map<String, dynamic> _$MainViewStateToJson(MainViewState instance) =>
@@ -30,6 +41,12 @@ Map<String, dynamic> _$MainViewStateToJson(MainViewState instance) =>
       'userGuessesIds': instance.userGuessesIds,
       'remainingGuesses': instance.remainingGuesses,
       'tileData': instance.tileData?.map((k, e) => MapEntry(k.toString(), e)),
+      'cardFlipControllers': instance.cardFlipControllers?.map((k, e) =>
+          MapEntry(
+              k.toString(), const FlipCardControllerJsonConverter().toJson(e))),
+      'blur': instance.blur?.map((k, e) =>
+          MapEntry(k.toString(), const BlurredImageJsonConverter().toJson(e))),
+      'allowFlip': instance.allowFlip,
     };
 
 const _$MainViewStatusEnumMap = {
@@ -38,6 +55,7 @@ const _$MainViewStatusEnumMap = {
   MainViewStatus.loss: 'loss',
   MainViewStatus.guessNotFound: 'guessNotFound',
   MainViewStatus.fatalError: 'fatalError',
+  MainViewStatus.guessLoading: 'guessLoading',
 };
 
 MovieTileData _$MovieTileDataFromJson(Map<String, dynamic> json) =>

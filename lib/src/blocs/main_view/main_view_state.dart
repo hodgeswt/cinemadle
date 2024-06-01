@@ -10,6 +10,8 @@ enum MainViewStatus {
 }
 
 @JsonSerializable()
+@FlipCardControllerJsonConverter()
+@BlurredImageJsonConverter()
 class MainViewState extends Equatable {
   const MainViewState({
     this.status = MainViewStatus.playing,
@@ -19,6 +21,7 @@ class MainViewState extends Equatable {
     this.tileData,
     this.cardFlipControllers,
     this.blur,
+    this.allowFlip,
   });
 
   final MainViewStatus status;
@@ -28,6 +31,7 @@ class MainViewState extends Equatable {
   final Map<int, MovieTileData>? tileData;
   final Map<int, FlipCardController>? cardFlipControllers;
   final Map<int, BlurredImage>? blur;
+  final List<bool>? allowFlip;
 
   static MainViewState get empty {
     return const MainViewState(
@@ -38,6 +42,7 @@ class MainViewState extends Equatable {
       tileData: {},
       cardFlipControllers: {},
       blur: {},
+      allowFlip: [],
     );
   }
 
@@ -49,6 +54,7 @@ class MainViewState extends Equatable {
     Map<int, MovieTileData>? tileData,
     Map<int, FlipCardController>? cardFlipControllers,
     Map<int, BlurredImage>? blur,
+    List<bool>? allowFlip,
   }) {
     return MainViewState(
       userGuesses: userGuesses ?? this.userGuesses,
@@ -58,6 +64,7 @@ class MainViewState extends Equatable {
       tileData: tileData ?? this.tileData,
       cardFlipControllers: cardFlipControllers ?? this.cardFlipControllers,
       blur: blur ?? this.blur,
+      allowFlip: allowFlip ?? this.allowFlip,
     );
   }
 
@@ -75,5 +82,6 @@ class MainViewState extends Equatable {
         tileData,
         cardFlipControllers,
         blur,
+        allowFlip,
       ];
 }

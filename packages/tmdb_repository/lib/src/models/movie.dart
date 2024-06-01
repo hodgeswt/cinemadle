@@ -114,7 +114,7 @@ class Movie extends Equatable {
       id: details.id,
       posterPath: details.posterPath == null
           ? ""
-          : "${TmdbApiClient.instance.imageEndpoint}${details.posterPath}",
+          : "${TmdbApiClient.instance.imageEndpoint}${details.backdropPath}",
     );
   }
 

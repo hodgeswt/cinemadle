@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:cinemadle/src/color_json_converter.dart';
 import 'package:cinemadle/src/constants.dart';
+import 'package:cinemadle/src/converters/blurred_image_json_converter.dart';
+import 'package:cinemadle/src/converters/flip_card_controller_json_converter.dart';
 import 'package:cinemadle/src/utilities.dart';
 import 'package:cinemadle/src/widgets/blurred_image.dart';
 import 'package:equatable/equatable.dart';
@@ -64,10 +66,20 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
           imagePath: targetMovie.posterPath,
         );
 
+        List<bool> newAllowFlip = [
+          newRemainingGuesses <= 2,
+          ...List.filled(state.allowFlip?.length ?? 0, false)
+        ];
+
         if (newRemainingGuesses == 0 && guess.id != targetMovie.id) {
           newStatus = MainViewStatus.loss;
           newGuesses = [targetMovie, ...newGuesses];
           newGuessesIds = [targetMovie.id, ...newGuessesIds];
+          newAllowFlip = [true, ...List.filled(newAllowFlip.length, false)];
+          newBlur[targetMovie.id] = BlurredImage(
+            imageBlur: 0.0,
+            imagePath: targetMovie.posterPath,
+          );
 
           MovieTileData targetColors = await _computeTileData(targetMovie);
           newTileColors[targetMovie.id] = targetColors;
@@ -84,6 +96,7 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
             tileData: newTileColors,
             blur: newBlur,
             cardFlipControllers: newCardFlipControllers,
+            allowFlip: newAllowFlip,
           ),
         );
       } catch (err) {

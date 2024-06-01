@@ -6,7 +6,12 @@ A movie guessing game that is still in development.
 
 To build cinemadle, do the following:
 
-1. Ensure you have an `API_KEY` defined in a root-level `.env` file.
-1. Run `dart run build_runner build`
-1. Run `flutter build web --release --source-maps --web-renderer canvaskit`
-1. Open the build `flutter.js` file and remove the source map off the final line.
+1. Ensure you have an `API_KEY` defined in an `.env` file in the `packages/tmdb_repository` folder.
+1. Import the `Cinemadle` powershell module
+1. If running for the first time, run `Invoke-BuildProject -IncludePackages`
+1. After that, run `Invoke-BuildProject`. Additional flags provide more options
+
+
+To generate a release build, run `Invoke-BuildProject -Release`
+
+A build can be hosted with `Invoke-HostBuild`

@@ -34,7 +34,7 @@ class GuessList extends StatelessWidget {
                       Padding(
                         padding: Constants.stdPad,
                         child: MovieCard(
-                          allowFlip: i == 0,
+                          allowFlip: state.allowFlip?[i] ?? false,
                           movieData: state.userGuesses![i],
                           targetMovie: targetMovie,
                           tileData: state.tileData?[state.userGuessesIds![i]] ??
