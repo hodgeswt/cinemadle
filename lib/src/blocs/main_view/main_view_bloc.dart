@@ -81,6 +81,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
         if (newRemainingGuesses == 0 && guess.id != targetMovie.id) {
           newStatus = MainViewStatus.loss;
+          newResults = _buildResults(newTileColors.values, newStatus);
           newGuesses = [targetMovie, ...newGuesses];
           newGuessesIds = [targetMovie.id, ...newGuessesIds];
           newAllowFlip = [true, ...List.filled(newAllowFlip.length, false)];
@@ -91,12 +92,9 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
           MovieTileData targetColors = await _computeTileData(targetMovie);
           newTileColors[targetMovie.id] = targetColors;
-
-          newResults = _buildResults(newStatus);
         } else if (guess.id == targetMovie.id) {
+          newResults = _buildResults(newTileColors.values, newStatus);
           newStatus = MainViewStatus.win;
-
-          newResults = _buildResults(newStatus);
         }
 
         emit(
@@ -269,9 +267,10 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
     return await TmdbRepository().isActorInMovie(lead, targetMovie.id);
   }
 
-  String _buildResults(MainViewStatus status) {
+  String _buildResults(
+      Iterable<MovieTileData> tileColors, MainViewStatus status) {
     String results = "";
-    for (MovieTileData x in state.tileData?.values ?? []) {
+    for (MovieTileData x in tileColors) {
       List<Color?> colors = [
         x.userScore,
         x.mpaRating,
