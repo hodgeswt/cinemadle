@@ -257,10 +257,11 @@ packages:
   flutter_flip_card:
     dependency: "direct main"
     description:
-      name: flutter_flip_card
-      sha256: cf67f31e85fa4452f493cac2f3c123bcacacb0f7feb3cc5f831faeea77cdc671
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "51cb979daff81440ab6a45dd286911e169d2e6e3"
+      url: "https://github.com/hodgeswt/flutter_flip_card"
+    source: git
     version: "0.0.6"
   flutter_keyboard_visibility:
     dependency: transitive

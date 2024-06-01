@@ -192,6 +192,11 @@ class MovieCard extends StatelessWidget {
           backWidget: _getBackWidget(),
           rotateSide: RotateSide.bottom,
           animationDuration: const Duration(milliseconds: 500),
+          onFlipCallback: () {
+            if (state.status == MainViewStatus.playing) {
+              context.read<MainViewBloc>().add(const UserFlippedCard());
+            }
+          },
         );
       },
     );

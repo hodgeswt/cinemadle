@@ -30,10 +30,16 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
     Constants.grey: "⬛",
   };
 
+  bool userFlippedCard = false;
+
   MainViewBloc(this.targetMovie)
       : super(const MainViewState(status: MainViewStatus.playing)) {
     on<ResetRequested>((event, emit) {
       emit(MainViewState.empty);
+    });
+
+    on<UserFlippedCard>((event, emit) {
+      userFlippedCard = true;
     });
 
     on<FlipAllRequested>((event, emit) async {
@@ -293,7 +299,8 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
     }
 
     if (status == MainViewStatus.win) {
-      results += "🟩🟩🟩🟩🟩🟩🟩🟩🟩\n\n";
+      results += "🟩🟩🟩🟩🟩🟩🟩🟩🟩\n";
+      results += userFlippedCard ? "\n" : "No Visual Clues 👑\n\n";
     } else {
       results += "❌❌❌❌❌❌❌❌❌\n\n";
     }
