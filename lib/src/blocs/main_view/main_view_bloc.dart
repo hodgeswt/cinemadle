@@ -99,8 +99,8 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
           MovieTileData targetColors = await _computeTileData(targetMovie);
           newTileColors[targetMovie.id] = targetColors;
         } else if (guess.id == targetMovie.id) {
-          newResults = _buildResults(newTileColors.values, newStatus);
           newStatus = MainViewStatus.win;
+          newResults = _buildResults(newTileColors.values, newStatus);
         }
 
         emit(
@@ -299,7 +299,6 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
     }
 
     if (status == MainViewStatus.win) {
-      results += "🟩🟩🟩🟩🟩🟩🟩🟩🟩\n";
       results += userFlippedCard ? "\n" : "No Visual Clues 👑\n\n";
     } else {
       results += "❌❌❌❌❌❌❌❌❌\n\n";
