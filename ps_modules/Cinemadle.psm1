@@ -36,16 +36,11 @@ function Invoke-Build() {
 
         if (Test-Path -Path '.\build\web\flutter.js' -PathType Leaf) {
             $content = Get-Content -Path '.\build\web\flutter.js'
-            $lines = ($content | Measure-Object -Line).Lines
-            $i = 1
             $newFile = [string]::Empty
-            foreach($line in $content) {
-                if ($i -ne ($lines - 1)) {
-                    $newFile += $line
-                    $newFile += [Environment]::NewLine
+            $content | ForEach-Object {
+                if (-not ($_ -Match "//# source*")) {
+                    $newFile += $_ + [Environment]::NewLine
                 }
-
-                $i += 1
             }
 
             $newFile | Out-File -FilePath '.\build\web\flutter.js'
