@@ -5,5 +5,5 @@ Additions:
 
 - Cinemadle now remembers guesses on refresh + browser close
 - Cinemadle now has an info page with release notes and version info
-- Cinemadle now appropriately displays the TMDB logo on all pages
+- Cinemadle now appropriately displays the TMDB logo and attribution
 - Cinemadle now has a share sheet on game end
