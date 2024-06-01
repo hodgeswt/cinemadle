@@ -14,5 +14,8 @@ class CinemadleAppBar extends AppBar {
             ),
           ),
           centerTitle: true,
+          iconTheme: IconThemeData(
+            color: Constants.lightGrey,
+          ),
         );
 }

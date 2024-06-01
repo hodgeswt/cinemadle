@@ -12,7 +12,7 @@ class InformationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CinemadleAppBar(),
-      drawer: drawer(context, Views.instructions),
+      drawer: drawer(context, Views.info),
       body: Center(
         child: SizedBox(
           width:
