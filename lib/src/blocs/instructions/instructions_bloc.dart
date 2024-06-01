@@ -17,11 +17,11 @@ class InstructionsBloc extends Bloc<InstructionsEvent, InstructionsState> {
       ),
       InstructionsStateStatus.overview: (
         "Introduction",
-        "Upon entering a guess, nine clues appear below to help you figure out the hidden movie. Through elimination, you can learn pieces of information about the movie."
+        "Upon entering a guess, nine clues appear in a card below to help you figure out the hidden movie. Through elimination, you can learn pieces of information about the movie."
       ),
       InstructionsStateStatus.detail: (
         "Clues",
-        "Each of the nine clues comes in a colored box.\n\nIf a box appears green, it means that information is the same as the hidden movie.\n\nIf a clue is yellow, it means that information is close to the hidden movie.\n\nIf it is grey, it means that it is incorrect.\n\nArrows may appear that indicate how far off the goal you are."
+        "Each of the nine clues comes in a colored box.\n\nIf a box appears green, it means that information is the same as the hidden movie.\n\nIf a clue is yellow, it means that information is close to the hidden movie.\n\nIf it is grey, it means that it is incorrect.\n\nArrows may appear that indicate how far off the goal you are.\n\nOn your last three guesses, you will receive a visual clue by flipping the card."
       ),
       InstructionsStateStatus.userScoreDescription: (
         "User Score",
