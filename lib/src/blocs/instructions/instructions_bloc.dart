@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -6,7 +6,8 @@ part 'instructions_event.dart';
 part 'instructions_state.dart';
 part 'instructions_bloc.g.dart';
 
-class InstructionsBloc extends Bloc<InstructionsEvent, InstructionsState> {
+class InstructionsBloc
+    extends HydratedBloc<InstructionsEvent, InstructionsState> {
   InstructionsBloc()
       : super(const InstructionsState(
             status: InstructionsStateStatus.introduction)) {
@@ -78,7 +79,8 @@ class InstructionsBloc extends Bloc<InstructionsEvent, InstructionsState> {
     ];
 
     on<NextInstructionRequested>((event, emit) {
-      if (state.index >= instructionsList.length - 1) {
+      if (state.index >= instructionsList.length - 1 ||
+          state.status == InstructionsStateStatus.completed) {
         emit(
           InstructionsState.completed,
         );
@@ -125,5 +127,15 @@ class InstructionsBloc extends Bloc<InstructionsEvent, InstructionsState> {
         InstructionsState.completed,
       );
     });
+  }
+
+  @override
+  InstructionsState? fromJson(Map<String, dynamic> json) {
+    return InstructionsState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(InstructionsState state) {
+    return state.toJson();
   }
 }

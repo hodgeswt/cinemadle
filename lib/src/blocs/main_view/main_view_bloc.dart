@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:cinemadle/src/color_json_converter.dart';
 import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/converters/blurred_image_json_converter.dart';
@@ -7,6 +6,7 @@ import 'package:cinemadle/src/utilities.dart';
 import 'package:cinemadle/src/widgets/blurred_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ part 'main_view_state.dart';
 part 'main_view_bloc.g.dart';
 part 'movie_tile_data.dart';
 
-class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
+class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
   final Movie targetMovie;
 
   final String singleUpArrow = "↑ ";
@@ -254,5 +254,15 @@ class MainViewBloc extends Bloc<MainViewEvent, MainViewState> {
     }
 
     return await TmdbRepository().isActorInMovie(lead, targetMovie.id);
+  }
+
+  @override
+  MainViewState? fromJson(Map<String, dynamic> json) {
+    return MainViewState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(MainViewState state) {
+    return state.toJson();
   }
 }

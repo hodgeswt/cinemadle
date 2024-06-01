@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
@@ -9,7 +9,7 @@ part 'target_movie_event.dart';
 part 'target_movie_state.dart';
 part 'target_movie_bloc.g.dart';
 
-class TargetMovieBloc extends Bloc<TargetMovieEvent, TargetMovieState> {
+class TargetMovieBloc extends HydratedBloc<TargetMovieEvent, TargetMovieState> {
   TargetMovieBloc()
       : super(const TargetMovieState(status: TargetMovieStatus.initial)) {
     on<TargetMovieLoadInitiated>((event, emit) async {
@@ -44,5 +44,15 @@ class TargetMovieBloc extends Bloc<TargetMovieEvent, TargetMovieState> {
         state.copyWith(status: TargetMovieStatus.failed),
       );
     }
+  }
+
+  @override
+  TargetMovieState? fromJson(Map<String, dynamic> json) {
+    return TargetMovieState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(TargetMovieState state) {
+    return state.toJson();
   }
 }
