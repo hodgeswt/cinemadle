@@ -22,6 +22,7 @@ class MainViewState extends Equatable {
     this.cardFlipControllers,
     this.blur,
     this.allowFlip,
+    this.results,
   });
 
   final MainViewStatus status;
@@ -32,6 +33,7 @@ class MainViewState extends Equatable {
   final Map<int, FlipCardController>? cardFlipControllers;
   final Map<int, BlurredImage>? blur;
   final List<bool>? allowFlip;
+  final String? results;
 
   static MainViewState get empty {
     return const MainViewState(
@@ -43,6 +45,7 @@ class MainViewState extends Equatable {
       cardFlipControllers: {},
       blur: {},
       allowFlip: [],
+      results: "",
     );
   }
 
@@ -55,6 +58,7 @@ class MainViewState extends Equatable {
     Map<int, FlipCardController>? cardFlipControllers,
     Map<int, BlurredImage>? blur,
     List<bool>? allowFlip,
+    String? results,
   }) {
     return MainViewState(
       userGuesses: userGuesses ?? this.userGuesses,
@@ -65,6 +69,7 @@ class MainViewState extends Equatable {
       cardFlipControllers: cardFlipControllers ?? this.cardFlipControllers,
       blur: blur ?? this.blur,
       allowFlip: allowFlip ?? this.allowFlip,
+      results: results ?? this.results,
     );
   }
 
@@ -83,5 +88,6 @@ class MainViewState extends Equatable {
         cardFlipControllers,
         blur,
         allowFlip,
+        results,
       ];
 }

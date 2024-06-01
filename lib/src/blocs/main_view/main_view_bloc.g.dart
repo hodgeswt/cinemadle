@@ -32,6 +32,7 @@ MainViewState _$MainViewStateFromJson(Map<String, dynamic> json) =>
       ),
       allowFlip:
           (json['allowFlip'] as List<dynamic>?)?.map((e) => e as bool).toList(),
+      results: json['results'] as String?,
     );
 
 Map<String, dynamic> _$MainViewStateToJson(MainViewState instance) =>
@@ -47,6 +48,7 @@ Map<String, dynamic> _$MainViewStateToJson(MainViewState instance) =>
       'blur': instance.blur?.map((k, e) =>
           MapEntry(k.toString(), const BlurredImageJsonConverter().toJson(e))),
       'allowFlip': instance.allowFlip,
+      'results': instance.results,
     };
 
 const _$MainViewStatusEnumMap = {

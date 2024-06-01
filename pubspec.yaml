@@ -36,3 +36,8 @@ flutter:
   assets:
     - release_notes.txt
     - tmdb_logo.png
+  fonts:
+    - family: NotoEmoji
+      fonts:
+        - asset: fonts/NotoColorEmoji-Regular.ttf
+          weight: 400

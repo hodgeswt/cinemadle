@@ -24,6 +24,12 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
   final String singleDownArrow = "↓ ";
   final String doubleDownArrow = "↓↓ ";
 
+  Map<Color, String> resultsColorMap = {
+    Constants.goldYellow: "🟨",
+    Constants.lightGreen: "🟩",
+    Constants.grey: "⬛",
+  };
+
   MainViewBloc(this.targetMovie)
       : super(const MainViewState(status: MainViewStatus.playing)) {
     on<ResetRequested>((event, emit) {
@@ -71,6 +77,8 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
           ...List.filled(state.allowFlip?.length ?? 0, false)
         ];
 
+        String newResults = state.results ?? "";
+
         if (newRemainingGuesses == 0 && guess.id != targetMovie.id) {
           newStatus = MainViewStatus.loss;
           newGuesses = [targetMovie, ...newGuesses];
@@ -83,8 +91,12 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
           MovieTileData targetColors = await _computeTileData(targetMovie);
           newTileColors[targetMovie.id] = targetColors;
+
+          newResults = _buildResults(newStatus);
         } else if (guess.id == targetMovie.id) {
           newStatus = MainViewStatus.win;
+
+          newResults = _buildResults(newStatus);
         }
 
         emit(
@@ -97,6 +109,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
             blur: newBlur,
             cardFlipControllers: newCardFlipControllers,
             allowFlip: newAllowFlip,
+            results: newResults,
           ),
         );
       } catch (err) {
@@ -254,6 +267,41 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
     }
 
     return await TmdbRepository().isActorInMovie(lead, targetMovie.id);
+  }
+
+  String _buildResults(MainViewStatus status) {
+    String results = "";
+    for (MovieTileData x in state.tileData?.values ?? []) {
+      List<Color?> colors = [
+        x.userScore,
+        x.mpaRating,
+        x.releaseDate,
+        x.revenue,
+        x.runtime,
+        x.genre,
+        x.director,
+        x.writer,
+        x.firstInCast,
+      ];
+
+      String row = "";
+      for (Color? color in colors) {
+        row += resultsColorMap[color ?? Constants.grey] ?? "⬛";
+      }
+
+      row += "\n";
+      results += row;
+    }
+
+    if (status == MainViewStatus.win) {
+      results += "🟩🟩🟩🟩🟩🟩🟩🟩🟩\n\n";
+    } else {
+      results += "❌❌❌❌❌❌❌❌❌\n\n";
+    }
+
+    results += "Play at\nhttp://cinemadle.hodgeswill.com";
+
+    return results;
   }
 
   @override

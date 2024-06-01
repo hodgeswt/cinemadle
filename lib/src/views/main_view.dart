@@ -8,6 +8,7 @@ import 'package:cinemadle/src/widgets/guess_box.dart';
 import 'package:cinemadle/src/widgets/guess_list.dart';
 import 'package:cinemadle/src/widgets/header_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
@@ -25,6 +26,54 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   final ScrollController _scrollController = ScrollController();
+
+  Future<void> _showShareSheet(String results) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Share'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                RichText(
+                  text: TextSpan(
+                    text: results,
+                    style: const TextStyle(fontFamily: 'NotoEmoji'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Copy'),
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: results)).then(
+                  (_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Results copied to clipboard!"),
+                      ),
+                    );
+
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,11 +171,9 @@ class _MainViewState extends State<MainView> {
                                   padding: Constants.stdPad,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      context
-                                          .read<MainViewBloc>()
-                                          .add(const ResetRequested());
+                                      _showShareSheet(state.results ?? "");
                                     },
-                                    child: const Text("Start Over"),
+                                    child: const Text("Share Your Results"),
                                   ),
                                 ),
                               ),
@@ -134,6 +181,26 @@ class _MainViewState extends State<MainView> {
                           ),
                         ),
                         GuessList(targetMovie: widget.targetMovie),
+                        IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: Constants.stdPad,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      context
+                                          .read<MainViewBloc>()
+                                          .add(const ResetRequested());
+                                    },
+                                    child: const Text("Reset"),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
