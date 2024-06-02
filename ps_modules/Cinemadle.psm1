@@ -29,9 +29,9 @@ function Invoke-Build() {
         }
 
         if ($Release) {
-            flutter build web --release --source-maps --web-renderer canvaskit
+            flutter build web --release --source-maps
         } else {
-            flutter build web --web-renderer canvaskit --source-maps
+            flutter build web --source-maps
         }
 
         if (Test-Path -Path '.\build\web\flutter.js' -PathType Leaf) {
