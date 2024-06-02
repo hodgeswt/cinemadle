@@ -18,6 +18,7 @@ part 'movie_tile_data.dart';
 
 class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
   final Movie targetMovie;
+  final int uuid;
 
   final String singleUpArrow = "↑ ";
   final String doubleUpArrow = "↑↑ ";
@@ -32,10 +33,16 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
   bool userFlippedCard = false;
 
-  MainViewBloc(this.targetMovie)
-      : super(const MainViewState(status: MainViewStatus.playing)) {
+  MainViewBloc(this.targetMovie, this.uuid)
+      : super(MainViewState(status: MainViewStatus.playing, uuid: uuid)) {
     on<ResetRequested>((event, emit) {
       emit(MainViewState.empty);
+    });
+
+    on<ValidateCurrentRequested>((event, emit) async {
+      if (event.uuid != state.uuid) {
+        emit(MainViewState.empty);
+      }
     });
 
     on<UserFlippedCard>((event, emit) {

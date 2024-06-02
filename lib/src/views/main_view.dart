@@ -16,9 +16,11 @@ class MainView extends StatefulWidget {
   const MainView({
     super.key,
     required this.targetMovie,
+    required this.uuid,
   });
 
   final Movie targetMovie;
+  final int uuid;
 
   @override
   State<MainView> createState() => _MainViewState();
@@ -82,7 +84,8 @@ class _MainViewState extends State<MainView> {
       body: Padding(
         padding: Constants.stdPad,
         child: BlocProvider<MainViewBloc>(
-          create: (context) => MainViewBloc(widget.targetMovie),
+          create: (context) => MainViewBloc(widget.targetMovie, widget.uuid)
+            ..add(ValidateCurrentRequested(widget.uuid)),
           child: BlocConsumer<MainViewBloc, MainViewState>(
             buildWhen: (previous, current) {
               return previous.status != current.status ||

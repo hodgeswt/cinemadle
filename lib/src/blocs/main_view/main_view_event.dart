@@ -16,6 +16,15 @@ class UserGuessAdded extends MainViewEvent {
   List<Object> get props => [id];
 }
 
+class ValidateCurrentRequested extends MainViewEvent {
+  const ValidateCurrentRequested(this.uuid);
+
+  final int uuid;
+
+  @override
+  List<Object> get props => [uuid];
+}
+
 class ResetRequested extends MainViewEvent {
   const ResetRequested();
 

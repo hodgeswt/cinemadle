@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:universal_io/io.dart';
 
@@ -64,5 +65,15 @@ class Utilities {
       default:
         return 0;
     }
+  }
+
+  static Future<int> getUuid() async {
+    DateTime now = DateTime.now();
+
+    int m = (DateTime(now.year, now.month, now.day).millisecondsSinceEpoch /
+            86400000)
+        .round();
+
+    return (1 + (sin(m) + 1) * 512 / 2).round();
   }
 }

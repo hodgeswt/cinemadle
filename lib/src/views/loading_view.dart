@@ -29,7 +29,10 @@ class LoadingView extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MainView(targetMovie: state.movie!),
+                  builder: (context) => MainView(
+                    targetMovie: state.movie!,
+                    uuid: state.uuid!,
+                  ),
                 ),
               );
               return;

@@ -11,6 +11,7 @@ TargetMovieState _$TargetMovieStateFromJson(Map<String, dynamic> json) =>
       movie: json['movie'] == null
           ? null
           : Movie.fromJson(json['movie'] as Map<String, dynamic>),
+      uuid: (json['uuid'] as num?)?.toInt(),
       status: $enumDecodeNullable(_$TargetMovieStatusEnumMap, json['status']) ??
           TargetMovieStatus.initial,
     );
@@ -18,6 +19,7 @@ TargetMovieState _$TargetMovieStateFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$TargetMovieStateToJson(TargetMovieState instance) =>
     <String, dynamic>{
       'movie': instance.movie,
+      'uuid': instance.uuid,
       'status': _$TargetMovieStatusEnumMap[instance.status]!,
     };
 

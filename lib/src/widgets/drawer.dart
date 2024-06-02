@@ -65,7 +65,10 @@ NavigationDrawer drawer(BuildContext context, Views activePage) {
                   : () {
                       _pushReplacement(
                         context,
-                        MainView(targetMovie: state.movie!),
+                        MainView(
+                          targetMovie: state.movie!,
+                          uuid: state.uuid!,
+                        ),
                       );
                     },
             );

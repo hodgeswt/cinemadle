@@ -23,6 +23,7 @@ class MainViewState extends Equatable {
     this.blur,
     this.allowFlip,
     this.results,
+    this.uuid,
   });
 
   final MainViewStatus status;
@@ -34,6 +35,7 @@ class MainViewState extends Equatable {
   final Map<int, BlurredImage>? blur;
   final List<bool>? allowFlip;
   final String? results;
+  final int? uuid;
 
   static MainViewState get empty {
     return const MainViewState(
@@ -46,6 +48,7 @@ class MainViewState extends Equatable {
       blur: {},
       allowFlip: [],
       results: "",
+      uuid: null,
     );
   }
 
@@ -59,6 +62,7 @@ class MainViewState extends Equatable {
     Map<int, BlurredImage>? blur,
     List<bool>? allowFlip,
     String? results,
+    int? uuid,
   }) {
     return MainViewState(
       userGuesses: userGuesses ?? this.userGuesses,
@@ -70,6 +74,7 @@ class MainViewState extends Equatable {
       blur: blur ?? this.blur,
       allowFlip: allowFlip ?? this.allowFlip,
       results: results ?? this.results,
+      uuid: uuid ?? this.uuid,
     );
   }
 
@@ -89,5 +94,6 @@ class MainViewState extends Equatable {
         blur,
         allowFlip,
         results,
+        uuid,
       ];
 }

@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'package:cinemadle/src/utilities.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -19,18 +18,19 @@ class TargetMovieBloc extends HydratedBloc<TargetMovieEvent, TargetMovieState> {
 
   _loadingInitiated(
       TargetMovieLoadInitiated event, Emitter<TargetMovieState> emit) async {
-    DateTime now = DateTime.now();
+    if (state.status == TargetMovieStatus.loaded &&
+        state.uuid == await Utilities.getUuid()) {
+      emit(state);
+    }
 
-    int m = (DateTime(now.year, now.month, now.day).millisecondsSinceEpoch /
-            86400000)
-        .round();
-
-    int out = (1 + (sin(m) + 1) * 512 / 2).round();
+    int uuid = await Utilities.getUuid();
+    int out = uuid;
     int page = (out / 20).round();
     out %= 20;
 
     emit(
-      state.copyWith(status: TargetMovieStatus.loading),
+      TargetMovieState.empty
+          .copyWith(status: TargetMovieStatus.loading, uuid: uuid),
     );
 
     try {
