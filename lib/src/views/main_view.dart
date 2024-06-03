@@ -76,10 +76,17 @@ class _MainViewState extends State<MainView> {
     );
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CinemadleAppBar(),
+      key: _scaffoldKey,
+      appBar: CinemadleAppBar(
+        onMenuPressed: () {
+          _scaffoldKey.currentState!.openDrawer();
+        },
+      ),
       drawer: drawer(context, Views.game),
       body: Padding(
         padding: Constants.stdPad,
@@ -116,16 +123,6 @@ class _MainViewState extends State<MainView> {
                         MediaQuery.of(context).size.width / 2),
                     child: Column(
                       children: [
-                        BlocBuilder<MainViewBloc, MainViewState>(
-                          buildWhen: (previous, current) {
-                            return previous.remainingGuesses !=
-                                current.remainingGuesses;
-                          },
-                          builder: (context, state) {
-                            return Text(
-                                "Guesses remaining: ${state.remainingGuesses}");
-                          },
-                        ),
                         GuessBox(
                           inputCallback: (int x) async {
                             MainViewBloc bloc = context.read<MainViewBloc>();

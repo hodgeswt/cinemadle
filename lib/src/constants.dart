@@ -4,6 +4,9 @@ class Constants {
   static const popularityListLength = 512;
   static const pageSize = 20;
 
+  static const Color primary = Color.fromARGB(100, 0, 178, 136);
+  static const Color primaryLight = Color.fromARGB(100, 169, 255, 234);
+
   static const int maxGuess = 10;
   static const Duration pollingDelay = Duration(milliseconds: 200);
 

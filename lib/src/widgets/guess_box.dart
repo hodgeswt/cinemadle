@@ -43,9 +43,57 @@ class _GuessBoxState extends State<GuessBox> {
     });
   }
 
+  _onInputChanged(String value, MainViewState state) async {
+    setState(() {
+      autofillHints = [];
+    });
+
+    if (value.isEmpty) {
+      setState(() {
+        _isClearButtonVisible = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _isClearButtonVisible = true;
+    });
+
+    suggestionsController.refresh();
+    suggestionsController.isLoading = true;
+
+    List<SearchResult> search = await TmdbRepository()
+        .search(value, List.from(state.userGuessesIds ?? []));
+
+    List<String> newTitles = [];
+    Map<String, int> idMap = {};
+
+    for (SearchResult res in search) {
+      newTitles.add(res.title);
+      idMap[res.title] = res.id;
+    }
+
+    bool empty = false;
+
+    if (newTitles.isEmpty) {
+      empty = true;
+      newTitles.add("No results found.");
+    }
+
+    setState(() {
+      autofillHints = newTitles;
+      ids.addAll(idMap);
+      preventSubmit = empty;
+    });
+
+    suggestionsController.isLoading = false;
+  }
+
   TextEditingController? _textFieldController;
 
   Stopwatch debounce = Stopwatch();
+
+  bool _isClearButtonVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,49 +104,67 @@ class _GuessBoxState extends State<GuessBox> {
         return BlocBuilder<MainViewBloc, MainViewState>(
           builder: (context, state) {
             _textFieldController ??= controller;
-            return TextField(
-              controller: controller,
-              focusNode: focusNode,
-              decoration: const InputDecoration(
-                labelText: "Enter guess...",
+            return Container(
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                gradient: const LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Color(0xFF6E6E6E), Color(0xFF585858)],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.25),
+                    offset: const Offset(0, 4),
+                    blurRadius: 4,
+                  ),
+                ],
               ),
-              onChanged: (value) async {
-                setState(() {
-                  autofillHints = [];
-                });
-                if (value.isEmpty) {
-                  return;
-                }
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    child: Icon(Icons.search, color: Colors.white),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: controller,
+                      focusNode: focusNode,
+                      decoration: InputDecoration(
+                        labelText:
+                            "${state.remainingGuesses} guesses remaining",
+                        border: InputBorder.none,
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
+                        labelStyle: const TextStyle(color: Colors.white),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      onChanged: (value) async {
+                        _onInputChanged(value, state);
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: _isClearButtonVisible,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isClearButtonVisible = false;
+                          _textFieldController?.clear();
+                        });
 
-                suggestionsController.refresh();
-                suggestionsController.isLoading = true;
-
-                List<SearchResult> search = await TmdbRepository()
-                    .search(value, List.from(state.userGuessesIds ?? []));
-
-                List<String> newTitles = [];
-                Map<String, int> idMap = {};
-
-                for (SearchResult res in search) {
-                  newTitles.add(res.title);
-                  idMap[res.title] = res.id;
-                }
-
-                bool empty = false;
-
-                if (newTitles.isEmpty) {
-                  empty = true;
-                  newTitles.add("No results found.");
-                }
-
-                setState(() {
-                  autofillHints = newTitles;
-                  ids.addAll(idMap);
-                  preventSubmit = empty;
-                });
-
-                suggestionsController.isLoading = false;
-              },
+                        suggestionsController.refresh();
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 4.0),
+                        child: Icon(Icons.clear, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           },
         );
