@@ -80,136 +80,176 @@ class _MainViewState extends State<MainView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: CinemadleAppBar(
-        onMenuPressed: () {
-          _scaffoldKey.currentState!.openDrawer();
-        },
-      ),
-      drawer: drawer(context, Views.game),
-      body: Padding(
-        padding: Constants.stdPad,
-        child: BlocProvider<MainViewBloc>(
-          create: (context) => MainViewBloc(widget.targetMovie, widget.uuid)
-            ..add(ValidateCurrentRequested(widget.uuid)),
-          child: BlocConsumer<MainViewBloc, MainViewState>(
-            buildWhen: (previous, current) {
-              return previous.status != current.status ||
-                  previous.userGuessesIds != current.userGuessesIds;
-            },
-            listener: (context, state) {
-              if (state.status == MainViewStatus.fatalError) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const FailedLoadingView(),
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              if (state.status == MainViewStatus.fatalError) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (state.status == MainViewStatus.playing ||
-                  state.status == MainViewStatus.guessNotFound ||
-                  state.status == MainViewStatus.guessLoading) {
-                return Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: Utilities.widthCalculator(
-                        MediaQuery.of(context).size.width / 2),
-                    child: Column(
-                      children: [
-                        GuessBox(
-                          inputCallback: (int x) async {
-                            MainViewBloc bloc = context.read<MainViewBloc>();
-                            bloc.add(const FlipAllRequested());
-
-                            await bloc.stream.firstWhere(
-                                (x) => x.status != MainViewStatus.guessLoading);
-
-                            bloc.add(
-                              UserGuessAdded(x),
-                            );
-                          },
-                          scrollController: _scrollController,
-                        ),
-                        GuessList(
-                          targetMovie: widget.targetMovie,
-                          scrollController: _scrollController,
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              }
-
-              if (state.status == MainViewStatus.win ||
-                  state.status == MainViewStatus.loss) {
-                final bool isWin = state.status == MainViewStatus.win;
-                return Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: Utilities.widthCalculator(
-                        MediaQuery.of(context).size.width / 2),
-                    child: Column(
-                      children: [
-                        HeaderCard(
-                          text: isWin ? "You win!" : "You lost :(",
-                          color:
-                              isWin ? Constants.lightGreen : Constants.lightRed,
-                        ),
-                        IntrinsicHeight(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: Constants.stdPad,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      _showShareSheet(state.results ?? "");
-                                    },
-                                    child: const Text("Share Your Results"),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        GuessList(targetMovie: widget.targetMovie),
-                        IntrinsicHeight(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: Constants.stdPad,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      context
-                                          .read<MainViewBloc>()
-                                          .add(const ResetRequested());
-                                    },
-                                    child: const Text("Reset"),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              }
-
-              return const Center(child: CircularProgressIndicator());
-            },
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF6E6E6E), Color(0xFF585858)],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.03),
+                offset: const Offset(158, 167),
+                blurRadius: 92,
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                offset: const Offset(89, 94),
+                blurRadius: 78,
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.17),
+                offset: const Offset(40, 42),
+                blurRadius: 58,
+              ),
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                offset: const Offset(10, 10),
+                blurRadius: 32,
+              ),
+            ],
           ),
+          child: Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: Colors.transparent,
+            appBar: CinemadleAppBar(
+              onMenuPressed: () {
+                _scaffoldKey.currentState!.openDrawer();
+              },
+            ),
+            drawer: drawer(context, Views.game),
+            body: _buildBody(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Padding _buildBody() {
+    return Padding(
+      padding: Constants.stdPad,
+      child: BlocProvider<MainViewBloc>(
+        create: (context) => MainViewBloc(widget.targetMovie, widget.uuid)
+          ..add(ValidateCurrentRequested(widget.uuid)),
+        child: BlocConsumer<MainViewBloc, MainViewState>(
+          buildWhen: (previous, current) {
+            return previous.status != current.status ||
+                previous.userGuessesIds != current.userGuessesIds;
+          },
+          listener: (context, state) {
+            if (state.status == MainViewStatus.fatalError) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FailedLoadingView(),
+                ),
+              );
+            }
+          },
+          builder: (context, state) {
+            if (state.status == MainViewStatus.fatalError) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state.status == MainViewStatus.playing ||
+                state.status == MainViewStatus.guessNotFound ||
+                state.status == MainViewStatus.guessLoading) {
+              return Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: Utilities.widthCalculator(
+                      MediaQuery.of(context).size.width / 2),
+                  child: Column(
+                    children: [
+                      GuessBox(
+                        inputCallback: (int x) async {
+                          MainViewBloc bloc = context.read<MainViewBloc>();
+                          bloc.add(const FlipAllRequested());
+
+                          await bloc.stream.firstWhere(
+                              (x) => x.status != MainViewStatus.guessLoading);
+
+                          bloc.add(
+                            UserGuessAdded(x),
+                          );
+                        },
+                        scrollController: _scrollController,
+                      ),
+                      GuessList(
+                        targetMovie: widget.targetMovie,
+                        scrollController: _scrollController,
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            if (state.status == MainViewStatus.win ||
+                state.status == MainViewStatus.loss) {
+              final bool isWin = state.status == MainViewStatus.win;
+              return Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: Utilities.widthCalculator(
+                      MediaQuery.of(context).size.width / 2),
+                  child: Column(
+                    children: [
+                      HeaderCard(
+                        text: isWin ? "You win!" : "You lost :(",
+                        color:
+                            isWin ? Constants.lightGreen : Constants.lightRed,
+                      ),
+                      IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: Constants.stdPad,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    _showShareSheet(state.results ?? "");
+                                  },
+                                  child: const Text("Share Your Results"),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      GuessList(targetMovie: widget.targetMovie),
+                      IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: Constants.stdPad,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    context
+                                        .read<MainViewBloc>()
+                                        .add(const ResetRequested());
+                                  },
+                                  child: const Text("Reset"),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return const Center(child: CircularProgressIndicator());
+          },
         ),
       ),
     );
