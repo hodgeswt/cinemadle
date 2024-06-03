@@ -6,80 +6,105 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class InformationView extends StatelessWidget {
-  const InformationView({super.key});
+  InformationView({super.key});
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CinemadleAppBar(),
-      drawer: drawer(context, Views.info),
-      body: Center(
-        child: SizedBox(
-          width:
-              Utilities.widthCalculator(MediaQuery.of(context).size.width / 2),
-          child: ListView(
-            children: [
-              const Padding(
-                padding: Constants.stdPad,
-                child: Center(
-                  child: Text(
-                    "Release Notes",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+    return Stack(
+      children: [
+        Container(
+          decoration: Constants.darkGradientBox(hasBorderRadius: false),
+          child: Scaffold(
+            key: _scaffoldKey,
+            backgroundColor: Colors.transparent,
+            appBar: CinemadleAppBar(
+              scaffoldKey: _scaffoldKey,
+            ),
+            drawer: drawer(context, Views.info),
+            body: _buildBody(context),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Center _buildBody(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        width: Utilities.widthCalculator(MediaQuery.of(context).size.width / 2),
+        child: ListView(
+          children: [
+            const Padding(
+              padding: Constants.stdPad,
+              child: Center(
+                child: Text(
+                  "Release Notes",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              FutureBuilder<String>(
-                future: _loadReleaseNotes(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Padding(
-                      padding: Constants.stdPad,
-                      child: Center(
-                        child: Text(
-                          snapshot.data!,
+            ),
+            FutureBuilder<String>(
+              future: _loadReleaseNotes(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Padding(
+                    padding: Constants.stdPad,
+                    child: Center(
+                      child: Text(
+                        snapshot.data!,
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
                         ),
                       ),
-                    );
-                  } else {
-                    return const Padding(
-                      padding: Constants.stdPad,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  }
-                },
-              ),
-              const Center(
-                child: Padding(
-                  padding: Constants.stdPad,
-                  child: Divider(),
-                ),
-              ),
-              const Padding(
+                    ),
+                  );
+                } else {
+                  return const Padding(
+                    padding: Constants.stdPad,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                }
+              },
+            ),
+            const Center(
+              child: Padding(
                 padding: Constants.stdPad,
-                child: Center(
-                  child: Text(
-                    "This product uses the TMDB API but is not endorsed or certified by TMDB.",
-                    textAlign: TextAlign.center,
+                child: Divider(),
+              ),
+            ),
+            const Padding(
+              padding: Constants.stdPad,
+              child: Center(
+                child: Text(
+                  "This product uses the TMDB API but is not endorsed or certified by TMDB.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              const Center(
-                child: Padding(
-                  padding: Constants.stdPad,
-                  child: Divider(),
-                ),
+            ),
+            const Center(
+              child: Padding(
+                padding: Constants.stdPad,
+                child: Divider(),
               ),
-              Center(
-                child: Image.asset('tmdb_logo.png'),
-              ),
-            ],
-          ),
+            ),
+            Center(
+              child: Image.asset('tmdb_logo.png'),
+            ),
+          ],
         ),
       ),
     );

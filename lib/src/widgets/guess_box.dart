@@ -1,4 +1,5 @@
 import 'package:cinemadle/src/blocs/main_view/main_view_bloc.dart';
+import 'package:cinemadle/src/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -106,21 +107,7 @@ class _GuessBoxState extends State<GuessBox> {
             _textFieldController ??= controller;
             return Container(
               padding: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                gradient: const LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [Color(0xFF6E6E6E), Color(0xFF585858)],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    offset: const Offset(0, 4),
-                    blurRadius: 4,
-                  ),
-                ],
-              ),
+              decoration: Constants.darkGradientBox(),
               child: Row(
                 children: [
                   const Padding(

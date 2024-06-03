@@ -24,6 +24,7 @@ dependencies:
   flutter_flip_card:
     git: https://github.com/hodgeswt/flutter_flip_card
   path_provider: ^2.1.3
+  flutter_card_swiper: ^7.0.1
 
 dev_dependencies:
   flutter_test:
@@ -42,3 +43,8 @@ flutter:
       fonts:
         - asset: fonts/NotoColorEmoji-Regular.ttf
           weight: 400
+    - family: KumbhSans
+      fonts:
+        - asset: fonts/KumbhSans-Regular.ttf
+        - asset: fonts/KumbhSans-Bold.ttf
+        - asset: fonts/KumbhSans-Medium.ttf

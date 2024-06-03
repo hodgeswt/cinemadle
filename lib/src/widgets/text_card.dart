@@ -16,51 +16,74 @@ class TextCard extends StatelessWidget {
   final String? arrow;
 
   String get titleSplit {
-    return "${text.split(':').first}:";
+    return text.split(':').first;
   }
 
   String get textSplit {
     return text.split(':').last;
   }
 
+  BoxDecoration get _gradient {
+    if (color == Constants.goldYellow) {
+      return Constants.yellowGradientBox;
+    } else if (color == Constants.lightGreen) {
+      return Constants.primaryGradientBox;
+    } else {
+      return Constants.lightGradientBox;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      color: color,
-      child: Center(
-        child: Padding(
-          padding: Constants.stdPad,
-          child: RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              text: "",
-              children: <TextSpan>[
-                TextSpan(
-                  text: "$titleSplit\n",
+    return Container(
+      decoration: _gradient,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: RichText(
+                textAlign: TextAlign.left,
+                text: TextSpan(
+                  text: titleSplit,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Constants.black,
+                    color: Colors.white,
+                    fontSize: 20,
                   ),
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: "\n$textSplit${arrow == null ? "" : " $arrow"}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
-                arrow != null
-                    ? TextSpan(
-                        text: "$arrow\n",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Constants.black,
-                        ),
-                      )
-                    : const TextSpan(text: ""),
-                TextSpan(
-                  text: textSplit,
-                  style: const TextStyle(
-                    color: Constants.black,
-                  ),
-                ),
-              ],
+              ),
+              // Text(
+              //   "$titleSplit ${arrow ?? ""}",
+              //   style: const TextStyle(
+              //     fontWeight: FontWeight.w500,
+              //     color: Colors.white,
+              //     fontSize: 20.0,
+              //   ),
+              //   textAlign: TextAlign.left,
+              // ),
             ),
-          ),
+            // Expanded(
+            //   child: Text(
+            //     textSplit,
+            //     style: const TextStyle(
+            //       color: Colors.white,
+            //     ),
+            //     textAlign: TextAlign.left,
+            //   ),
+            // ),
+          ],
         ),
       ),
     );

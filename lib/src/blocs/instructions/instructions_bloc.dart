@@ -54,8 +54,8 @@ class InstructionsBloc
       "The writer box shows the name of the writer.\n\nThe writer box will appear yellow if the writer of the guessed movie is the same as the director of the hidden movie.\n\nThe writer box will never have an arrow."
     ),
     InstructionsStateStatus.firstInCastDescription: (
-      "First in Cast",
-      "The first in cast box shows the name of the first-billed actor or actress in the movie.\n\nThe first in cast box will appear yellow if the first-billed actor or actress of the guessed movie is a member of the cast in the hidden movie.\n\nThe first in cast box will never have arrows."
+      "Cast",
+      "The cast box shows the name of the first-billed actor or actress in the movie.\n\nThe first in cast box will appear yellow if the first-billed actor or actress of the guessed movie is a member of the cast in the hidden movie.\n\nThe cast box will never have arrows."
     ),
   };
 

@@ -42,7 +42,7 @@ class MovieCard extends StatelessWidget {
         : Constants.lightRed;
     return RoundedRectangleBorder(
       side: BorderSide(color: c, width: 4.0),
-      borderRadius: BorderRadius.circular(8.0),
+      borderRadius: BorderRadius.circular(15.0),
     );
   }
 
@@ -81,51 +81,51 @@ class MovieCard extends StatelessWidget {
   Widget _getFrontWidget() {
     return BlocBuilder<MainViewBloc, MainViewState>(
       builder: (context, state) {
-        return Card(
-          shape: _getCardOutline(state),
-          elevation: 3,
-          color: _getCardColor(state),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: Constants.stdPad,
-                child: Center(
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: "",
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: "${movieData.title}${allowFlip ? "\n" : ""}",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Constants.black,
-                            fontSize: 24,
-                          ),
+        return Container(
+          width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
+          decoration: Constants.darkGradientBox(),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: RichText(
+                      textAlign: TextAlign.left,
+                      text: TextSpan(
+                        text: movieData.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          fontSize: 32,
                         ),
-                        allowFlip
-                            ? const TextSpan(
-                                text: "(flip to see visual clue)",
-                                style: TextStyle(
-                                  color: Constants.black,
-                                  fontSize: 12,
-                                ),
-                              )
-                            : const TextSpan(text: ""),
-                      ],
+                        children: <TextSpan>[
+                          allowFlip
+                              ? const TextSpan(
+                                  text: "\n(flip to see visual clue)",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                )
+                              : const TextSpan(text: ""),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const Divider(),
-              Padding(
-                padding: Constants.stdPad,
-                child: GridView.count(
+                GridView.count(
                   primary: true,
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: 3,
                   shrinkWrap: true,
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
                   children: [
                     TextCard(
                       text: 'User Score:${movieData.voteAverage}',
@@ -166,13 +166,13 @@ class MovieCard extends StatelessWidget {
                       color: tileData.writer,
                     ),
                     TextCard(
-                      text: 'First in Cast:${movieData.lead}',
+                      text: 'Cast:${movieData.lead}',
                       color: tileData.firstInCast,
                     ),
                   ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

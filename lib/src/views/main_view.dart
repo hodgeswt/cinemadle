@@ -83,42 +83,12 @@ class _MainViewState extends State<MainView> {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF6E6E6E), Color(0xFF585858)],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.03),
-                offset: const Offset(158, 167),
-                blurRadius: 92,
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                offset: const Offset(89, 94),
-                blurRadius: 78,
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.17),
-                offset: const Offset(40, 42),
-                blurRadius: 58,
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                offset: const Offset(10, 10),
-                blurRadius: 32,
-              ),
-            ],
-          ),
+          decoration: Constants.darkGradientBox(hasBorderRadius: false),
           child: Scaffold(
             key: _scaffoldKey,
             backgroundColor: Colors.transparent,
             appBar: CinemadleAppBar(
-              onMenuPressed: () {
-                _scaffoldKey.currentState!.openDrawer();
-              },
+              scaffoldKey: _scaffoldKey,
             ),
             drawer: drawer(context, Views.game),
             body: _buildBody(),

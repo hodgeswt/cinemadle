@@ -12,8 +12,9 @@ class CinemadleApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Constants.lightGrey),
         useMaterial3: true,
+        fontFamily: 'KumbhSans',
       ),
-      home: const LoadingView(),
+      home: LoadingView(),
     );
   }
 }

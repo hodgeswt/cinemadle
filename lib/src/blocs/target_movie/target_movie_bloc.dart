@@ -19,11 +19,11 @@ class TargetMovieBloc extends HydratedBloc<TargetMovieEvent, TargetMovieState> {
   _loadingInitiated(
       TargetMovieLoadInitiated event, Emitter<TargetMovieState> emit) async {
     if (state.status == TargetMovieStatus.loaded &&
-        state.uuid == await Utilities.getUuid()) {
+        state.uuid == Utilities.getUuid()) {
       emit(state);
     }
 
-    int uuid = await Utilities.getUuid();
+    int uuid = Utilities.getUuid();
     int out = uuid;
     int page = (out / 20).round();
     out %= 20;

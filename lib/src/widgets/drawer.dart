@@ -25,32 +25,26 @@ NavigationDrawer drawer(BuildContext context, Views activePage) {
           ),
         ),
       ),
-      BlocProvider(
-        create: (context) => TargetMovieBloc(),
-        child: BlocBuilder<TargetMovieBloc, TargetMovieState>(
-          builder: (context, state) {
-            return ListTile(
-              title: Text(
-                'Instructions',
-                style: TextStyle(
-                    color: activePage == Views.instructions
-                        ? Colors.grey
-                        : Colors.black),
-              ),
-              onTap: activePage == Views.instructions
-                  ? null
-                  : () {
-                      _pushReplacement(
-                        context,
-                        InstructionsView(targetMovie: state.movie!),
-                      );
-                    },
-            );
-          },
+      ListTile(
+        title: Text(
+          'Instructions',
+          style: TextStyle(
+              color: activePage == Views.instructions
+                  ? Colors.grey
+                  : Colors.black),
         ),
+        onTap: activePage == Views.instructions
+            ? null
+            : () {
+                _pushReplacement(
+                  context,
+                  InstructionsView(),
+                );
+              },
       ),
       BlocProvider(
-        create: (context) => TargetMovieBloc(),
+        create: (context) =>
+            TargetMovieBloc()..add(const TargetMovieLoadInitiated()),
         child: BlocBuilder<TargetMovieBloc, TargetMovieState>(
           builder: (context, state) {
             return ListTile(
@@ -86,7 +80,7 @@ NavigationDrawer drawer(BuildContext context, Views activePage) {
             : () {
                 _pushReplacement(
                   context,
-                  const InformationView(),
+                  InformationView(),
                 );
               },
       )

@@ -1,5 +1,4 @@
 import 'package:cinemadle/src/blocs/main_view/main_view_bloc.dart';
-import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/widgets/movie_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,7 +31,7 @@ class GuessList extends StatelessWidget {
                   children: [
                     for (int i = 0; i < (state.userGuesses ?? []).length; i++)
                       Padding(
-                        padding: Constants.stdPad,
+                        padding: const EdgeInsets.only(top: 16.0),
                         child: MovieCard(
                           allowFlip: state.allowFlip?[i] ?? false,
                           movieData: state.userGuesses![i],

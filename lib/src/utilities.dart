@@ -5,7 +5,7 @@ import 'package:universal_io/io.dart';
 class Utilities {
   static widthCalculator(double width) {
     double w = width;
-    double widthBox = (110 * 3) + 24;
+    double widthBox = (110 * 3) + 64;
     if (w > widthBox || w < widthBox) {
       w = widthBox;
     }
@@ -67,7 +67,7 @@ class Utilities {
     }
   }
 
-  static Future<int> getUuid() async {
+  static int getUuid() {
     DateTime now = DateTime.now();
 
     int m = (DateTime(now.year, now.month, now.day).millisecondsSinceEpoch /

@@ -1,13 +1,14 @@
+import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/utilities.dart';
 import 'package:flutter/material.dart';
 
 class CinemadleAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CinemadleAppBar({
     super.key,
-    this.onMenuPressed,
+    required this.scaffoldKey,
   });
 
-  final Function()? onMenuPressed;
+  final GlobalKey<ScaffoldState> scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -15,22 +16,7 @@ class CinemadleAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              transform: GradientRotation(71 * 3.1415927 / 180),
-              colors: [Color(0xFFA9FFEA), Color(0xFF00B288)],
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.25),
-                offset: Offset(0, 4),
-                blurRadius: 4,
-              ),
-            ],
-            borderRadius: BorderRadius.circular(15),
-          ),
+          decoration: Constants.primaryGradientBox,
           width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
           height: 75,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
@@ -46,7 +32,9 @@ class CinemadleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               InkWell(
-                onTap: onMenuPressed ?? () {},
+                onTap: () {
+                  scaffoldKey.currentState?.openDrawer();
+                },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
