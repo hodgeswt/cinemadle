@@ -88,7 +88,7 @@ class InstructionsView extends StatelessWidget {
       cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
           instructions[index],
       cardsCount: instructions.length,
-      backCardOffset: const Offset(50, 25),
+      backCardOffset: const Offset(50, 50),
       numberOfCardsDisplayed: 3,
     );
   }

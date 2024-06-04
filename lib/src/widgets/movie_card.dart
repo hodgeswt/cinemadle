@@ -49,29 +49,39 @@ class MovieCard extends StatelessWidget {
   Widget _getBackWidget() {
     return BlocBuilder<MainViewBloc, MainViewState>(
       builder: (context, state) {
-        return Card(
-          shape: _getCardOutline(state),
-          elevation: 3,
-          color: _getCardColor(state),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: Constants.stdPad,
-                child: Center(
-                  child: Text(
-                    textAlign: TextAlign.center,
-                    "Visual Clue",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
+            decoration: Constants.darkGradientBox(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        textAlign: TextAlign.left,
+                        text: const TextSpan(
+                          text: "Visual Clue",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            fontSize: 32,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  state.blur?[movieData.id] ?? const Text("Image not found.")
+                ],
               ),
-              const Divider(),
-              state.blur?[movieData.id] ?? const Text("Image not found.")
-            ],
+            ),
           ),
         );
       },
@@ -81,97 +91,100 @@ class MovieCard extends StatelessWidget {
   Widget _getFrontWidget() {
     return BlocBuilder<MainViewBloc, MainViewState>(
       builder: (context, state) {
-        return Container(
-          width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
-          decoration: Constants.darkGradientBox(),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: RichText(
-                      textAlign: TextAlign.left,
-                      text: TextSpan(
-                        text: movieData.title,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          fontSize: 32,
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
+            decoration: Constants.darkGradientBox(),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: RichText(
+                        textAlign: TextAlign.left,
+                        text: TextSpan(
+                          text: movieData.title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            fontSize: 32,
+                          ),
+                          children: <TextSpan>[
+                            allowFlip
+                                ? const TextSpan(
+                                    text: "\n(flip to see visual clue)",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  )
+                                : const TextSpan(text: ""),
+                          ],
                         ),
-                        children: <TextSpan>[
-                          allowFlip
-                              ? const TextSpan(
-                                  text: "\n(flip to see visual clue)",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                  ),
-                                )
-                              : const TextSpan(text: ""),
-                        ],
                       ),
                     ),
                   ),
-                ),
-                GridView.count(
-                  primary: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 3,
-                  shrinkWrap: true,
-                  mainAxisSpacing: 8.0,
-                  crossAxisSpacing: 8.0,
-                  children: [
-                    TextCard(
-                      text: 'User Score:${movieData.voteAverage}',
-                      color: tileData.userScore,
-                      arrow: tileData.userScoreArrow,
-                    ),
-                    TextCard(
-                      text: 'MPA Rating:${movieData.mpaRating}',
-                      color: tileData.mpaRating,
-                      arrow: tileData.mpaRatingArrow,
-                    ),
-                    TextCard(
-                      text:
-                          'Release Year:${Utilities.formatDate(movieData.releaseDate)}',
-                      color: tileData.releaseDate,
-                      arrow: tileData.releaseDateArrow,
-                    ),
-                    TextCard(
-                      text:
-                          'Revenue:${Utilities.formatIntToDollars(movieData.revenue)}',
-                      color: tileData.revenue,
-                      arrow: tileData.revenueArrow,
-                    ),
-                    TextCard(
-                      text: 'Runtime:${movieData.runtime} min',
-                      color: tileData.runtime,
-                      arrow: tileData.runtimeArrow,
-                    ),
-                    TextCard(
-                      text: 'Genre:${movieData.genre.join(', ')}',
-                      color: tileData.genre,
-                    ),
-                    TextCard(
-                        text: 'Director:${movieData.director}',
-                        color: tileData.director),
-                    TextCard(
-                      text: 'Writer:${movieData.writer}',
-                      color: tileData.writer,
-                    ),
-                    TextCard(
-                      text: 'Cast:${movieData.lead}',
-                      color: tileData.firstInCast,
-                    ),
-                  ],
-                ),
-              ],
+                  GridView.count(
+                    primary: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 3,
+                    shrinkWrap: true,
+                    mainAxisSpacing: 8.0,
+                    crossAxisSpacing: 8.0,
+                    children: [
+                      TextCard(
+                        text: 'User Score:${movieData.voteAverage}',
+                        color: tileData.userScore,
+                        arrow: tileData.userScoreArrow,
+                      ),
+                      TextCard(
+                        text: 'MPA Rating:${movieData.mpaRating}',
+                        color: tileData.mpaRating,
+                        arrow: tileData.mpaRatingArrow,
+                      ),
+                      TextCard(
+                        text:
+                            'Release Year:${Utilities.formatDate(movieData.releaseDate)}',
+                        color: tileData.releaseDate,
+                        arrow: tileData.releaseDateArrow,
+                      ),
+                      TextCard(
+                        text:
+                            'Revenue:${Utilities.formatIntToDollars(movieData.revenue)}',
+                        color: tileData.revenue,
+                        arrow: tileData.revenueArrow,
+                      ),
+                      TextCard(
+                        text: 'Runtime:${movieData.runtime} min',
+                        color: tileData.runtime,
+                        arrow: tileData.runtimeArrow,
+                      ),
+                      TextCard(
+                        text: 'Genre:${movieData.genre.join(', ')}',
+                        color: tileData.genre,
+                      ),
+                      TextCard(
+                          text: 'Director:${movieData.director}',
+                          color: tileData.director),
+                      TextCard(
+                        text: 'Writer:${movieData.writer}',
+                        color: tileData.writer,
+                      ),
+                      TextCard(
+                        text: 'Cast:${movieData.lead}',
+                        color: tileData.firstInCast,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         );

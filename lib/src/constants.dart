@@ -28,6 +28,11 @@ class Constants {
                 offset: Offset(0, 4),
                 blurRadius: 4,
               ),
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.5),
+                offset: Offset(-4, 0),
+                blurRadius: 4,
+              ),
             ]
           : null,
       borderRadius: hasCornerRadius ? BorderRadius.circular(15) : null,
@@ -47,6 +52,11 @@ class Constants {
         offset: Offset(0, 4),
         blurRadius: 4,
       ),
+      BoxShadow(
+        color: Color.fromRGBO(0, 0, 0, 0.5),
+        offset: Offset(-4, 0),
+        blurRadius: 4,
+      ),
     ],
     borderRadius: BorderRadius.circular(15),
   );
@@ -58,6 +68,11 @@ class Constants {
         BoxShadow(
           color: Color.fromRGBO(0, 0, 0, 0.5),
           offset: Offset(0, 4),
+          blurRadius: 4,
+        ),
+        BoxShadow(
+          color: Color.fromRGBO(0, 0, 0, 0.5),
+          offset: Offset(-4, 0),
           blurRadius: 4,
         ),
       ],
@@ -75,6 +90,11 @@ class Constants {
       BoxShadow(
         color: Color.fromRGBO(0, 0, 0, 0.5),
         offset: Offset(0, 4),
+        blurRadius: 4,
+      ),
+      BoxShadow(
+        color: Color.fromRGBO(0, 0, 0, 0.5),
+        offset: Offset(-4, 0),
         blurRadius: 4,
       ),
     ],
