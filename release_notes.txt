@@ -1,3 +1,17 @@
+Cinemadle v0.3.1
+
+Additions:
+
+- Genre card will now turn green
+- Genre card now bolds and italicizes any genres that match the movie's genres
+- Actor card now shows top 3 actors
+- Any actor that matches the movie's actors is bolded and italicized
+- X button on input box disappears after submitting a guess
+- Cards no longer clip their content
+
+
+-------------------
+
 Cinemadle v0.3.0
 
 Additions:
