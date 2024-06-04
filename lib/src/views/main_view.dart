@@ -154,7 +154,7 @@ class _MainViewState extends State<MainView> {
                       GuessList(
                         targetMovie: widget.targetMovie,
                         scrollController: _scrollController,
-                      )
+                      ),
                     ],
                   ),
                 ),
