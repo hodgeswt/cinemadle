@@ -22,7 +22,7 @@ class InformationView extends StatelessWidget {
             appBar: CinemadleAppBar(
               scaffoldKey: _scaffoldKey,
             ),
-            drawer: drawer(context, Views.info),
+            endDrawer: drawer(context, Views.info),
             body: _buildBody(context),
           ),
         ),

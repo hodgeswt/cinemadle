@@ -75,7 +75,7 @@ class InstructionsView extends StatelessWidget {
             appBar: CinemadleAppBar(
               scaffoldKey: _scaffoldKey,
             ),
-            drawer: drawer(context, Views.instructions),
+            endDrawer: drawer(context, Views.instructions),
             body: _buildBody(),
           ),
         ),

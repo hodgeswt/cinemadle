@@ -1,4 +1,5 @@
 import 'package:cinemadle/src/blocs/target_movie/target_movie_bloc.dart';
+import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/views/information_view.dart';
 import 'package:cinemadle/src/views/instructions_view.dart';
 import 'package:cinemadle/src/views/main_view.dart';
@@ -11,84 +12,91 @@ enum Views {
   info,
 }
 
-NavigationDrawer drawer(BuildContext context, Views activePage) {
-  return NavigationDrawer(
-    children: [
-      const DrawerHeader(
-        child: Center(
-          child: Text(
-            'Cinemadle',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 24,
-            ),
+class Destination {
+  const Destination(this.label, this.icon, this.selectedIcon);
+
+  final String label;
+  final Widget icon;
+  final Widget selectedIcon;
+
+  static const List<Destination> all = <Destination>[
+    Destination('Instructions', Icon(Icons.description_outlined),
+        Icon(Icons.description)),
+    Destination('Game', Icon(Icons.movie_outlined), Icon(Icons.movie)),
+    Destination('Information', Icon(Icons.info_outlined), Icon(Icons.info)),
+  ];
+}
+
+Widget drawer(BuildContext context, Views activePage) {
+  int ind = activePage.index;
+  return BlocProvider(
+    create: (context) =>
+        TargetMovieBloc()..add(const TargetMovieLoadInitiated()),
+    child: BlocBuilder<TargetMovieBloc, TargetMovieState>(
+      builder: (context, state) {
+        return Container(
+          height: MediaQuery.of(context).size.height,
+          decoration: Constants.primaryGradientBox(
+            hasCornerRadius: true,
+            hasBoxShadow: false,
           ),
-        ),
-      ),
-      ListTile(
-        title: Text(
-          'Instructions',
-          style: TextStyle(
-              color: activePage == Views.instructions
-                  ? Colors.grey
-                  : Colors.black),
-        ),
-        onTap: activePage == Views.instructions
-            ? null
-            : () {
-                _pushReplacement(
-                  context,
-                  InstructionsView(),
-                );
-              },
-      ),
-      BlocProvider(
-        create: (context) =>
-            TargetMovieBloc()..add(const TargetMovieLoadInitiated()),
-        child: BlocBuilder<TargetMovieBloc, TargetMovieState>(
-          builder: (context, state) {
-            return ListTile(
-              title: Text(
-                'Game',
-                style: TextStyle(
-                    color:
-                        activePage == Views.game ? Colors.grey : Colors.black),
+          child: NavigationDrawer(
+            indicatorShape: ShapeBorder.lerp(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                1),
+            backgroundColor: Colors.transparent,
+            onDestinationSelected: (int selected) {
+              _pushReplacement(context, selected, state);
+            },
+            selectedIndex: ind,
+            children: [
+              const Padding(
+                padding: EdgeInsets.fromLTRB(28, 16, 16, 10),
+                child: Text(
+                  'Cinemadle',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
               ),
-              onTap: activePage == Views.game
-                  ? null
-                  : () {
-                      _pushReplacement(
-                        context,
-                        MainView(
-                          targetMovie: state.movie!,
-                          uuid: state.uuid!,
-                        ),
-                      );
-                    },
-            );
-          },
-        ),
-      ),
-      ListTile(
-        title: Text(
-          'Info',
-          style: TextStyle(
-              color: activePage == Views.info ? Colors.grey : Colors.black),
-        ),
-        onTap: activePage == Views.info
-            ? null
-            : () {
-                _pushReplacement(
-                  context,
-                  InformationView(),
-                );
-              },
-      )
-    ],
+              ...Destination.all.map(
+                (Destination destination) {
+                  return NavigationDrawerDestination(
+                    label: Text(destination.label),
+                    icon: destination.icon,
+                    selectedIcon: destination.selectedIcon,
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    ),
   );
 }
 
-_pushReplacement(BuildContext context, Widget page) {
+_pushReplacement(BuildContext context, int selected, TargetMovieState state) {
+  Widget page;
+
+  switch (Views.values[selected]) {
+    case Views.instructions:
+      page = InstructionsView();
+      break;
+    case Views.game:
+      page = MainView(
+        targetMovie: state.movie!,
+        uuid: state.uuid!,
+      );
+      break;
+    case Views.info:
+      page = InformationView();
+      break;
+    default:
+      return;
+  }
   Navigator.pushReplacement(
     context,
     PageRouteBuilder(

@@ -16,7 +16,7 @@ class CinemadleAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          decoration: Constants.primaryGradientBox,
+          decoration: Constants.primaryGradientBox(),
           width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
           height: 75,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
@@ -33,7 +33,7 @@ class CinemadleAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               InkWell(
                 onTap: () {
-                  scaffoldKey.currentState?.openDrawer();
+                  scaffoldKey.currentState?.openEndDrawer();
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

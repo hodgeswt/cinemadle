@@ -90,7 +90,7 @@ class _MainViewState extends State<MainView> {
             appBar: CinemadleAppBar(
               scaffoldKey: _scaffoldKey,
             ),
-            drawer: drawer(context, Views.game),
+            endDrawer: drawer(context, Views.game),
             body: _buildBody(),
           ),
         ),

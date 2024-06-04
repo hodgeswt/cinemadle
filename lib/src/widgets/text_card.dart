@@ -27,7 +27,7 @@ class TextCard extends StatelessWidget {
     if (color == Constants.goldYellow) {
       return Constants.yellowGradientBox;
     } else if (color == Constants.lightGreen) {
-      return Constants.primaryGradientBox;
+      return Constants.primaryGradientBox();
     } else {
       return Constants.lightGradientBox;
     }

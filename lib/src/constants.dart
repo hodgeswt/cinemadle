@@ -4,32 +4,42 @@ class Constants {
   static const popularityListLength = 512;
   static const pageSize = 20;
 
-  static const Color primary = Color.fromARGB(100, 0, 178, 136);
-  static const Color primaryLight = Color.fromARGB(100, 169, 255, 234);
+  static const Color primary = Color(0xFF00B288);
+  static const Color primaryLight = Color(0xFFA9FFEA);
 
-  static final BoxDecoration primaryGradientBox = BoxDecoration(
-    gradient: const LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      transform: GradientRotation(71 * 3.1415927 / 180),
-      colors: [Color(0xFFA9FFEA), Color(0xFF00B288)],
-    ),
-    boxShadow: const [
-      BoxShadow(
-        color: Color.fromRGBO(0, 0, 0, 0.5),
-        offset: Offset(0, 4),
-        blurRadius: 4,
+  static const Color secondary = Color(0xFFFF9E2D);
+  static const Color secondaryLight = Color(0xFFFFD29D);
+
+  static BoxDecoration primaryGradientBox({
+    bool hasCornerRadius = true,
+    bool hasBoxShadow = true,
+  }) {
+    return BoxDecoration(
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        transform: GradientRotation(71 * 3.1415927 / 180),
+        colors: [primaryLight, primary],
       ),
-    ],
-    borderRadius: BorderRadius.circular(15),
-  );
+      boxShadow: hasBoxShadow
+          ? const [
+              BoxShadow(
+                color: Color.fromRGBO(0, 0, 0, 0.5),
+                offset: Offset(0, 4),
+                blurRadius: 4,
+              ),
+            ]
+          : null,
+      borderRadius: hasCornerRadius ? BorderRadius.circular(15) : null,
+    );
+  }
 
   static final BoxDecoration yellowGradientBox = BoxDecoration(
     gradient: const LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       transform: GradientRotation(71 * 3.1415927 / 180),
-      colors: [Color(0xFFFFD29D), Color(0xFFFF9E2D)],
+      colors: [secondaryLight, secondary],
     ),
     boxShadow: const [
       BoxShadow(
