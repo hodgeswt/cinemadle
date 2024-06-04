@@ -258,20 +258,37 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
     tileData.writer = writer;
 
     Color? genres;
+    List<bool> boldGenre = [];
+
     for (String genre in movie.genre) {
       if (targetMovie.genre.contains(genre)) {
         genres = Constants.goldYellow;
-        break;
+        boldGenre.add(true);
+      } else {
+        boldGenre.add(false);
       }
     }
-    tileData.genre = genres;
+    tileData.genre =
+        movie.genre == targetMovie.genre ? Constants.lightGreen : genres;
+    tileData.boldGenre = boldGenre;
 
-    Color? lead = movie.lead == targetMovie.lead
+    bool inTarget = false;
+    List<bool> boldCast = [];
+
+    for (String name in movie.leads) {
+      if (await _isGuessedLeadInTargetCast(name)) {
+        inTarget = true;
+        boldCast.add(true);
+      } else {
+        boldCast.add(false);
+      }
+    }
+
+    Color? lead = movie.leads == targetMovie.leads
         ? Constants.lightGreen
-        : (await _isGuessedLeadInTargetCast(movie.lead)
-            ? Constants.goldYellow
-            : null);
+        : (inTarget ? Constants.goldYellow : null);
     tileData.firstInCast = lead;
+    tileData.boldCast = boldCast;
 
     return tileData;
   }
@@ -315,7 +332,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
       results += "❌❌❌❌❌❌❌❌❌\n\n";
     }
 
-    results += "Play at\nhttp://cinemadle.hodgeswill.com";
+    results += "Play at\ncinemadle.hodgeswill.com";
 
     return results;
   }

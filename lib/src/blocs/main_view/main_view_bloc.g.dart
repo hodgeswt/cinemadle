@@ -87,6 +87,10 @@ MovieTileData _$MovieTileDataFromJson(Map<String, dynamic> json) =>
       releaseDateArrow: json['releaseDateArrow'] as String?,
       runtimeArrow: json['runtimeArrow'] as String?,
       revenueArrow: json['revenueArrow'] as String?,
+      boldGenre:
+          (json['boldGenre'] as List<dynamic>?)?.map((e) => e as bool).toList(),
+      boldCast:
+          (json['boldCast'] as List<dynamic>?)?.map((e) => e as bool).toList(),
     );
 
 Map<String, dynamic> _$MovieTileDataToJson(MovieTileData instance) =>
@@ -105,6 +109,8 @@ Map<String, dynamic> _$MovieTileDataToJson(MovieTileData instance) =>
       'releaseDateArrow': instance.releaseDateArrow,
       'runtimeArrow': instance.runtimeArrow,
       'revenueArrow': instance.revenueArrow,
+      'boldGenre': instance.boldGenre,
+      'boldCast': instance.boldCast,
     };
 
 Value? _$JsonConverterFromJson<Json, Value>(

@@ -19,6 +19,9 @@ class MovieTileData {
   String? runtimeArrow;
   String? revenueArrow;
 
+  List<bool>? boldGenre;
+  List<bool>? boldCast;
+
   MovieTileData({
     this.userScore,
     this.mpaRating,
@@ -34,6 +37,8 @@ class MovieTileData {
     this.releaseDateArrow,
     this.runtimeArrow,
     this.revenueArrow,
+    this.boldGenre,
+    this.boldCast,
   });
 
   static MovieTileData all({Color? color}) {
@@ -47,11 +52,6 @@ class MovieTileData {
       director: color,
       writer: color,
       firstInCast: color,
-      userScoreArrow: null,
-      mpaRatingArrow: null,
-      releaseDateArrow: null,
-      runtimeArrow: null,
-      revenueArrow: null,
     );
   }
 

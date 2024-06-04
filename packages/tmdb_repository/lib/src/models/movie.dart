@@ -10,7 +10,7 @@ class Movie extends Equatable {
     required this.director,
     required this.genre,
     required this.id,
-    required this.lead,
+    required this.leads,
     required this.mpaRating,
     required this.releaseDate,
     required this.revenue,
@@ -31,7 +31,7 @@ class Movie extends Equatable {
   final List<String> genre;
   final String director;
   final String writer;
-  final String lead;
+  final List<String> leads;
   final String posterPath;
 
   factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
@@ -58,14 +58,11 @@ class Movie extends Equatable {
     return genres;
   }
 
-  static String _getArbitraryFirstInCast(Credits? c) {
+  static List<String> _getArbitraryCast(Credits? c) {
     try {
-      return c?.cast.firstWhere((x) {
-            return x.order == 0;
-          }).name ??
-          "";
+      return (c?.cast.take(3).map((x) => x.name).toList()) ?? [];
     } catch (_) {
-      return "";
+      return [];
     }
   }
 
@@ -110,7 +107,7 @@ class Movie extends Equatable {
       genre: _getGenre(details),
       director: _getArbitraryCrewRole(credits, ["Director"]),
       writer: _getArbitraryCrewRole(credits, ["Screenplay", "Writer"]),
-      lead: _getArbitraryFirstInCast(credits),
+      leads: _getArbitraryCast(credits),
       id: details.id,
       posterPath: details.posterPath == null
           ? ""
@@ -132,7 +129,7 @@ class Movie extends Equatable {
         genre,
         director,
         writer,
-        lead,
+        leads,
         posterPath,
       ];
 }
