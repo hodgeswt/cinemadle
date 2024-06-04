@@ -10,7 +10,7 @@ Movie _$MovieFromJson(Map<String, dynamic> json) => Movie(
       director: json['director'] as String,
       genre: (json['genre'] as List<dynamic>).map((e) => e as String).toList(),
       id: (json['id'] as num).toInt(),
-      lead: json['lead'] as String,
+      leads: (json['leads'] as List<dynamic>).map((e) => e as String).toList(),
       mpaRating: json['mpaRating'] as String,
       releaseDate: json['releaseDate'] as String,
       revenue: (json['revenue'] as num).toInt(),
@@ -32,6 +32,6 @@ Map<String, dynamic> _$MovieToJson(Movie instance) => <String, dynamic>{
       'genre': instance.genre,
       'director': instance.director,
       'writer': instance.writer,
-      'lead': instance.lead,
+      'leads': instance.leads,
       'posterPath': instance.posterPath,
     };

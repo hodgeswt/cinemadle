@@ -34,6 +34,7 @@ class _GuessBoxState extends State<GuessBox> {
       int id = ids[data] ?? -1;
       widget.inputCallback(id);
       _textFieldController?.clear();
+      _isClearButtonVisible = false;
       suggestionsController.refresh();
       autofillHints = [];
       widget.scrollController.animateTo(
