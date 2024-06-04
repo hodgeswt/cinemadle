@@ -86,7 +86,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
         );
 
         List<bool> newAllowFlip = [
-          newRemainingGuesses <= 2,
+          newRemainingGuesses <= 2 || targetMovie.id == guess.id,
           ...List.filled(state.allowFlip?.length ?? 0, false)
         ];
 
@@ -107,6 +107,10 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
           newTileColors[targetMovie.id] = targetColors;
         } else if (guess.id == targetMovie.id) {
           newStatus = MainViewStatus.win;
+          newBlur[targetMovie.id] = BlurredImage(
+            imageBlur: 0.0,
+            imagePath: targetMovie.posterPath,
+          );
           newResults = _buildResults(newTileColors.values, newStatus);
         }
 

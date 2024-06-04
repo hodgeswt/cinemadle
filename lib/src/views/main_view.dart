@@ -34,14 +34,16 @@ class _MainViewState extends State<MainView> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Share'),
+          backgroundColor: Constants.primary,
+          title: const Text('Share', style: TextStyle(color: Colors.white)),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 RichText(
                   text: TextSpan(
                     text: results,
-                    style: const TextStyle(fontFamily: 'NotoEmoji'),
+                    style: const TextStyle(
+                        fontFamily: 'NotoEmoji', color: Colors.white),
                   ),
                 ),
               ],
@@ -49,13 +51,14 @@ class _MainViewState extends State<MainView> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child:
+                  const Text('Cancel', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Copy'),
+              child: const Text('Copy', style: TextStyle(color: Colors.white)),
               onPressed: () {
                 Clipboard.setData(ClipboardData(text: results)).then(
                   (_) {
@@ -170,8 +173,7 @@ class _MainViewState extends State<MainView> {
                     children: [
                       HeaderCard(
                         text: isWin ? "You win!" : "You lost :(",
-                        color:
-                            isWin ? Constants.lightGreen : Constants.lightRed,
+                        isWin: isWin,
                       ),
                       IntrinsicHeight(
                         child: Row(
@@ -179,12 +181,21 @@ class _MainViewState extends State<MainView> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: Constants.stdPad,
-                                child: ElevatedButton(
-                                  onPressed: () {
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: InkWell(
+                                  onTap: () {
                                     _showShareSheet(state.results ?? "");
                                   },
-                                  child: const Text("Share Your Results"),
+                                  child: Container(
+                                    padding: Constants.stdPad,
+                                    decoration: Constants.primaryGradientBox(),
+                                    child: const Center(
+                                      child: Text(
+                                        "Share Your Results",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -197,15 +208,21 @@ class _MainViewState extends State<MainView> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Expanded(
-                              child: Padding(
-                                padding: Constants.stdPad,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    context
-                                        .read<MainViewBloc>()
-                                        .add(const ResetRequested());
-                                  },
-                                  child: const Text("Reset"),
+                              child: InkWell(
+                                onTap: () {
+                                  context
+                                      .read<MainViewBloc>()
+                                      .add(const ResetRequested());
+                                },
+                                child: Container(
+                                  padding: Constants.stdPad,
+                                  decoration: Constants.primaryGradientBox(),
+                                  child: const Center(
+                                    child: Text(
+                                      "Reset",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

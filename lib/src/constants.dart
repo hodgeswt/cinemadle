@@ -1,3 +1,4 @@
+import 'package:cinemadle/src/blocs/main_view/main_view_bloc.dart';
 import 'package:flutter/material.dart';
 
 class Constants {
@@ -28,11 +29,6 @@ class Constants {
                 offset: Offset(0, 4),
                 blurRadius: 4,
               ),
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.5),
-                offset: Offset(-4, 0),
-                blurRadius: 4,
-              ),
             ]
           : null,
       borderRadius: hasCornerRadius ? BorderRadius.circular(15) : null,
@@ -52,11 +48,6 @@ class Constants {
         offset: Offset(0, 4),
         blurRadius: 4,
       ),
-      BoxShadow(
-        color: Color.fromRGBO(0, 0, 0, 0.5),
-        offset: Offset(-4, 0),
-        blurRadius: 4,
-      ),
     ],
     borderRadius: BorderRadius.circular(15),
   );
@@ -68,11 +59,6 @@ class Constants {
         BoxShadow(
           color: Color.fromRGBO(0, 0, 0, 0.5),
           offset: Offset(0, 4),
-          blurRadius: 4,
-        ),
-        BoxShadow(
-          color: Color.fromRGBO(0, 0, 0, 0.5),
-          offset: Offset(-4, 0),
           blurRadius: 4,
         ),
       ],
@@ -92,11 +78,6 @@ class Constants {
         offset: Offset(0, 4),
         blurRadius: 4,
       ),
-      BoxShadow(
-        color: Color.fromRGBO(0, 0, 0, 0.5),
-        offset: Offset(-4, 0),
-        blurRadius: 4,
-      ),
     ],
     gradient: const LinearGradient(
       begin: Alignment.topLeft,
@@ -105,6 +86,40 @@ class Constants {
       colors: [Color(0xFFB0B0B0), Color(0xFF595959)],
     ),
   );
+
+  static BoxBorder? _getBorder(bool hasBorder, MainViewStatus? isWin) {
+    if (hasBorder && isWin != null) {
+      return Border.all(
+        color: isWin == MainViewStatus.win ? primary : crimsonRed,
+        width: 2,
+      );
+    }
+    return null;
+  }
+
+  static BoxDecoration mediumGradientBox(
+      {bool hasBorder = false, MainViewStatus? isWin}) {
+    return BoxDecoration(
+      border: _getBorder(hasBorder, isWin),
+      borderRadius: BorderRadius.circular(15),
+      boxShadow: const [
+        BoxShadow(
+          color: Color.fromRGBO(0, 0, 0, 0.5),
+          offset: Offset(0, 4),
+          blurRadius: 4,
+        ),
+      ],
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        transform: GradientRotation(71 * 3.1415927 / 180),
+        colors: [
+          Color(0xFF8C8C8C),
+          Color(0xFF4D4D4D)
+        ], // Adjusted darker colors
+      ),
+    );
+  }
 
   static const int maxGuess = 10;
   static const Duration pollingDelay = Duration(milliseconds: 200);

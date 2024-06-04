@@ -5,10 +5,10 @@ class HeaderCard extends StatelessWidget {
   const HeaderCard({
     super.key,
     required this.text,
-    this.color,
+    required this.isWin,
   });
 
-  final Color? color;
+  final bool isWin;
   final String text;
 
   @override
@@ -19,9 +19,10 @@ class HeaderCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: Card(
-              color: color,
-              elevation: 4.0,
+            child: Container(
+              decoration: isWin
+                  ? Constants.primaryGradientBox()
+                  : Constants.darkGradientBox(),
               child: Padding(
                 padding: Constants.stdPad,
                 child: Center(
@@ -29,7 +30,7 @@ class HeaderCard extends StatelessWidget {
                     text,
                     style: const TextStyle(
                       fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                 ),

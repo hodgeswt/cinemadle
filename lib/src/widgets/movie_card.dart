@@ -23,27 +23,8 @@ class MovieCard extends StatelessWidget {
   final MovieTileData tileData;
   final bool allowFlip;
 
-  Color? _getCardColor(MainViewState state) {
-    if (state.status == MainViewStatus.win && movieData.id == targetMovie.id) {
-      return Constants.otherGreen;
-    }
-
-    return null;
-  }
-
-  RoundedRectangleBorder? _getCardOutline(MainViewState state) {
-    if (state.status == MainViewStatus.playing ||
-        movieData.id != targetMovie.id) {
-      return null;
-    }
-
-    Color c = movieData.id == targetMovie.id
-        ? Constants.lightGreen
-        : Constants.lightRed;
-    return RoundedRectangleBorder(
-      side: BorderSide(color: c, width: 4.0),
-      borderRadius: BorderRadius.circular(15.0),
-    );
+  bool get isTarget {
+    return movieData.id == targetMovie.id;
   }
 
   Widget _getBackWidget() {
@@ -53,7 +34,10 @@ class MovieCard extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
-            decoration: Constants.darkGradientBox(),
+            decoration: Constants.mediumGradientBox(
+              hasBorder: isTarget,
+              isWin: state.status,
+            ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -95,7 +79,10 @@ class MovieCard extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
-            decoration: Constants.darkGradientBox(),
+            decoration: Constants.mediumGradientBox(
+              hasBorder: isTarget,
+              isWin: state.status,
+            ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
