@@ -99,6 +99,12 @@ class _GuessBoxState extends State<GuessBox> {
   @override
   Widget build(BuildContext context) {
     return TypeAheadField<String>(
+      decorationBuilder: (context, child) {
+        return Container(
+          decoration: Constants.mediumGradientBox(),
+          child: child,
+        );
+      },
       suggestionsCallback: (search) => autofillHints,
       suggestionsController: suggestionsController,
       builder: (context, controller, focusNode) {
@@ -156,10 +162,18 @@ class _GuessBoxState extends State<GuessBox> {
           },
         );
       },
-      loadingBuilder: (context) => const ListTile(title: Text("Loading...")),
+      loadingBuilder: (context) => const ListTile(
+        title: Text(
+          "Loading...",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       itemBuilder: (context, data) {
         return ListTile(
-          title: Text(data),
+          title: Text(
+            data,
+            style: const TextStyle(color: Colors.white),
+          ),
         );
       },
       onSelected: (data) {
