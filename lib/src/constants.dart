@@ -82,12 +82,6 @@ class Constants {
         blurRadius: 4,
       ),
     ],
-    // gradient: const LinearGradient(
-    //   begin: Alignment.topLeft,
-    //   end: Alignment.bottomRight,
-    //   transform: GradientRotation(71 * 3.1415927 / 180),
-    //   colors: [Color(0xFFB0B0B0), Color(0xFF595959)],
-    // ),
   );
 
   static BoxBorder? _getBorder(bool hasBorder, MainViewStatus? isWin) {
