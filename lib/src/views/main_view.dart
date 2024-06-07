@@ -105,7 +105,8 @@ class _MainViewState extends State<MainView> {
     return Padding(
       padding: Constants.stdPad,
       child: BlocProvider<MainViewBloc>(
-        create: (context) => MainViewBloc(widget.targetMovie, widget.uuid)
+        create: (context) => MainViewBloc(
+            widget.targetMovie, widget.uuid, context.read<TmdbRepository>())
           ..add(ValidateCurrentRequested(widget.uuid)),
         child: BlocConsumer<MainViewBloc, MainViewState>(
           buildWhen: (previous, current) {

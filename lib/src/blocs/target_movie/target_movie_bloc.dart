@@ -9,7 +9,9 @@ part 'target_movie_state.dart';
 part 'target_movie_bloc.g.dart';
 
 class TargetMovieBloc extends HydratedBloc<TargetMovieEvent, TargetMovieState> {
-  TargetMovieBloc()
+  final TmdbRepository _tmdbRepository;
+
+  TargetMovieBloc(this._tmdbRepository)
       : super(const TargetMovieState(status: TargetMovieStatus.initial)) {
     on<TargetMovieLoadInitiated>((event, emit) async {
       await _loadingInitiated(event, emit);
@@ -34,7 +36,7 @@ class TargetMovieBloc extends HydratedBloc<TargetMovieEvent, TargetMovieState> {
     );
 
     try {
-      Movie? movie = await TmdbRepository().getMovieFromPage(page, out);
+      Movie? movie = await _tmdbRepository.getMovieFromPage(page, out);
 
       emit(
         state.copyWith(movie: movie, status: TargetMovieStatus.loaded),

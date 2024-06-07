@@ -5,6 +5,7 @@ import 'package:cinemadle/src/views/instructions_view.dart';
 import 'package:cinemadle/src/views/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tmdb_repository/tmdb_repository.dart';
 
 enum Views {
   instructions,
@@ -30,8 +31,8 @@ class Destination {
 Widget drawer(BuildContext context, Views activePage) {
   int ind = activePage.index;
   return BlocProvider(
-    create: (context) =>
-        TargetMovieBloc()..add(const TargetMovieLoadInitiated()),
+    create: (context) => TargetMovieBloc(context.read<TmdbRepository>())
+      ..add(const TargetMovieLoadInitiated()),
     child: BlocBuilder<TargetMovieBloc, TargetMovieState>(
       builder: (context, state) {
         return Container(

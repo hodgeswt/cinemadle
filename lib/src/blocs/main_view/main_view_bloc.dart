@@ -25,6 +25,8 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
   final String singleDownArrow = "↓ ";
   final String doubleDownArrow = "↓↓ ";
 
+  final TmdbRepository _tmdbRepository;
+
   Map<Color, String> resultsColorMap = {
     Constants.goldYellow: "🟨",
     Constants.lightGreen: "🟩",
@@ -33,7 +35,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
   bool userFlippedCard = false;
 
-  MainViewBloc(this.targetMovie, this.uuid)
+  MainViewBloc(this.targetMovie, this.uuid, this._tmdbRepository)
       : super(MainViewState(status: MainViewStatus.playing, uuid: uuid)) {
     on<ResetRequested>((event, emit) {
       emit(MainViewState.empty);
@@ -61,7 +63,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
       }
 
       try {
-        Movie guess = await TmdbRepository().getMovie(event.id);
+        Movie guess = await _tmdbRepository.getMovie(event.id);
 
         List<Movie> newGuesses = [guess, ...state.userGuesses ?? []];
         List<int> newGuessesIds = [event.id, ...state.userGuessesIds ?? []];
@@ -298,7 +300,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
       return false;
     }
 
-    return await TmdbRepository().isActorInMovie(lead, targetMovie.id);
+    return await _tmdbRepository.isActorInMovie(lead, targetMovie.id);
   }
 
   String _buildResults(

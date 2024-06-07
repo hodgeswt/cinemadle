@@ -64,7 +64,8 @@ class _GuessBoxState extends State<GuessBox> {
     suggestionsController.refresh();
     suggestionsController.isLoading = true;
 
-    List<SearchResult> search = await TmdbRepository()
+    List<SearchResult> search = await context
+        .read<TmdbRepository>()
         .search(value, List.from(state.userGuessesIds ?? []));
 
     List<String> newTitles = [];
