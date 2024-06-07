@@ -80,7 +80,7 @@ class MovieCard extends StatelessWidget {
         text: title,
         style: const TextStyle(
           color: Colors.white,
-          fontSize: 20,
+          fontSize: 22,
         ),
       ),
     );
@@ -116,17 +116,21 @@ class MovieCard extends StatelessWidget {
         );
       }
 
+      double fontSize = list.length > 2 ? 14 : 16;
+
       return RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
           children: List.generate(list.length, (index) {
             bool isBold = bold?[index] ?? false;
+            String prefix = isBold ? "★ " : "";
             return TextSpan(
-              text: index < list.length - 1 ? "${list[index]},\n" : list[index],
+              text: index < list.length - 1
+                  ? "$prefix${list[index]},\n"
+                  : "$prefix${list[index]}",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: list.length > 2 ? 14 : 16,
-                fontStyle: isBold ? FontStyle.italic : FontStyle.normal,
+                fontSize: isBold ? fontSize + 1 : fontSize,
                 fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
               ),
             );
@@ -137,12 +141,13 @@ class MovieCard extends StatelessWidget {
   }
 
   AspectRatio _tileBuilder(int index) {
+    double aspectRatio = 0.85;
     switch (index) {
       case 0:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
-            title: _titleBuilder('User Score'),
+            title: _titleBuilder('Score'),
             content: _contentBuilder(
               content: movieData.voteAverage.toString(),
             ),
@@ -152,9 +157,9 @@ class MovieCard extends StatelessWidget {
         );
       case 1:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
-            title: _titleBuilder('MPA Rating'),
+            title: _titleBuilder('Rating'),
             content: _contentBuilder(
               content: movieData.mpaRating,
             ),
@@ -164,9 +169,9 @@ class MovieCard extends StatelessWidget {
         );
       case 2:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
-            title: _titleBuilder('Release Year'),
+            title: _titleBuilder('Year'),
             content: _contentBuilder(
               content: Utilities.formatDate(movieData.releaseDate),
             ),
@@ -176,7 +181,7 @@ class MovieCard extends StatelessWidget {
         );
       case 3:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
             title: _titleBuilder('Revenue'),
             content: _contentBuilder(
@@ -188,7 +193,7 @@ class MovieCard extends StatelessWidget {
         );
       case 4:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
             title: _titleBuilder('Runtime'),
             content: _contentBuilder(
@@ -200,7 +205,7 @@ class MovieCard extends StatelessWidget {
         );
       case 5:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
             title: _titleBuilder('Genre'),
             content: _contentBuilder(
@@ -212,7 +217,7 @@ class MovieCard extends StatelessWidget {
         );
       case 6:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
             title: _titleBuilder('Director'),
             content: _contentBuilder(
@@ -223,7 +228,7 @@ class MovieCard extends StatelessWidget {
         );
       case 7:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
             title: _titleBuilder('Writer'),
             content: _contentBuilder(
@@ -234,7 +239,7 @@ class MovieCard extends StatelessWidget {
         );
       case 8:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
             title: _titleBuilder('Cast'),
             content: _contentBuilder(
@@ -246,7 +251,7 @@ class MovieCard extends StatelessWidget {
         );
       default:
         return AspectRatio(
-          aspectRatio: 0.90,
+          aspectRatio: aspectRatio,
           child: TextCard(
             title: _titleBuilder(''),
             content: _contentBuilder(

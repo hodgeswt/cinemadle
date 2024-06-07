@@ -18,11 +18,11 @@ class TextCard extends StatelessWidget {
   final String? arrow;
   BoxDecoration get _gradient {
     if (color == Constants.goldYellow) {
-      return Constants.yellowGradientBox;
+      return Constants.yellowBox;
     } else if (color == Constants.lightGreen) {
-      return Constants.primaryGradientBox();
+      return Constants.greenBox;
     } else {
-      return Constants.lightGradientBox;
+      return Constants.lightBox;
     }
   }
 
@@ -33,8 +33,10 @@ class TextCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(child: title),
+            const SizedBox(height: 2.0),
             content,
             if (arrow != null)
               Text(

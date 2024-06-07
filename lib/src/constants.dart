@@ -16,12 +16,7 @@ class Constants {
     bool hasBoxShadow = true,
   }) {
     return BoxDecoration(
-      gradient: const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        transform: GradientRotation(71 * 3.1415927 / 180),
-        colors: [primaryLight, primary],
-      ),
+      color: primary,
       boxShadow: hasBoxShadow
           ? const [
               BoxShadow(
@@ -35,13 +30,20 @@ class Constants {
     );
   }
 
-  static final BoxDecoration yellowGradientBox = BoxDecoration(
-    gradient: const LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      transform: GradientRotation(71 * 3.1415927 / 180),
-      colors: [secondaryLight, secondary],
-    ),
+  static final BoxDecoration yellowBox = BoxDecoration(
+    color: const Color(0xFFC97616),
+    boxShadow: const [
+      BoxShadow(
+        color: Color.fromRGBO(0, 0, 0, 0.5),
+        offset: Offset(0, 4),
+        blurRadius: 4,
+      ),
+    ],
+    borderRadius: BorderRadius.circular(15),
+  );
+
+  static final BoxDecoration greenBox = BoxDecoration(
+    color: const Color(0xFF007949),
     boxShadow: const [
       BoxShadow(
         color: Color.fromRGBO(0, 0, 0, 0.5),
@@ -70,8 +72,9 @@ class Constants {
     );
   }
 
-  static final BoxDecoration lightGradientBox = BoxDecoration(
+  static final BoxDecoration lightBox = BoxDecoration(
     borderRadius: BorderRadius.circular(15),
+    color: const Color(0xFF737373),
     boxShadow: const [
       BoxShadow(
         color: Color.fromRGBO(0, 0, 0, 0.5),
@@ -79,12 +82,12 @@ class Constants {
         blurRadius: 4,
       ),
     ],
-    gradient: const LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-      transform: GradientRotation(71 * 3.1415927 / 180),
-      colors: [Color(0xFFB0B0B0), Color(0xFF595959)],
-    ),
+    // gradient: const LinearGradient(
+    //   begin: Alignment.topLeft,
+    //   end: Alignment.bottomRight,
+    //   transform: GradientRotation(71 * 3.1415927 / 180),
+    //   colors: [Color(0xFFB0B0B0), Color(0xFF595959)],
+    // ),
   );
 
   static BoxBorder? _getBorder(bool hasBorder, MainViewStatus? isWin) {
