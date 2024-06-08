@@ -1,3 +1,17 @@
+Cinemadle v0.3.2
+
+Additions:
+
+- Card color adjustments
+- Card tile color + arrow logic rewrite
+- Code cleanup
+- Instructions no longer say PG-12 instead of PG-13
+- Made instructions more clear and match the current state of the game rules
+- Removed the duplicate instructions card
+
+
+-------------------
+
 Cinemadle v0.3.1
 
 Additions:

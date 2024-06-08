@@ -1,11 +1,32 @@
 import 'dart:math';
+import 'package:cinemadle/src/constants.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:universal_io/io.dart';
 
+import 'bloc_utilities/tile_data/tile_color.dart';
+
 class Utilities {
+  static Map<TileColor?, BoxDecoration> colorMap = {
+    TileColor.yellow: Constants.yellowBox,
+    TileColor.green: Constants.greenBox,
+    TileColor.grey: Constants.lightBox,
+    null: Constants.lightBox,
+  };
+
+  static bool isMobile() {
+    return defaultTargetPlatform == TargetPlatform.android ||
+        defaultTargetPlatform == TargetPlatform.iOS;
+  }
+
   static widthCalculator(double width) {
-    double w = width;
-    double widthBox = (110 * 3) + 64;
+    if (isMobile()) {
+      return width;
+    }
+
+    double w = width / 2;
+    double widthBox = 800;
     if (w > widthBox || w < widthBox) {
       w = widthBox;
     }

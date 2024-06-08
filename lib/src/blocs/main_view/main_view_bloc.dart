@@ -1,15 +1,18 @@
+import 'package:cinemadle/src/bloc_utilities/blurred_image/blurred_image_creator.dart';
+import 'package:cinemadle/src/bloc_utilities/blurred_image/blurred_image_data.dart';
+import 'package:cinemadle/src/bloc_utilities/utilities.dart';
 import 'package:cinemadle/src/color_json_converter.dart';
-import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/converters/blurred_image_json_converter.dart';
 import 'package:cinemadle/src/converters/flip_card_controller_json_converter.dart';
-import 'package:cinemadle/src/utilities.dart';
 import 'package:cinemadle/src/widgets/blurred_image.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
+
+import 'package:tmdb_repository/tmdb_repository.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tmdb_repository/tmdb_repository.dart';
-import 'package:flutter/material.dart';
 
 part 'main_view_event.dart';
 part 'main_view_state.dart';
@@ -27,16 +30,38 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
   final TmdbRepository _tmdbRepository;
 
-  Map<Color, String> resultsColorMap = {
-    Constants.goldYellow: "🟨",
-    Constants.lightGreen: "🟩",
-    Constants.grey: "⬛",
+  late UserScoreCreator _userScoreCreator;
+  late MpaRatingCreator _mpaRatingCreator;
+  late ReleaseDateCreator _releaseDateCreator;
+  late RevenueCreator _revenueCreator;
+  late RuntimeCreator _runtimeCreator;
+  late DirectorCreator _directorCreator;
+  late WriterCreator _writerCreator;
+  late GenreCreator _genreCreator;
+  late CastCreator _castCreator;
+
+  Map<TileColor, String> resultsColorMap = {
+    TileColor.yellow: "🟨",
+    TileColor.green: "🟩",
+    TileColor.grey: "⬛",
+    TileColor.red: "⬛",
   };
 
   bool userFlippedCard = false;
 
   MainViewBloc(this.targetMovie, this.uuid, this._tmdbRepository)
       : super(MainViewState(status: MainViewStatus.playing, uuid: uuid)) {
+    _userScoreCreator = UserScoreCreator(targetMovie: targetMovie);
+    _mpaRatingCreator = MpaRatingCreator(targetMovie: targetMovie);
+    _releaseDateCreator = ReleaseDateCreator(targetMovie: targetMovie);
+    _revenueCreator = RevenueCreator(targetMovie: targetMovie);
+    _runtimeCreator = RuntimeCreator(targetMovie: targetMovie);
+    _directorCreator = DirectorCreator(targetMovie: targetMovie);
+    _writerCreator = WriterCreator(targetMovie: targetMovie);
+    _genreCreator = GenreCreator(targetMovie: targetMovie);
+    _castCreator =
+        CastCreator(targetMovie: targetMovie, tmdbRepository: _tmdbRepository);
+
     on<ResetRequested>((event, emit) {
       emit(MainViewState.empty);
     });
@@ -65,54 +90,53 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
       try {
         Movie guess = await _tmdbRepository.getMovie(event.id);
 
-        List<Movie> newGuesses = [guess, ...state.userGuesses ?? []];
-        List<int> newGuessesIds = [event.id, ...state.userGuessesIds ?? []];
+        List<Movie> newGuesses =
+            With.listCopyWith<Movie>(state.userGuesses, guess);
+        List<int> newGuessesIds =
+            With.listCopyWith(state.userGuessesIds, event.id);
+
         MainViewStatus newStatus = state.status;
         int newRemainingGuesses =
             state.remainingGuesses - 1 >= 0 ? state.remainingGuesses - 1 : 0;
 
         MovieTileData tileColors = await _computeTileData(guess);
-        Map<int, MovieTileData> newTileColors = {};
-        newTileColors.addAll(state.tileData ?? {});
-        newTileColors[guess.id] = tileColors;
 
-        Map<int, FlipCardController> newCardFlipControllers = {};
-        newCardFlipControllers.addAll(state.cardFlipControllers ?? {});
-        newCardFlipControllers[guess.id] = FlipCardController();
+        Map<int, MovieTileData> newTileColors =
+            With.mapCopyWith(state.tileData, guess.id, tileColors);
 
-        Map<int, BlurredImage> newBlur = {};
-        newBlur.addAll(state.blur ?? {});
-        newBlur[guess.id] = BlurredImage(
-          imageBlur: newRemainingGuesses >= 9 ? 100.0 : newRemainingGuesses * 2,
-          imagePath: targetMovie.posterPath,
-        );
+        Map<int, FlipCardController> newCardFlipControllers = With.mapCopyWith(
+            state.cardFlipControllers, guess.id, FlipCardController());
 
-        List<bool> newAllowFlip = [
-          newRemainingGuesses <= 2 || targetMovie.id == guess.id,
-          ...List.filled(state.allowFlip?.length ?? 0, false)
-        ];
+        BlurredImage img = BlurredImageCreator.instance.create(BlurredImageData(
+          imageUri: guess.posterPath,
+          blur: newRemainingGuesses >= 9 ? 100.0 : newRemainingGuesses * 2,
+        ));
+        Map<int, BlurredImage> newBlur =
+            With.mapCopyWith(state.blur, guess.id, img);
+
+        List<bool> newAllowFlip = List.filled(
+                state.allowFlip?.length ?? 0, false)
+            .prepend(newRemainingGuesses <= 2 || targetMovie.id == guess.id);
 
         String newResults = state.results ?? "";
 
         if (newRemainingGuesses == 0 && guess.id != targetMovie.id) {
           newStatus = MainViewStatus.loss;
           newResults = _buildResults(newTileColors.values, newStatus);
-          newGuesses = [targetMovie, ...newGuesses];
-          newGuessesIds = [targetMovie.id, ...newGuessesIds];
-          newAllowFlip = [true, ...List.filled(newAllowFlip.length, false)];
-          newBlur[targetMovie.id] = BlurredImage(
-            imageBlur: 0.0,
-            imagePath: targetMovie.posterPath,
-          );
+          newGuesses = newGuesses.prepend(targetMovie);
+
+          newGuessesIds = newGuessesIds.prepend(targetMovie.id);
+          newAllowFlip = List.filled(newAllowFlip.length, false).prepend(true);
+
+          newBlur[targetMovie.id] = BlurredImageCreator.instance
+              .create(BlurredImageData.zero(targetMovie.posterPath));
 
           MovieTileData targetColors = await _computeTileData(targetMovie);
           newTileColors[targetMovie.id] = targetColors;
         } else if (guess.id == targetMovie.id) {
           newStatus = MainViewStatus.win;
-          newBlur[targetMovie.id] = BlurredImage(
-            imageBlur: 0.0,
-            imagePath: targetMovie.posterPath,
-          );
+          newBlur[targetMovie.id] = BlurredImageCreator.instance
+              .create(BlurredImageData.zero(targetMovie.posterPath));
           newResults = _buildResults(newTileColors.values, newStatus);
         }
 
@@ -153,161 +177,57 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
   Future<MovieTileData> _computeTileData(Movie movie) async {
     if (state.status == MainViewStatus.loss) {
-      return MovieTileData.all(color: Constants.lightRed);
+      return MovieTileData.all(color: TileColor.red);
     }
 
     if (movie.id == targetMovie.id) {
-      return MovieTileData.all(color: Constants.lightGreen);
+      return MovieTileData.all(color: TileColor.green);
     }
 
     MovieTileData tileData = MovieTileData();
 
-    double userScoreDiff = (double.parse(movie.voteAverage.toStringAsFixed(1)) -
-        double.parse(targetMovie.voteAverage.toStringAsFixed(1)));
-    Color? userScore = userScoreDiff == 0
-        ? Constants.lightGreen
-        : (userScoreDiff.abs() <= 1 ? Constants.goldYellow : null);
-    tileData.userScore = userScore;
+    await _userScoreCreator.compute(movie);
+    tileData.userScore = _userScoreCreator.color;
+    tileData.userScoreArrow = _userScoreCreator.arrow;
 
-    tileData.userScoreArrow = userScoreDiff > 0
-        ? singleDownArrow
-        : (userScoreDiff < 0 ? singleUpArrow : null);
+    await _mpaRatingCreator.compute(movie);
+    tileData.mpaRating = _mpaRatingCreator.color;
+    tileData.mpaRatingArrow = _mpaRatingCreator.arrow;
 
-    int mpaDiff = (Utilities.mapMpaRatingToInt(movie.mpaRating) -
-        Utilities.mapMpaRatingToInt(targetMovie.mpaRating));
-    Color? mpaRating = mpaDiff == 0
-        ? Constants.lightGreen
-        : (mpaDiff.abs() <= 1 ? Constants.goldYellow : null);
-    tileData.mpaRating = mpaRating;
+    await _releaseDateCreator.compute(movie);
+    tileData.releaseDate = _releaseDateCreator.color;
+    tileData.releaseDateArrow = _releaseDateCreator.arrow;
 
-    int dateDiff = (Utilities.parseDate(movie.releaseDate).year -
-        Utilities.parseDate(targetMovie.releaseDate).year);
-    Color? releaseDate = dateDiff == 0
-        ? Constants.lightGreen
-        : (dateDiff.abs() <= 5 ? Constants.goldYellow : null);
-    tileData.releaseDate = releaseDate;
+    await _revenueCreator.compute(movie);
+    tileData.revenue = _revenueCreator.color;
+    tileData.revenueArrow = _revenueCreator.arrow;
 
-    if (dateDiff != 0) {
-      if (dateDiff < 0) {
-        if (dateDiff > -10) {
-          tileData.releaseDateArrow = singleUpArrow;
-        } else if (dateDiff <= 10) {
-          tileData.releaseDateArrow = doubleUpArrow;
-        }
-      }
+    await _runtimeCreator.compute(movie);
+    tileData.runtime = _runtimeCreator.color;
+    tileData.runtimeArrow = _runtimeCreator.arrow;
 
-      if (dateDiff > 0) {
-        if (dateDiff < 10) {
-          tileData.releaseDateArrow = singleDownArrow;
-        } else if (dateDiff >= 10) {
-          tileData.releaseDateArrow = doubleDownArrow;
-        }
-      }
-    }
+    await _directorCreator.compute(movie);
+    tileData.director = _directorCreator.color;
 
-    int revenueDiff = (movie.revenue - targetMovie.revenue);
-    Color? revenue = revenueDiff.abs() == 0
-        ? Constants.lightGreen
-        : (revenueDiff.abs() <= 50000000 ? Constants.goldYellow : null);
-    tileData.revenue = revenue;
+    await _writerCreator.compute(movie);
+    tileData.writer = _writerCreator.color;
 
-    if (revenueDiff > 0) {
-      if (revenueDiff <= 50000000) {
-        tileData.revenueArrow = singleDownArrow;
-      } else {
-        tileData.revenueArrow = doubleDownArrow;
-      }
-    }
+    await _genreCreator.compute(movie);
+    tileData.genre = _genreCreator.color;
+    tileData.boldGenre = _genreCreator.bolded;
 
-    if (revenueDiff < 0) {
-      if (revenueDiff >= -50000000) {
-        tileData.revenueArrow = singleUpArrow;
-      } else {
-        tileData.revenueArrow = doubleUpArrow;
-      }
-    }
-
-    int runtimeDiff = (movie.runtime - targetMovie.runtime).abs();
-    Color? runtime = runtimeDiff == 0
-        ? Constants.lightGreen
-        : (runtimeDiff <= 20 ? Constants.goldYellow : null);
-    tileData.runtime = runtime;
-
-    if (runtimeDiff > 0) {
-      if (runtimeDiff <= 40) {
-        tileData.runtimeArrow = singleDownArrow;
-      } else {
-        tileData.runtimeArrow = doubleDownArrow;
-      }
-    }
-
-    if (runtimeDiff < 0) {
-      if (runtimeDiff >= -40) {
-        tileData.runtimeArrow = singleUpArrow;
-      } else {
-        tileData.runtimeArrow = doubleUpArrow;
-      }
-    }
-
-    Color? director = movie.director == targetMovie.director
-        ? Constants.lightGreen
-        : (movie.director == targetMovie.writer ? Constants.goldYellow : null);
-    tileData.director = director;
-
-    Color? writer = movie.writer == targetMovie.writer
-        ? Constants.lightGreen
-        : (movie.writer == targetMovie.director ? Constants.goldYellow : null);
-    tileData.writer = writer;
-
-    Color? genres;
-    List<bool> boldGenre = [];
-
-    for (String genre in movie.genre) {
-      if (targetMovie.genre.contains(genre)) {
-        genres = Constants.goldYellow;
-        boldGenre.add(true);
-      } else {
-        boldGenre.add(false);
-      }
-    }
-    tileData.genre =
-        movie.genre == targetMovie.genre ? Constants.lightGreen : genres;
-    tileData.boldGenre = boldGenre;
-
-    bool inTarget = false;
-    List<bool> boldCast = [];
-
-    for (String name in movie.leads) {
-      if (await _isGuessedLeadInTargetCast(name)) {
-        inTarget = true;
-        boldCast.add(true);
-      } else {
-        boldCast.add(false);
-      }
-    }
-
-    Color? lead = movie.leads == targetMovie.leads
-        ? Constants.lightGreen
-        : (inTarget ? Constants.goldYellow : null);
-    tileData.firstInCast = lead;
-    tileData.boldCast = boldCast;
+    await _castCreator.compute(movie);
+    tileData.firstInCast = _castCreator.color;
+    tileData.boldCast = _castCreator.bolded;
 
     return tileData;
-  }
-
-  Future<bool> _isGuessedLeadInTargetCast(String? lead) async {
-    if (lead == null) {
-      return false;
-    }
-
-    return await _tmdbRepository.isActorInMovie(lead, targetMovie.id);
   }
 
   String _buildResults(
       Iterable<MovieTileData> tileColors, MainViewStatus status) {
     String results = "";
     for (MovieTileData x in tileColors) {
-      List<Color?> colors = [
+      List<TileColor?> colors = [
         x.userScore,
         x.mpaRating,
         x.releaseDate,
@@ -320,8 +240,8 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
       ];
 
       String row = "";
-      for (Color? color in colors) {
-        row += resultsColorMap[color ?? Constants.grey] ?? "⬛";
+      for (TileColor? color in colors) {
+        row += resultsColorMap[color ?? TileColor.grey] ?? "⬛";
       }
 
       row += "\n";

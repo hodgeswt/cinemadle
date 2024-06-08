@@ -1,7 +1,9 @@
+import 'package:cinemadle/src/bloc_utilities/utilities.dart';
 import 'package:cinemadle/src/blocs/main_view/main_view_bloc.dart';
 import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/utilities.dart';
 import 'package:cinemadle/src/widgets/text_card.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
@@ -122,7 +124,7 @@ class MovieCard extends StatelessWidget {
         textAlign: TextAlign.center,
         text: TextSpan(
           children: List.generate(list.length, (index) {
-            bool isBold = bold?[index] ?? false;
+            bool isBold = bold?.getOrDefault(index, false) ?? false;
             String prefix = isBold ? "★ " : "";
             return TextSpan(
               text: index < list.length - 1
@@ -141,7 +143,7 @@ class MovieCard extends StatelessWidget {
   }
 
   AspectRatio _tileBuilder(int index) {
-    double aspectRatio = 0.85;
+    double aspectRatio = Utilities.isMobile() ? 0.6 : 1.5;
     switch (index) {
       case 0:
         return AspectRatio(

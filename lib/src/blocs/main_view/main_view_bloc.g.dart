@@ -64,24 +64,15 @@ const _$MainViewStatusEnumMap = {
 
 MovieTileData _$MovieTileDataFromJson(Map<String, dynamic> json) =>
     MovieTileData(
-      userScore: _$JsonConverterFromJson<String, Color?>(
-          json['userScore'], const ColorJsonConverter().fromJson),
-      mpaRating: _$JsonConverterFromJson<String, Color?>(
-          json['mpaRating'], const ColorJsonConverter().fromJson),
-      releaseDate: _$JsonConverterFromJson<String, Color?>(
-          json['releaseDate'], const ColorJsonConverter().fromJson),
-      revenue: _$JsonConverterFromJson<String, Color?>(
-          json['revenue'], const ColorJsonConverter().fromJson),
-      runtime: _$JsonConverterFromJson<String, Color?>(
-          json['runtime'], const ColorJsonConverter().fromJson),
-      genre: _$JsonConverterFromJson<String, Color?>(
-          json['genre'], const ColorJsonConverter().fromJson),
-      director: _$JsonConverterFromJson<String, Color?>(
-          json['director'], const ColorJsonConverter().fromJson),
-      writer: _$JsonConverterFromJson<String, Color?>(
-          json['writer'], const ColorJsonConverter().fromJson),
-      firstInCast: _$JsonConverterFromJson<String, Color?>(
-          json['firstInCast'], const ColorJsonConverter().fromJson),
+      userScore: $enumDecodeNullable(_$TileColorEnumMap, json['userScore']),
+      mpaRating: $enumDecodeNullable(_$TileColorEnumMap, json['mpaRating']),
+      releaseDate: $enumDecodeNullable(_$TileColorEnumMap, json['releaseDate']),
+      revenue: $enumDecodeNullable(_$TileColorEnumMap, json['revenue']),
+      runtime: $enumDecodeNullable(_$TileColorEnumMap, json['runtime']),
+      genre: $enumDecodeNullable(_$TileColorEnumMap, json['genre']),
+      director: $enumDecodeNullable(_$TileColorEnumMap, json['director']),
+      writer: $enumDecodeNullable(_$TileColorEnumMap, json['writer']),
+      firstInCast: $enumDecodeNullable(_$TileColorEnumMap, json['firstInCast']),
       userScoreArrow: json['userScoreArrow'] as String?,
       mpaRatingArrow: json['mpaRatingArrow'] as String?,
       releaseDateArrow: json['releaseDateArrow'] as String?,
@@ -95,15 +86,15 @@ MovieTileData _$MovieTileDataFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$MovieTileDataToJson(MovieTileData instance) =>
     <String, dynamic>{
-      'userScore': const ColorJsonConverter().toJson(instance.userScore),
-      'mpaRating': const ColorJsonConverter().toJson(instance.mpaRating),
-      'releaseDate': const ColorJsonConverter().toJson(instance.releaseDate),
-      'revenue': const ColorJsonConverter().toJson(instance.revenue),
-      'runtime': const ColorJsonConverter().toJson(instance.runtime),
-      'genre': const ColorJsonConverter().toJson(instance.genre),
-      'director': const ColorJsonConverter().toJson(instance.director),
-      'writer': const ColorJsonConverter().toJson(instance.writer),
-      'firstInCast': const ColorJsonConverter().toJson(instance.firstInCast),
+      'userScore': _$TileColorEnumMap[instance.userScore],
+      'mpaRating': _$TileColorEnumMap[instance.mpaRating],
+      'releaseDate': _$TileColorEnumMap[instance.releaseDate],
+      'revenue': _$TileColorEnumMap[instance.revenue],
+      'runtime': _$TileColorEnumMap[instance.runtime],
+      'genre': _$TileColorEnumMap[instance.genre],
+      'director': _$TileColorEnumMap[instance.director],
+      'writer': _$TileColorEnumMap[instance.writer],
+      'firstInCast': _$TileColorEnumMap[instance.firstInCast],
       'userScoreArrow': instance.userScoreArrow,
       'mpaRatingArrow': instance.mpaRatingArrow,
       'releaseDateArrow': instance.releaseDateArrow,
@@ -113,8 +104,9 @@ Map<String, dynamic> _$MovieTileDataToJson(MovieTileData instance) =>
       'boldCast': instance.boldCast,
     };
 
-Value? _$JsonConverterFromJson<Json, Value>(
-  Object? json,
-  Value? Function(Json json) fromJson,
-) =>
-    json == null ? null : fromJson(json as Json);
+const _$TileColorEnumMap = {
+  TileColor.green: 'green',
+  TileColor.yellow: 'yellow',
+  TileColor.red: 'red',
+  TileColor.grey: 'grey',
+};
