@@ -162,7 +162,7 @@ void main() {
         expect(creator.color, TileColor.grey);
       });
 
-      test('not computed', () {
+      test('arrow: not computed', () {
         Movie targetMovie = TestUtilities.movie();
 
         DirectorCreator creator = DirectorCreator(targetMovie: targetMovie);
@@ -170,7 +170,7 @@ void main() {
         expect(creator.arrow, '');
       });
 
-      test('computed', () {
+      test('arrow: computed', () {
         Movie targetMovie = TestUtilities.movie(director: 'Steven Spielberg');
         Movie guessedMovie = TestUtilities.movie(director: 'Steven Spielberg');
 
