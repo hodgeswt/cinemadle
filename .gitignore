@@ -12,6 +12,7 @@ env.g.dart
 .svn/
 migrate_working_dir/
 devtools_options.yaml
+coverage/
 
 # IntelliJ related
 *.iml

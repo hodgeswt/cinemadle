@@ -1,5 +1,22 @@
 import 'package:tmdb_repository/tmdb_repository.dart';
 
+class TestData<T, E> {
+  TestData({
+    required this.input1,
+    required this.input2,
+    required this.expected,
+  });
+
+  final T input1;
+  final T input2;
+  final E expected;
+
+  @override
+  String toString() {
+    return 'TestData{input1: $input1, input2: $input2, expected: $expected}';
+  }
+}
+
 class TestUtilities {
   static Movie movie({
     int id = 1,

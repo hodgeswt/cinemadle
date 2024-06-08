@@ -3,7 +3,6 @@ import 'package:cinemadle/src/blocs/main_view/main_view_bloc.dart';
 import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/utilities.dart';
 import 'package:cinemadle/src/widgets/text_card.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
