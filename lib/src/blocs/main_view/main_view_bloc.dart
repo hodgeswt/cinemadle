@@ -108,7 +108,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
             state.cardFlipControllers, guess.id, FlipCardController());
 
         BlurredImage img = BlurredImageCreator.instance.create(BlurredImageData(
-          imageUri: guess.posterPath,
+          imageUri: targetMovie.posterPath,
           blur: newRemainingGuesses >= 9 ? 100.0 : newRemainingGuesses * 2,
         ));
         Map<int, BlurredImage> newBlur =
