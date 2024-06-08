@@ -135,7 +135,7 @@ class _MainViewState extends State<MainView> {
                 alignment: Alignment.center,
                 child: SizedBox(
                   width: Utilities.widthCalculator(
-                      MediaQuery.of(context).size.width / 2),
+                      MediaQuery.of(context).size.width),
                   child: Column(
                     children: [
                       GuessBox(
@@ -169,7 +169,7 @@ class _MainViewState extends State<MainView> {
                 alignment: Alignment.center,
                 child: SizedBox(
                   width: Utilities.widthCalculator(
-                      MediaQuery.of(context).size.width / 2),
+                      MediaQuery.of(context).size.width),
                   child: Column(
                     children: [
                       HeaderCard(

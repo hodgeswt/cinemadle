@@ -3,15 +3,15 @@ part of 'main_view_bloc.dart';
 @JsonSerializable()
 @ColorJsonConverter()
 class MovieTileData {
-  Color? userScore;
-  Color? mpaRating;
-  Color? releaseDate;
-  Color? revenue;
-  Color? runtime;
-  Color? genre;
-  Color? director;
-  Color? writer;
-  Color? firstInCast;
+  TileColor? userScore;
+  TileColor? mpaRating;
+  TileColor? releaseDate;
+  TileColor? revenue;
+  TileColor? runtime;
+  TileColor? genre;
+  TileColor? director;
+  TileColor? writer;
+  TileColor? firstInCast;
 
   String? userScoreArrow;
   String? mpaRatingArrow;
@@ -41,7 +41,7 @@ class MovieTileData {
     this.boldCast,
   });
 
-  static MovieTileData all({Color? color}) {
+  static MovieTileData all({TileColor? color}) {
     return MovieTileData(
       userScore: color,
       mpaRating: color,
