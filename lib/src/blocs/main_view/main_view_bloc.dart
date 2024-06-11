@@ -1,7 +1,7 @@
 import 'package:cinemadle/src/bloc_utilities/blurred_image/blurred_image_creator.dart';
 import 'package:cinemadle/src/bloc_utilities/blurred_image/blurred_image_data.dart';
 import 'package:cinemadle/src/bloc_utilities/utilities.dart';
-import 'package:cinemadle/src/color_json_converter.dart';
+import 'package:cinemadle/src/converters/color_json_converter.dart';
 import 'package:cinemadle/src/converters/blurred_image_json_converter.dart';
 import 'package:cinemadle/src/converters/flip_card_controller_json_converter.dart';
 import 'package:cinemadle/src/widgets/blurred_image.dart';
