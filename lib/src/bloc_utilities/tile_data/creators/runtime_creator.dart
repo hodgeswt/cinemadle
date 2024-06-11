@@ -32,7 +32,7 @@ class RuntimeCreator extends TileDataCreator<int> {
     // Result: 90 min - 100 min = -10 min
     // Show single down arrow
     //
-    return value < 0 && value >= -10;
+    return value < 0 && value >= -20;
   }
 
   @override

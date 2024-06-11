@@ -54,7 +54,7 @@ void main() {
     });
 
     group('colors', () {
-      test('greenCondition', () {
+      test('green condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         DirectorCreator creator = DirectorCreator(targetMovie: targetMovie);
@@ -64,7 +64,7 @@ void main() {
         expect(creator.greenCondition(2), true);
       });
 
-      test('yellowCondition', () {
+      test('yellow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         DirectorCreator creator = DirectorCreator(targetMovie: targetMovie);
@@ -76,7 +76,7 @@ void main() {
     });
 
     group('arrows', () {
-      test('singleDownArrowCondition', () {
+      test('single down arrow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         DirectorCreator creator = DirectorCreator(targetMovie: targetMovie);
@@ -86,7 +86,7 @@ void main() {
         expect(creator.singleDownArrowCondition(2), false);
       });
 
-      test('doubleDownArrowCondition', () {
+      test('double down arrow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         DirectorCreator creator = DirectorCreator(targetMovie: targetMovie);
@@ -96,7 +96,7 @@ void main() {
         expect(creator.doubleDownArrowCondition(2), false);
       });
 
-      test('singleUpArrowCondition', () {
+      test('single up arrow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         DirectorCreator creator = DirectorCreator(targetMovie: targetMovie);
@@ -106,7 +106,7 @@ void main() {
         expect(creator.singleUpArrowCondition(2), false);
       });
 
-      test('doubleUpArrowCondition', () {
+      test('double up arrow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         DirectorCreator creator = DirectorCreator(targetMovie: targetMovie);

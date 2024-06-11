@@ -74,7 +74,7 @@ void main() {
     });
 
     group('colors', () {
-      test('greenCondition', () {
+      test('green condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         GenreCreator creator = GenreCreator(targetMovie: targetMovie);
@@ -84,7 +84,7 @@ void main() {
         expect(creator.greenCondition(2), true);
       });
 
-      test('yellowCondition', () {
+      test('yellow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         GenreCreator creator = GenreCreator(targetMovie: targetMovie);
@@ -96,7 +96,7 @@ void main() {
     });
 
     group('arrows', () {
-      test('singleDownArrowCondition', () {
+      test('single down arrow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         GenreCreator creator = GenreCreator(targetMovie: targetMovie);
@@ -106,7 +106,7 @@ void main() {
         expect(creator.singleDownArrowCondition(2), false);
       });
 
-      test('doubleDownArrowCondition', () {
+      test('double down arrow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         GenreCreator creator = GenreCreator(targetMovie: targetMovie);
@@ -116,7 +116,7 @@ void main() {
         expect(creator.doubleDownArrowCondition(2), false);
       });
 
-      test('singleUpArrowCondition', () {
+      test('single up arrow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         GenreCreator creator = GenreCreator(targetMovie: targetMovie);
@@ -126,7 +126,7 @@ void main() {
         expect(creator.singleUpArrowCondition(2), false);
       });
 
-      test('doubleUpArrowCondition', () {
+      test('double up arrow condition', () {
         Movie targetMovie = TestUtilities.movie();
 
         GenreCreator creator = GenreCreator(targetMovie: targetMovie);
@@ -212,6 +212,104 @@ void main() {
 
         creator.compute(guessedMovie);
         expect(creator.arrow, '');
+      });
+    });
+
+    group('sequences', () {
+      Movie targetMovie =
+          TestUtilities.movie(genre: ["Action", "Adventure", "Comedy"]);
+
+      test('green then yellow then grey', () async {
+        Movie guessedMovie =
+            TestUtilities.movie(genre: ["Action", "Adventure", "Comedy"]);
+
+        GenreCreator creator = GenreCreator(targetMovie: targetMovie);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.green);
+        expect(creator.arrow, '');
+        expect(creator.bolded, []);
+
+        guessedMovie =
+            TestUtilities.movie(genre: ["Sci-Fi", "Adventure", "Romance"]);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.yellow);
+        expect(creator.arrow, '');
+        expect(creator.bolded, [false, true, false]);
+
+        guessedMovie =
+            TestUtilities.movie(genre: ["Sci-Fi", "Horror", "Romance"]);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.grey);
+        expect(creator.arrow, '');
+        expect(creator.bolded, [false, false, false]);
+      });
+
+      test('three yellows', () async {
+        Movie guessedMovie =
+            TestUtilities.movie(genre: ["Adventure", "Action", "Romance"]);
+
+        GenreCreator creator = GenreCreator(targetMovie: targetMovie);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.yellow);
+        expect(creator.arrow, '');
+        expect(creator.bolded, [true, true, false]);
+
+        guessedMovie =
+            TestUtilities.movie(genre: ["Sci-Fi", "Adventure", "Romance"]);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.yellow);
+        expect(creator.arrow, '');
+        expect(creator.bolded, [false, true, false]);
+
+        guessedMovie =
+            TestUtilities.movie(genre: ["Drama", "Horror", "Adventure"]);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.yellow);
+        expect(creator.arrow, '');
+        expect(creator.bolded, [false, false, true]);
+      });
+
+      test('two yellow then grey', () async {
+        Movie guessedMovie =
+            TestUtilities.movie(genre: ["Adventure", "Action", "Romance"]);
+
+        GenreCreator creator = GenreCreator(targetMovie: targetMovie);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.yellow);
+        expect(creator.arrow, '');
+        expect(creator.bolded, [true, true, false]);
+
+        guessedMovie =
+            TestUtilities.movie(genre: ["Sci-Fi", "Adventure", "Romance"]);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.yellow);
+        expect(creator.arrow, '');
+        expect(creator.bolded, [false, true, false]);
+
+        guessedMovie =
+            TestUtilities.movie(genre: ["Sci-Fi", "Horror", "Romance"]);
+
+        await creator.compute(guessedMovie);
+
+        expect(creator.color, TileColor.grey);
+        expect(creator.arrow, '');
+        expect(creator.bolded, [false, false, false]);
       });
     });
   });

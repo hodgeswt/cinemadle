@@ -6,12 +6,24 @@ class UserScoreCreator extends TileDataCreator<double> {
     required super.targetMovie,
   });
 
+  double _round(double x) {
+    int y = (x * 10).round();
+
+    return y.toDouble() / 10;
+  }
+
   @override
   compute(Movie guessedMovie) async {
-    double target = double.parse(targetMovie.voteAverage.toStringAsFixed(1));
-    double guessed = double.parse(guessedMovie.voteAverage.toStringAsFixed(1));
+    // Normal conversion functions were acting
+    // weird, so I wrote my own. Rounds to the nearest
+    // tenth.
+    double target = _round(targetMovie.voteAverage);
+    double guessed = _round(guessedMovie.voteAverage);
 
-    data = target - guessed;
+    // Dart has weird floating point errors
+    // kind of often, so keep our diff to the
+    // same sig figs
+    data = _round(target - guessed);
 
     super.compute(guessedMovie);
   }
