@@ -1,4 +1,8 @@
+import 'package:mocktail/mocktail.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
+
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 class TestData<T, E> {
   TestData({
@@ -15,6 +19,19 @@ class TestData<T, E> {
   String toString() {
     return 'TestData{input1: $input1, input2: $input2, expected: $expected}';
   }
+}
+
+class MockStorage extends Mock implements Storage {}
+
+late Storage hydratedStorage;
+
+void initHydratedStorage() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  hydratedStorage = MockStorage();
+  when(
+    () => hydratedStorage.write(any(), any<dynamic>()),
+  ).thenAnswer((_) async {});
+  HydratedBloc.storage = hydratedStorage;
 }
 
 class TestUtilities {

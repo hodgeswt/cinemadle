@@ -30,38 +30,10 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
   final TmdbRepository _tmdbRepository;
 
-  late UserScoreCreator _userScoreCreator;
-  late MpaRatingCreator _mpaRatingCreator;
-  late ReleaseDateCreator _releaseDateCreator;
-  late RevenueCreator _revenueCreator;
-  late RuntimeCreator _runtimeCreator;
-  late DirectorCreator _directorCreator;
-  late WriterCreator _writerCreator;
-  late GenreCreator _genreCreator;
-  late CastCreator _castCreator;
-
-  Map<TileColor, String> resultsColorMap = {
-    TileColor.yellow: "🟨",
-    TileColor.green: "🟩",
-    TileColor.grey: "⬛",
-    TileColor.red: "⬛",
-  };
-
   bool userFlippedCard = false;
 
   MainViewBloc(this.targetMovie, this.uuid, this._tmdbRepository)
       : super(MainViewState(status: MainViewStatus.playing, uuid: uuid)) {
-    _userScoreCreator = UserScoreCreator(targetMovie: targetMovie);
-    _mpaRatingCreator = MpaRatingCreator(targetMovie: targetMovie);
-    _releaseDateCreator = ReleaseDateCreator(targetMovie: targetMovie);
-    _revenueCreator = RevenueCreator(targetMovie: targetMovie);
-    _runtimeCreator = RuntimeCreator(targetMovie: targetMovie);
-    _directorCreator = DirectorCreator(targetMovie: targetMovie);
-    _writerCreator = WriterCreator(targetMovie: targetMovie);
-    _genreCreator = GenreCreator(targetMovie: targetMovie);
-    _castCreator =
-        CastCreator(targetMovie: targetMovie, tmdbRepository: _tmdbRepository);
-
     on<ResetRequested>((event, emit) {
       emit(MainViewState.empty);
     });
@@ -184,41 +156,55 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
       return MovieTileData.all(color: TileColor.green);
     }
 
+    CastCreator castCreator =
+        CastCreator(targetMovie: targetMovie, tmdbRepository: _tmdbRepository);
+    UserScoreCreator userScoreCreator =
+        UserScoreCreator(targetMovie: targetMovie);
+    MpaRatingCreator mpaRatingCreator =
+        MpaRatingCreator(targetMovie: targetMovie);
+    ReleaseDateCreator releaseDateCreator =
+        ReleaseDateCreator(targetMovie: targetMovie);
+    RevenueCreator revenueCreator = RevenueCreator(targetMovie: targetMovie);
+    RuntimeCreator runtimeCreator = RuntimeCreator(targetMovie: targetMovie);
+    DirectorCreator directorCreator = DirectorCreator(targetMovie: targetMovie);
+    WriterCreator writerCreator = WriterCreator(targetMovie: targetMovie);
+    GenreCreator genreCreator = GenreCreator(targetMovie: targetMovie);
+
     MovieTileData tileData = MovieTileData();
 
-    await _userScoreCreator.compute(movie);
-    tileData.userScore = _userScoreCreator.color;
-    tileData.userScoreArrow = _userScoreCreator.arrow;
+    await userScoreCreator.compute(movie);
+    tileData.userScore = userScoreCreator.color;
+    tileData.userScoreArrow = userScoreCreator.arrow;
 
-    await _mpaRatingCreator.compute(movie);
-    tileData.mpaRating = _mpaRatingCreator.color;
-    tileData.mpaRatingArrow = _mpaRatingCreator.arrow;
+    await mpaRatingCreator.compute(movie);
+    tileData.mpaRating = mpaRatingCreator.color;
+    tileData.mpaRatingArrow = mpaRatingCreator.arrow;
 
-    await _releaseDateCreator.compute(movie);
-    tileData.releaseDate = _releaseDateCreator.color;
-    tileData.releaseDateArrow = _releaseDateCreator.arrow;
+    await releaseDateCreator.compute(movie);
+    tileData.releaseDate = releaseDateCreator.color;
+    tileData.releaseDateArrow = releaseDateCreator.arrow;
 
-    await _revenueCreator.compute(movie);
-    tileData.revenue = _revenueCreator.color;
-    tileData.revenueArrow = _revenueCreator.arrow;
+    await revenueCreator.compute(movie);
+    tileData.revenue = revenueCreator.color;
+    tileData.revenueArrow = revenueCreator.arrow;
 
-    await _runtimeCreator.compute(movie);
-    tileData.runtime = _runtimeCreator.color;
-    tileData.runtimeArrow = _runtimeCreator.arrow;
+    await runtimeCreator.compute(movie);
+    tileData.runtime = runtimeCreator.color;
+    tileData.runtimeArrow = runtimeCreator.arrow;
 
-    await _directorCreator.compute(movie);
-    tileData.director = _directorCreator.color;
+    await directorCreator.compute(movie);
+    tileData.director = directorCreator.color;
 
-    await _writerCreator.compute(movie);
-    tileData.writer = _writerCreator.color;
+    await writerCreator.compute(movie);
+    tileData.writer = writerCreator.color;
 
-    await _genreCreator.compute(movie);
-    tileData.genre = _genreCreator.color;
-    tileData.boldGenre = _genreCreator.bolded;
+    await genreCreator.compute(movie);
+    tileData.genre = genreCreator.color;
+    tileData.boldGenre = genreCreator.bolded;
 
-    await _castCreator.compute(movie);
-    tileData.firstInCast = _castCreator.color;
-    tileData.boldCast = _castCreator.bolded;
+    await castCreator.compute(movie);
+    tileData.firstInCast = castCreator.color;
+    tileData.boldCast = castCreator.bolded;
 
     return tileData;
   }

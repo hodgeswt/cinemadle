@@ -9,7 +9,4 @@ sealed class TargetMovieEvent extends Equatable {
 
 final class TargetMovieLoadInitiated extends TargetMovieEvent {
   const TargetMovieLoadInitiated();
-
-  @override
-  List<Object> get props => [];
 }

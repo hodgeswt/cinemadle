@@ -23,6 +23,7 @@ class TargetMovieBloc extends HydratedBloc<TargetMovieEvent, TargetMovieState> {
     if (state.status == TargetMovieStatus.loaded &&
         state.uuid == Utilities.getUuid()) {
       emit(state);
+      return;
     }
 
     int uuid = Utilities.getUuid();
@@ -36,7 +37,7 @@ class TargetMovieBloc extends HydratedBloc<TargetMovieEvent, TargetMovieState> {
     );
 
     try {
-      Movie? movie = await _tmdbRepository.getMovieFromPage(page, out);
+      Movie movie = await _tmdbRepository.getMovieFromPage(page, out);
 
       emit(
         state.copyWith(movie: movie, status: TargetMovieStatus.loaded),
