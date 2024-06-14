@@ -23,6 +23,13 @@ jobs:
       - name: Get Packages
         run: flutter pub get
 
+      - name: Build Runner
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+        working-directory: ./packages/tmdb_repository
+        run: |
+          dart run build_runner build
+
       - name: Analyze
         run: flutter analyze
 
