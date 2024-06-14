@@ -26,9 +26,9 @@ jobs:
       - name: Build Runner
         env:
           API_KEY: ${{ secrets.API_KEY }}
+        working-directory: ./packages/tmdb_repository
         run: |
-          cd ./packages/tmdb_repository
-          dart run build_runner build
+          dart run build_runner build --delete-conflicting-outputs
 
       - name: Analyze
         run: flutter analyze
