@@ -411,23 +411,27 @@ function Set-PubspecVersion() {
     Process {
         [string[]]$pubspec = [IO.File]::ReadAllLines('pubspec.yaml')
         [string[]]$modified = @()
+        [bool]$dirty = $False
         foreach($line in $pubspec) {
-            if ($line -Like 'version: *') {
+            if ($line -Like 'version: *' -and (-not ($line -like "version: $v+0*"))) {
                 $modified += "version: $v+0"
+                $dirty = $True
             } else {
                 $modified += $line
             }
         }
 
-        [IO.File]::WriteAllLines('pubspec.yaml', $modified)
+        if ($dirty) {
+            [IO.File]::WriteAllLines('pubspec.yaml', $modified)
 
-        if ($CommitAndPush) {
-            git config user.name 'github-actions' | Out-Null
-            git config user.email 'github-actions@github.com' | Out-Null
-            git pull | Out-Null
-            git add pubspec.yaml | Out-Null
-            git commit -m "Updated pubspec.yaml version to $releaseVersion" | Out-Null
-            git push | Out-Null
+            if ($CommitAndPush) {
+                git config user.name 'github-actions' | Out-Null
+                git config user.email 'github-actions@github.com' | Out-Null
+                git pull | Out-Null
+                git add pubspec.yaml | Out-Null
+                git commit -m "Updated pubspec.yaml version to $releaseVersion" | Out-Null
+                git push | Out-Null
+            }
         }
     }
 
