@@ -44,6 +44,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           Import-Module .\ps_modules\Cinemadle.psm1
-          $version = ${{ steps.pick_version.outputs.version }}
+          [string]$version = '${{ steps.pick_version.outputs.version }}'
           New-Release -Version $version -Prerelease
 
