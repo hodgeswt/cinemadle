@@ -11,7 +11,7 @@ on:
 
 jobs:
   create-release:
-    if: github.repository_owner == 'owner_name'
+    if: github.repository_owner == 'hodgeswt'
     runs-on: ubuntu-latest
 
     steps:
