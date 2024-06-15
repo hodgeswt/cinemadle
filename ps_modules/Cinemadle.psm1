@@ -467,8 +467,6 @@ function Get-LatestReleaseNotes() {
 
             $latestReleaseNotes += "$line$([Environment]::NewLine)"
         }
-
-        $latestReleaseNotes
     }
 
     End {
