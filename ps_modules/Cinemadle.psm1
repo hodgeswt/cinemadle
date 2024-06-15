@@ -290,3 +290,148 @@ function Invoke-HostBuild() {
         }
     }
 }
+
+function Get-ReleaseVersion() {
+    <#
+        .SYNOPSIS
+            Picks the next release version
+
+        .DESCRIPTION
+            Increments the release version by one
+            and returns it
+    #>
+
+    [CmdletBinding()]
+    [OutputType([string])]
+    param()
+
+    Begin {
+        $ghCli = Get-Command -Name gh -ErrorAction SilentlyContinue
+        if ($null -eq $ghCli) {
+            Write-Error -Message 'This cmdlet requires the gh cli tool.'
+            exit 1
+        }
+
+        $valid = Test-StartingDirectory
+        $projectRoot = Test-CanSetStartingDirectory
+
+        if (-not $valid) {
+            if ([string]::IsNullOrEmpty($projectRoot)) {
+                Write-Error -InputObject 'Please run this command from the cinemadle project root'
+                exit 1
+            }
+
+            Set-Location -Path $projectRoot
+        }
+
+        [string]$releaseVersion = [string]::Empty
+    }
+
+    Process {
+        [string]$lastRelease = (gh release list --json tagName | ConvertFrom-Json | Select-Object -First 1).tagName
+        [string[]]$releaseParts = $lastRelease -Split '\.'
+
+        [int]$lastNumber = $releaseParts | Select-Object -Last 1
+        $lastNumber += 1
+        $releaseParts[$releaseParts.Length - 1] = $lastNumber
+
+        $releaseVersion = $releaseParts -Join '.'
+    }
+
+    End {
+        return $releaseVersion
+    }
+}
+
+function Get-LatestReleaseNotes() {
+    <#
+        .SYNOPSIS
+           Gets the latest release notes
+
+        .DESCRIPTION
+            Gets the latest release notes
+            from release_notes.txt
+    #>
+
+    [CmdletBinding()]
+    [OutputType([string])]
+    param()
+
+    Begin {
+        [string[]]$releaseNotes = [IO.File]::ReadAllLines('.\release_notes.txt')
+        [string]$latestReleaseNotes = [string]::Empty
+    }
+
+    Process {
+        foreach($line in $releaseNotes) {
+            if ($line -eq '-------------------') {
+                break;
+            }
+
+            $latestReleaseNotes += "$line$([Environment]::NewLine)"
+        }
+
+        $latestReleaseNotes
+    }
+
+    End {
+        return $latestReleaseNotes
+    }
+}
+
+function New-Release() {
+    <#
+        .SYNOPSIS
+            Creates a new release on GitHub
+
+        .DESCRIPTION
+            Creates a new release on GitHub
+            using the GitHub cli
+
+        .PARAMETER Version
+            The version to create
+
+        .PARAMETER ReleaseNotes
+            The content of the release notes
+
+        .PARAMETER Prerelease
+            Marks this release as a prerelease
+    #>
+
+    [CmdletBinding()]
+    [OutputType()]
+    param(
+        [Parameter(Mandatory = $True)]
+        [string]$Version,
+
+        [Parameter(Mandatory = $False)]
+        [string]$ReleaseNotes = $null,
+
+        [Parameter(Mandatory = $False)]
+        [switch]$Prerelease
+    )
+
+    Begin {
+        $ghCli = Get-Command -Name gh -ErrorAction SilentlyContinue
+        if ($null -eq $ghCli) {
+            Write-Error -Message 'This cmdlet requires the gh cli tool.'
+            exit 1
+        }
+
+        if ($null -eq $ReleaseNotes) {
+            $ReleaseNotes = Get-LatestReleaseNotes
+        }
+    }
+
+    Process {
+        if ($Prerelease) {
+            gh release create "$Version" --latest --notes "$ReleaseNotes" --prerelease
+        } else {
+            gh release create "$Version" --latest --notes "$ReleaseNotes"
+        }
+    }
+
+    End {
+
+    }
+}
