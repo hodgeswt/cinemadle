@@ -24,11 +24,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         run: |
-          $version = ${{ github.event.inputs.version }}
+          [string]$version = '${{ github.event.inputs.version }}'
 
           if ([string]::IsNullOrEmpty($version)) {
             Import-Module .\ps_modules\Cinemadle.psm1
-            $v = Get-ReleaseVersion -CommitAndPush
+            [string]$v = Get-ReleaseVersion -CommitAndPush
             Write-Output "version=$v" >> $env:GITHUB_OUTPUT
           } else {
             Set-PubspecVersion -Version $version -CommitAndPush

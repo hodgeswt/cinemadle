@@ -409,7 +409,7 @@ function Set-PubspecVersion() {
     }
 
     Process {
-        [string[]]$pubspec = [IO.File]::ReadAllLines('.\pubspec.yaml')
+        [string[]]$pubspec = [IO.File]::ReadAllLines('pubspec.yaml')
         [string[]]$modified = @()
         foreach($line in $pubspec) {
             if ($line -Like 'version: *') {
@@ -419,7 +419,7 @@ function Set-PubspecVersion() {
             }
         }
 
-        [IO.File]::WriteAllLines('.\pubspec.yaml', $modified)
+        [IO.File]::WriteAllLines('pubspec.yaml', $modified)
 
         if ($CommitAndPush) {
             git pull
@@ -449,7 +449,7 @@ function Get-LatestReleaseNotes() {
     param()
 
     Begin {
-        [string[]]$releaseNotes = [IO.File]::ReadAllLines('.\release_notes.txt')
+        [string[]]$releaseNotes = [IO.File]::ReadAllLines('release_notes.txt')
         [string]$latestReleaseNotes = [string]::Empty
     }
 
