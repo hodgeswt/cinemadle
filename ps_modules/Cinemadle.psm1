@@ -516,7 +516,7 @@ function New-Release() {
         }
 
         [string]$notes = $ReleaseNotes
-        if ($null -eq $notes) {
+        if ([string]::IsNullOrEmpty($notes)) {
             $notes = Get-LatestReleaseNotes
         }
 
