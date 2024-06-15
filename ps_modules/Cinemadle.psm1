@@ -422,6 +422,8 @@ function Set-PubspecVersion() {
         [IO.File]::WriteAllLines('pubspec.yaml', $modified)
 
         if ($CommitAndPush) {
+            git config user.name 'github-actions'
+            git config user.email 'github-actions@github.com'
             git pull
             git add pubspec.yaml
             git commit -m "Updated pubspec.yaml version to $releaseVersion"
