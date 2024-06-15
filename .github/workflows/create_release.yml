@@ -28,19 +28,12 @@ jobs:
 
           if ([string]::IsNullOrEmpty($version)) {
             Import-Module .\ps_modules\Cinemadle.psm1
-            $version = Get-ReleaseVersion
+            $v = Get-ReleaseVersion -CommitAndPush
+            Write-Output "version=$v" >> $env:GITHUB_OUTPUT
+          } else {
+            Set-PubspecVersion -Version $version -CommitAndPush
+            Write-Output "version=$version" >> $env:GITHUB_OUTPUT
           }
-
-          Write-Output "version=$version" >> $env:GITHUB_OUTPUT
-
-      - name: Update pubspec.yaml
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          valueFile: 'pubspec.yaml'
-          propertyPath: 'version'
-          value: '${{ steps.pick_version.outputs.version }}+0'
-          message: 'Update version in pubspec.yaml to ${{ steps.pick_version.outputs.version }}+0'
-          token: ${{ secrets.GH_PAT }}
 
       - name: Create Release
         shell: pwsh

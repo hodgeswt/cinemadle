@@ -299,11 +299,18 @@ function Get-ReleaseVersion() {
         .DESCRIPTION
             Increments the release version by one
             and returns it
+
+        .PARAMETER CommitAndPush
+            Commits and pushes an update to the
+            pubspec.yaml file.
     #>
 
     [CmdletBinding()]
     [OutputType([string])]
-    param()
+    param(
+        [Parameter(Mandatory = $False)]
+        [switch]$CommitAndPush
+    )
 
     Begin {
         $ghCli = Get-Command -Name gh -ErrorAction SilentlyContinue
@@ -336,10 +343,94 @@ function Get-ReleaseVersion() {
         $releaseParts[$releaseParts.Length - 1] = $lastNumber
 
         $releaseVersion = $releaseParts -Join '.'
+
+        Set-PubspecVersion -Version $releaseVersion -CommitAndPush:$CommitAndPush
     }
 
     End {
         return $releaseVersion
+    }
+}
+
+function Set-PubspecVersion() {
+    <#
+        .SYNOPSIS
+            Updates the pubspec.yaml
+            version
+
+        .DESCRIPTION
+            Updates the pubsepec.yaml
+            file to contain the
+            new version
+
+        .PARAMETER Version
+            Version to set
+
+        .PARAMETER CommitAndPush
+            Commits the change and
+            pushes to GitHub
+    #>
+
+    [CmdletBinding()]
+    [OutputType()]
+    param(
+        [Parameter(Mandatory = $True)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Version,
+
+        [Parameter(Mandatory = $False)]
+        [switch]$CommitAndPush
+    )
+
+    Begin {
+        $git = Get-Command -Name git -ErrorAction SilentlyContinue
+        if ($null -eq $git) {
+            Write-Error -Message 'This cmdlet requires the git cli.'
+            exit 1
+        }
+
+        $valid = Test-StartingDirectory
+        $projectRoot = Test-CanSetStartingDirectory
+
+        if (-not $valid) {
+            if ([string]::IsNullOrEmpty($projectRoot)) {
+                Write-Error -InputObject 'Please run this command from the cinemadle project root'
+                exit 1
+            }
+
+            Set-Location -Path $projectRoot
+        }
+
+        [string]$v = $releaseVersion
+
+        if ($v.StartsWith('v')) {
+            $v = $v.Substring(1)
+        }
+    }
+
+    Process {
+        [string[]]$pubspec = [IO.File]::ReadAllLines('.\pubspec.yaml')
+        [string[]]$modified = @()
+        foreach($line in $pubspec) {
+            if ($line -Like 'version: *') {
+                $modified += "version: $v+0"
+            } else {
+                $modified += $line
+            }
+        }
+
+        [IO.File]::WriteAllLines('.\pubspec.yaml', $modified)
+
+        if ($CommitAndPush) {
+            git pull
+            git add pubspec.yaml
+            git commit -m "Updated pubspec.yaml version to $releaseVersion"
+            git push
+        }
+    }
+
+    End {
+
     }
 }
 
