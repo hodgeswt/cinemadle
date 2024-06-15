@@ -48,5 +48,5 @@ jobs:
         run: |
           Import-Module .\ps_modules\Cinemadle.psm1
           $version = ${{ steps.pick_version.outputs.version }}
-          New-Release -Version $version
+          New-Release -Version $version -Prerelease
 
