@@ -515,16 +515,19 @@ function New-Release() {
             exit 1
         }
 
-        if ($null -eq $ReleaseNotes) {
-            $ReleaseNotes = Get-LatestReleaseNotes
+        [string]$notes = $ReleaseNotes
+        if ($null -eq $notes) {
+            $notes = Get-LatestReleaseNotes
         }
+
+        Write-Output -InputObject "Creating release with notes: $notes"
     }
 
     Process {
         if ($Prerelease) {
-            gh release create "$Version" --latest --notes "$ReleaseNotes" --prerelease
+            gh release create "$Version" --latest --notes "$notes" --prerelease
         } else {
-            gh release create "$Version" --latest --notes "$ReleaseNotes"
+            gh release create "$Version" --latest --notes "$notes"
         }
     }
 
