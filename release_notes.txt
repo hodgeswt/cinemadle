@@ -1,3 +1,14 @@
+Cinemadle v0.3.5
+
+Additions:
+
+- Genres and Cast now all render the same size
+- Font is now RobotoMono family, using Light as the regular weight
+- Share sheet will now be populated on loss
+
+
+-------------------
+
 Cinemadle v0.3.4
 
 Additions:
