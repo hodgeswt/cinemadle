@@ -70,7 +70,6 @@ FunctionsToExport = @(
     'Invoke-BuildProject'
     'Invoke-HostBuild'
     'Get-ReleaseVersion'
-    'Get-LatestReleaseNotes'
     'New-Release'
     'Set-PubspecVersion'
 )

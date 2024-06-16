@@ -261,7 +261,6 @@ function Invoke-HostBuild() {
     )
 
     Begin {
-        $startingDirectory = (Get-Location).Path
         $valid = Test-StartingDirectory
         $projectRoot = Test-CanSetStartingDirectory
 
@@ -299,18 +298,11 @@ function Get-ReleaseVersion() {
         .DESCRIPTION
             Increments the release version by one
             and returns it
-
-        .PARAMETER CommitAndPush
-            Commits and pushes an update to the
-            pubspec.yaml file.
     #>
 
     [CmdletBinding()]
     [OutputType([string])]
-    param(
-        [Parameter(Mandatory = $False)]
-        [switch]$CommitAndPush
-    )
+    param()
 
     Begin {
         $ghCli = Get-Command -Name gh -ErrorAction SilentlyContinue
@@ -344,7 +336,7 @@ function Get-ReleaseVersion() {
 
         $releaseVersion = $releaseParts -Join '.'
 
-        Set-PubspecVersion -Version $releaseVersion -CommitAndPush:$CommitAndPush
+        Set-PubspecVersion -Version $releaseVersion
     }
 
     End {
@@ -365,10 +357,6 @@ function Set-PubspecVersion() {
 
         .PARAMETER Version
             Version to set
-
-        .PARAMETER CommitAndPush
-            Commits the change and
-            pushes to GitHub
     #>
 
     [CmdletBinding()]
@@ -376,10 +364,7 @@ function Set-PubspecVersion() {
     param(
         [Parameter(Mandatory = $True)]
         [ValidateNotNullOrEmpty()]
-        [string]$Version,
-
-        [Parameter(Mandatory = $False)]
-        [switch]$CommitAndPush
+        [string]$Version
     )
 
     Begin {
@@ -423,15 +408,6 @@ function Set-PubspecVersion() {
 
         if ($dirty) {
             [IO.File]::WriteAllLines('pubspec.yaml', $modified)
-
-            if ($CommitAndPush) {
-                git config user.name 'github-actions' | Out-Null
-                git config user.email 'github-actions@github.com' | Out-Null
-                git pull | Out-Null
-                git add pubspec.yaml | Out-Null
-                git commit -m "Updated pubspec.yaml version to $releaseVersion" | Out-Null
-                git push | Out-Null
-            }
         }
     }
 
@@ -440,7 +416,7 @@ function Set-PubspecVersion() {
     }
 }
 
-function Get-LatestReleaseNotes() {
+function Get-ReleaseNotes() {
     <#
         .SYNOPSIS
            Gets the latest release notes
@@ -455,22 +431,23 @@ function Get-LatestReleaseNotes() {
     param()
 
     Begin {
-        [string[]]$releaseNotes = [IO.File]::ReadAllLines('release_notes.txt')
-        [string]$latestReleaseNotes = [string]::Empty
+        [string]$releaseNotes = [string]::Empty
     }
 
     Process {
-        foreach($line in $releaseNotes) {
-            if ($line -eq '-------------------') {
-                break;
+        while($True) {
+            $addition = Read-Host -Prompt 'Enter release addition (''exit'' to end)'
+
+            if ($addition -eq 'exit' -or [string]::IsNullOrEmpty($addition)) {
+                break
             }
 
-            $latestReleaseNotes += "$line$([Environment]::NewLine)"
+            $releaseNotes += "- $addition$([Environment]::NewLine)"
         }
     }
 
     End {
-        return $latestReleaseNotes
+        return $releaseNotes
     }
 }
 
@@ -496,7 +473,7 @@ function New-Release() {
     [CmdletBinding()]
     [OutputType()]
     param(
-        [Parameter(Mandatory = $True)]
+        [Parameter(Mandatory = $False)]
         [string]$Version,
 
         [Parameter(Mandatory = $False)]
@@ -513,15 +490,36 @@ function New-Release() {
             exit 1
         }
 
+        [string]$v = $Version
+        if ([string]::IsNullOrEmpty($v)) {
+            $v = Get-ReleaseVersion
+        }
+
+
         [string]$notes = $ReleaseNotes
+        [string]$prependToFile = [string]::Empty
         if ([string]::IsNullOrEmpty($notes)) {
-            $notes = Get-LatestReleaseNotes
+            $notes = Get-ReleaseNotes
+            [string]$n = [Environment]::NewLine
+            $notes = "Cinemadle $v$n${n}Additions:$n${n}$notes$n${n}"
+            $prependToFile = "$notes-------------------$n$n"
         }
 
         Write-Output -InputObject "Creating release with notes: $notes"
     }
 
     Process {
+        if (-not ([string]::IsNullOrEmpty($prependToFile))) {
+            [string]$oldNotes = [IO.File]::ReadAllText('release_notes.txt')
+            $oldNotes = "$prependToFile$oldNotes"
+
+            [IO.File]::WriteAllText('release_notes.txt', $oldNotes)
+        }
+
+        git add .
+        git commit -m "[skip ci] Creating release $v"
+        git push
+
         if ($Prerelease) {
             gh release create "$Version" --latest --notes "$notes" --prerelease
         } else {
