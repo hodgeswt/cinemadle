@@ -9,8 +9,6 @@ enum MainViewStatus {
   guessLoading
 }
 
-const userGuessLimit = 10;
-
 @JsonSerializable()
 @FlipCardControllerJsonConverter()
 @BlurredImageJsonConverter()
@@ -19,12 +17,14 @@ class MainViewState extends Equatable {
     this.status = MainViewStatus.playing,
     this.userGuesses,
     this.userGuessesIds,
-    this.remainingGuesses = userGuessLimit,
+    this.remainingGuesses = MainViewState.userGuessLimit,
     this.cardFlipControllers,
     this.blur,
     this.results,
     this.uuid,
   });
+
+  static const int userGuessLimit = 10;
 
   final MainViewStatus status;
   final List<TileCollection>? userGuesses;
@@ -37,7 +37,7 @@ class MainViewState extends Equatable {
 
   static MainViewState get empty {
     return const MainViewState(
-      remainingGuesses: userGuessLimit,
+      remainingGuesses: MainViewState.userGuessLimit,
       userGuesses: [],
       userGuessesIds: [],
       status: MainViewStatus.playing,

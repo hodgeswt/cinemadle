@@ -1,5 +1,4 @@
 import 'package:cinemadle/src/constants.dart';
-import 'package:cinemadle/src/utilities.dart';
 import 'package:cinemadle/src/widgets/cinemadle_app_bar.dart';
 import 'package:cinemadle/src/widgets/drawer.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +32,6 @@ class InformationView extends StatelessWidget {
   Center _buildBody(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: Utilities.widthCalculator(MediaQuery.of(context).size.width / 2),
         child: ListView(
           children: [
             const Padding(

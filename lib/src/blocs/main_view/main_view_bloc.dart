@@ -121,12 +121,12 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
           newBlur[targetMovie.id] = BlurredImageCreator.instance
               .create(BlurredImageData.zero(targetMovie.posterPath));
-          newResults = _buildResults(newStatus);
+          newResults = _buildResults(newStatus, newGuesses);
         } else if (newStatus == MainViewStatus.win) {
-          newStatus = MainViewStatus.win;
           newBlur[targetMovie.id] = BlurredImageCreator.instance
               .create(BlurredImageData.zero(targetMovie.posterPath));
-          newResults = _buildResults(newStatus);
+
+          newResults = _buildResults(newStatus, newGuesses);
         }
 
         emit(
@@ -162,10 +162,16 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
     }
   }
 
-  String _buildResults(MainViewStatus status) {
+  String _buildResults(MainViewStatus status, List<TileCollection> guesses) {
     String results = "";
-    for (TileCollection tile in state.userGuesses ?? []) {
+
+    int i = 0;
+    for (TileCollection tile in guesses) {
+      if (i >= MainViewState.userGuessLimit) {
+        break;
+      }
       results += tile.results;
+      i++;
     }
 
     if (status == MainViewStatus.win) {
