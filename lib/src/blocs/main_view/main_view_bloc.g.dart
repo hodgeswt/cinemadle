@@ -16,8 +16,8 @@ MainViewState _$MainViewStateFromJson(Map<String, dynamic> json) =>
       userGuessesIds: (json['userGuessesIds'] as List<dynamic>?)
           ?.map((e) => (e as num).toInt())
           .toList(),
-      remainingGuesses:
-          (json['remainingGuesses'] as num?)?.toInt() ?? userGuessLimit,
+      remainingGuesses: (json['remainingGuesses'] as num?)?.toInt() ??
+          MainViewState.userGuessLimit,
       cardFlipControllers:
           (json['cardFlipControllers'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(int.parse(k),
