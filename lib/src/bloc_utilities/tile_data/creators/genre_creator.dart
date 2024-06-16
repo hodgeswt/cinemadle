@@ -31,7 +31,7 @@ class GenreCreator extends TileDataCreator<int> {
       }
     }
 
-    content = guessedMovie.genre.join(', ');
+    content = guessedMovie.genre.uniformPadding().join('\n');
 
     return super.compute(guessedMovie, status: status);
   }

@@ -1,4 +1,5 @@
 import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
+import 'package:cinemadle/src/bloc_utilities/utilities.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
 class WriterCreator extends TileDataCreator<int> {
@@ -17,7 +18,7 @@ class WriterCreator extends TileDataCreator<int> {
       data = 0;
     }
 
-    content = guessedMovie.writer;
+    content = guessedMovie.writer.split(' ').uniformPadding().join('\n');
 
     return super.compute(guessedMovie, status: status);
   }

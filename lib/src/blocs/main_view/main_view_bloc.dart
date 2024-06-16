@@ -74,10 +74,6 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
         Map<int, BlurredImage> newBlur =
             With.mapCopyWith(state.blur, guess.id, img);
 
-        List<bool> newAllowFlip = List.filled(
-                state.allowFlip?.length ?? 0, false)
-            .prepend(newRemainingGuesses <= 2 || targetMovie.id == guess.id);
-
         String newResults = state.results ?? "";
 
         MainViewStatus newStatus = state.status;
@@ -100,6 +96,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
           guess,
           targetMovie,
           tileStatus == TileStatus.loss ? TileStatus.none : tileStatus,
+          newRemainingGuesses <= 2 || targetMovie.id == guess.id,
         ).setTmdbRepository(_tmdbRepository);
 
         await newGuess.create();
@@ -114,16 +111,17 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
             targetMovie,
             targetMovie,
             tileStatus,
+            true,
           ).setTmdbRepository(_tmdbRepository);
 
           await targetTile.create();
           newGuesses = newGuesses.prepend(targetTile);
 
           newGuessesIds = newGuessesIds.prepend(targetMovie.id);
-          newAllowFlip = List.filled(newAllowFlip.length, false).prepend(true);
 
           newBlur[targetMovie.id] = BlurredImageCreator.instance
               .create(BlurredImageData.zero(targetMovie.posterPath));
+          newResults = _buildResults(newStatus);
         } else if (newStatus == MainViewStatus.win) {
           newStatus = MainViewStatus.win;
           newBlur[targetMovie.id] = BlurredImageCreator.instance
@@ -139,7 +137,6 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
             userGuessesIds: newGuessesIds,
             blur: newBlur,
             cardFlipControllers: newCardFlipControllers,
-            allowFlip: newAllowFlip,
             results: newResults,
           ),
         );

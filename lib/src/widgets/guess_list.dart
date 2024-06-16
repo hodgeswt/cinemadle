@@ -56,7 +56,6 @@ class _GuessListState extends State<GuessList> {
                           Padding(
                             padding: const EdgeInsets.only(top: 16.0),
                             child: MovieCard(
-                              allowFlip: state.allowFlip?[i] ?? false,
                               movieData: state.userGuesses![i],
                             ),
                           )

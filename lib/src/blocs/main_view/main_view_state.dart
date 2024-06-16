@@ -22,7 +22,6 @@ class MainViewState extends Equatable {
     this.remainingGuesses = userGuessLimit,
     this.cardFlipControllers,
     this.blur,
-    this.allowFlip,
     this.results,
     this.uuid,
   });
@@ -33,7 +32,6 @@ class MainViewState extends Equatable {
   final int remainingGuesses;
   final Map<int, FlipCardController>? cardFlipControllers;
   final Map<int, BlurredImage>? blur;
-  final List<bool>? allowFlip;
   final String? results;
   final int? uuid;
 
@@ -45,7 +43,6 @@ class MainViewState extends Equatable {
       status: MainViewStatus.playing,
       cardFlipControllers: {},
       blur: {},
-      allowFlip: [],
       results: "",
       uuid: null,
     );
@@ -58,7 +55,6 @@ class MainViewState extends Equatable {
     MainViewStatus? status,
     Map<int, FlipCardController>? cardFlipControllers,
     Map<int, BlurredImage>? blur,
-    List<bool>? allowFlip,
     String? results,
     int? uuid,
   }) {
@@ -69,7 +65,6 @@ class MainViewState extends Equatable {
       status: status ?? this.status,
       cardFlipControllers: cardFlipControllers ?? this.cardFlipControllers,
       blur: blur ?? this.blur,
-      allowFlip: allowFlip ?? this.allowFlip,
       results: results ?? this.results,
       uuid: uuid ?? this.uuid,
     );
@@ -88,7 +83,6 @@ class MainViewState extends Equatable {
         userGuessesIds,
         cardFlipControllers,
         blur,
-        allowFlip,
         results,
         uuid,
       ];

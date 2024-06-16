@@ -11,6 +11,7 @@ TileCollection _$TileCollectionFromJson(Map<String, dynamic> json) =>
       Movie.fromJson(json['movie'] as Map<String, dynamic>),
       Movie.fromJson(json['targetMovie'] as Map<String, dynamic>),
       $enumDecode(_$TileStatusEnumMap, json['status']),
+      json['allowFlip'] as bool,
     )..tiles = (json['tiles'] as List<dynamic>)
         .map((e) => Tile.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -19,6 +20,7 @@ Map<String, dynamic> _$TileCollectionToJson(TileCollection instance) =>
     <String, dynamic>{
       'movie': instance.movie,
       'targetMovie': instance.targetMovie,
+      'allowFlip': instance.allowFlip,
       'status': _$TileStatusEnumMap[instance.status]!,
       'tiles': instance.tiles,
     };

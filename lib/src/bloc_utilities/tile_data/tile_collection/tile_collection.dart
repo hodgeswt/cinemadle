@@ -13,10 +13,11 @@ Map<TileColor, String> resultsColorMap = {
 
 @JsonSerializable()
 class TileCollection {
-  TileCollection(this.movie, this.targetMovie, this.status);
+  TileCollection(this.movie, this.targetMovie, this.status, this.allowFlip);
 
   final Movie movie;
   final Movie targetMovie;
+  final bool allowFlip;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   TmdbRepository? tmdbRepository;

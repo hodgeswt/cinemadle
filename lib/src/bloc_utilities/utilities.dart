@@ -39,3 +39,33 @@ extension Equals<T> on List<T> {
         every((element) => other.contains(element));
   }
 }
+
+extension UniformPadding on String {
+  String uniformPadding(int length) {
+    int l = (this.length - length).abs();
+    if (l == 0) {
+      return this;
+    }
+
+    String left = ' ' * (l / 2).floor();
+    String right = ' ' * (l / 2).ceil();
+
+    return '$left$this$right';
+  }
+}
+
+extension MaxLength on List<String> {
+  int maxLength() {
+    return fold(
+        0,
+        (int previousValue, element) =>
+            element.length > previousValue ? element.length : previousValue);
+  }
+}
+
+extension UniformPaddingList on List<String> {
+  List<String> uniformPadding() {
+    int l = maxLength();
+    return map((e) => e.uniformPadding(l)).toList();
+  }
+}

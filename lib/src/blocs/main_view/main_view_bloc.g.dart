@@ -27,8 +27,6 @@ MainViewState _$MainViewStateFromJson(Map<String, dynamic> json) =>
         (k, e) => MapEntry(int.parse(k),
             const BlurredImageJsonConverter().fromJson(e as String)),
       ),
-      allowFlip:
-          (json['allowFlip'] as List<dynamic>?)?.map((e) => e as bool).toList(),
       results: json['results'] as String?,
       uuid: (json['uuid'] as num?)?.toInt(),
     );
@@ -44,7 +42,6 @@ Map<String, dynamic> _$MainViewStateToJson(MainViewState instance) =>
               k.toString(), const FlipCardControllerJsonConverter().toJson(e))),
       'blur': instance.blur?.map((k, e) =>
           MapEntry(k.toString(), const BlurredImageJsonConverter().toJson(e))),
-      'allowFlip': instance.allowFlip,
       'results': instance.results,
       'uuid': instance.uuid,
     };

@@ -15,11 +15,9 @@ class MovieCard extends StatelessWidget {
   const MovieCard({
     super.key,
     required this.movieData,
-    required this.allowFlip,
   });
 
   final TileCollection movieData;
-  final bool allowFlip;
 
   bool get isTarget => movieData.movie.id == movieData.targetMovie.id;
 
@@ -120,7 +118,7 @@ class MovieCard extends StatelessWidget {
   }
 
   AspectRatio _tileBuilder(int index) {
-    double aspectRatio = Utilities.isMobile() ? 0.6 : 1.5;
+    double aspectRatio = Utilities.isMobile() ? 1.0 : 1.5;
     TileData data = movieData.tiles[index].tileData;
 
     return AspectRatio(
@@ -175,13 +173,31 @@ class MovieCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Text(
-          movieData.movie.title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-            fontSize: 32,
-          ),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                movieData.movie.title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                  fontSize: 32,
+                ),
+              ),
+            ),
+            if (movieData.allowFlip)
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'flip for visual clue',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
@@ -195,7 +211,7 @@ class MovieCard extends StatelessWidget {
           key: Key("${movieData.movie.id}"),
           controller: state.cardFlipControllers?[movieData.movie.id] ??
               FlipCardController(),
-          onTapFlipping: allowFlip,
+          onTapFlipping: movieData.allowFlip,
           frontWidget: _getFrontWidget(),
           backWidget: _getBackWidget(),
           rotateSide: RotateSide.bottom,
