@@ -521,9 +521,9 @@ function New-Release() {
         git push
 
         if ($Prerelease) {
-            gh release create "$Version" --latest --notes "$notes" --prerelease
+            gh release create "$v" --latest --notes "$notes" --prerelease
         } else {
-            gh release create "$Version" --latest --notes "$notes"
+            gh release create "$v" --latest --notes "$notes"
         }
     }
 
