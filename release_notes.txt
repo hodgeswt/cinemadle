@@ -1,3 +1,13 @@
+Cinemadle v0.3.4
+
+Additions:
+
+- UI bugfixes and design changes
+- Business logic rework
+
+
+-------------------
+
 Cinemadle v0.3.3
 
 Additions:
