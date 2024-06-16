@@ -501,7 +501,9 @@ function New-Release() {
         if ([string]::IsNullOrEmpty($notes)) {
             $notes = Get-ReleaseNotes
             [string]$n = [Environment]::NewLine
-            $notes = "Cinemadle $v$n${n}Additions:$n${n}$notes$n${n} - ${(Get-Date)}"
+            [string]$date = Get-Date
+            $date += " EST"
+            $notes = "Cinemadle $v$n$date$n${n}Additions:$n${n}$notes$n${n}"
             $prependToFile = "$notes-------------------$n$n"
         }
 

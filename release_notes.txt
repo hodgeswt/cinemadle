@@ -1,4 +1,5 @@
 Cinemadle v0.3.6
+06/16/2024 19:48:02 EST
 
 Additions:
 
@@ -10,6 +11,7 @@ Additions:
 -------------------
 
 Cinemadle v0.3.5
+06/16/2024 19:07:xx EST
 
 Additions:
 
@@ -21,6 +23,7 @@ Additions:
 -------------------
 
 Cinemadle v0.3.4
+06/15/2024 21:26:xx EST
 
 Additions:
 
@@ -31,6 +34,7 @@ Additions:
 -------------------
 
 Cinemadle v0.3.3
+06/14/2024 21:09:xx EST
 
 Additions:
 
@@ -40,6 +44,7 @@ Additions:
 -------------------
 
 Cinemadle v0.3.2
+06/07/2024 23:39:xx EST
 
 Additions:
 
@@ -54,6 +59,7 @@ Additions:
 -------------------
 
 Cinemadle v0.3.1
+06/04/2024 19:49:xx EST
 
 Additions:
 
@@ -68,6 +74,7 @@ Additions:
 -------------------
 
 Cinemadle v0.3.0
+06/03/2024 21:44:xx EST
 
 Additions:
 
@@ -77,6 +84,7 @@ Additions:
 -------------------
 
 Cinemadle v0.2.6
+06/02/2024 16:03:xx EST
 
 Additions:
 
@@ -87,6 +95,7 @@ Additions:
 -------------------
 
 Cinemadle v0.2.5
+06/02/2024 15:52:xx EST
 
 Additions:
 
@@ -97,6 +106,7 @@ Additions:
 -------------------
 
 Cinemadle v0.2.4
+06/01/2024 16:25:xx EST
 
 Additions:
 
