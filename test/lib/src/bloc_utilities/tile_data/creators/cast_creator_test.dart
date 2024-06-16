@@ -326,8 +326,8 @@ void main() {
         });
       });
 
-      group('bolded', () {
-        test('bolded: not computed', () {
+      group('emphasized', () {
+        test('emphasized: not computed', () {
           Movie targetMovie = TestUtilities.movie();
 
           CastCreator creator = CastCreator(
@@ -335,10 +335,10 @@ void main() {
             tmdbRepository: tmdbRepository,
           );
 
-          expect(creator.bolded, isEmpty);
+          expect(creator.emphasized, isEmpty);
         });
 
-        test('bolded: 0', () async {
+        test('emphasized: 0', () async {
           Movie targetMovie = TestUtilities.movie(
               leads: ["Harrison Ford", "Sally Field", "Kevin Costner"]);
           Movie guessedMovie = TestUtilities.movie(
@@ -355,10 +355,10 @@ void main() {
           await creator.compute(guessedMovie);
 
           verify(tmdbRepository.isActorInMovie(any, any)).called(3);
-          expect(creator.bolded, [false, false, false]);
+          expect(creator.emphasized, [false, false, false]);
         });
 
-        test('bolded: 1 (first)', () async {
+        test('emphasized: 1 (first)', () async {
           Movie targetMovie = TestUtilities.movie(
               leads: ["Harrison Ford", "Steve Carrell", "Kevin Costner"]);
           Movie guessedMovie = TestUtilities.movie(
@@ -379,10 +379,10 @@ void main() {
           await creator.compute(guessedMovie);
 
           verify(tmdbRepository.isActorInMovie(any, any)).called(3);
-          expect(creator.bolded, [true, false, false]);
+          expect(creator.emphasized, [true, false, false]);
         });
 
-        test('bolded: 1 (second)', () async {
+        test('emphasized: 1 (second)', () async {
           Movie targetMovie = TestUtilities.movie(
               leads: ["Harrison Ford", "Sally Field", "Kevin Costner"]);
           Movie guessedMovie = TestUtilities.movie(
@@ -403,10 +403,10 @@ void main() {
           await creator.compute(guessedMovie);
 
           verify(tmdbRepository.isActorInMovie(any, any)).called(3);
-          expect(creator.bolded, [false, true, false]);
+          expect(creator.emphasized, [false, true, false]);
         });
 
-        test('bolded: 1 (third)', () async {
+        test('emphasized: 1 (third)', () async {
           Movie targetMovie = TestUtilities.movie(
               leads: ["Harrison Ford", "Kevin Costner", "Sally Field"]);
           Movie guessedMovie = TestUtilities.movie(
@@ -427,10 +427,10 @@ void main() {
           await creator.compute(guessedMovie);
 
           verify(tmdbRepository.isActorInMovie(any, any)).called(3);
-          expect(creator.bolded, [false, false, true]);
+          expect(creator.emphasized, [false, false, true]);
         });
 
-        test('bolded: 2 (first two)', () async {
+        test('emphasized: 2 (first two)', () async {
           Movie targetMovie = TestUtilities.movie(
               leads: ["Harrison Ford", "Sally Field", "Kevin Costner"]);
           Movie guessedMovie = TestUtilities.movie(
@@ -451,10 +451,10 @@ void main() {
           await creator.compute(guessedMovie);
 
           verify(tmdbRepository.isActorInMovie(any, any)).called(3);
-          expect(creator.bolded, [true, true, false]);
+          expect(creator.emphasized, [true, true, false]);
         });
 
-        test('bolded: 2 (last two)', () async {
+        test('emphasized: 2 (last two)', () async {
           Movie targetMovie = TestUtilities.movie(
               leads: ["Harrison Ford", "Sally Field", "Kevin Costner"]);
           Movie guessedMovie = TestUtilities.movie(
@@ -475,10 +475,10 @@ void main() {
           await creator.compute(guessedMovie);
 
           verify(tmdbRepository.isActorInMovie(any, any)).called(3);
-          expect(creator.bolded, [false, true, true]);
+          expect(creator.emphasized, [false, true, true]);
         });
 
-        test('bolded: 2 (first and last)', () async {
+        test('emphasized: 2 (first and last)', () async {
           Movie targetMovie = TestUtilities.movie(
               leads: ["Harrison Ford", "Sally Field", "Kevin Costner"]);
           Movie guessedMovie = TestUtilities.movie(
@@ -499,10 +499,10 @@ void main() {
           await creator.compute(guessedMovie);
 
           verify(tmdbRepository.isActorInMovie(any, any)).called(3);
-          expect(creator.bolded, [true, false, true]);
+          expect(creator.emphasized, [true, false, true]);
         });
 
-        test('bolded: 3', () async {
+        test('emphasized: 3', () async {
           Movie targetMovie = TestUtilities.movie(
               leads: ["Harrison Ford", "Sally Field", "Kevin Costner"]);
           Movie guessedMovie = TestUtilities.movie(
@@ -516,7 +516,7 @@ void main() {
           await creator.compute(guessedMovie);
 
           verifyNever(tmdbRepository.isActorInMovie(any, any));
-          expect(creator.bolded, isEmpty);
+          expect(creator.emphasized, isEmpty);
         });
       });
     });

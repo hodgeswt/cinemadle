@@ -229,7 +229,7 @@ void main() {
 
         expect(creator.color, TileColor.green);
         expect(creator.arrow, '');
-        expect(creator.bolded, []);
+        expect(creator.emphasized, []);
 
         guessedMovie =
             TestUtilities.movie(genre: ["Sci-Fi", "Adventure", "Romance"]);
@@ -238,7 +238,7 @@ void main() {
 
         expect(creator.color, TileColor.yellow);
         expect(creator.arrow, '');
-        expect(creator.bolded, [false, true, false]);
+        expect(creator.emphasized, [false, true, false]);
 
         guessedMovie =
             TestUtilities.movie(genre: ["Sci-Fi", "Horror", "Romance"]);
@@ -247,7 +247,7 @@ void main() {
 
         expect(creator.color, TileColor.grey);
         expect(creator.arrow, '');
-        expect(creator.bolded, [false, false, false]);
+        expect(creator.emphasized, [false, false, false]);
       });
 
       test('three yellows', () async {
@@ -260,7 +260,7 @@ void main() {
 
         expect(creator.color, TileColor.yellow);
         expect(creator.arrow, '');
-        expect(creator.bolded, [true, true, false]);
+        expect(creator.emphasized, [true, true, false]);
 
         guessedMovie =
             TestUtilities.movie(genre: ["Sci-Fi", "Adventure", "Romance"]);
@@ -269,7 +269,7 @@ void main() {
 
         expect(creator.color, TileColor.yellow);
         expect(creator.arrow, '');
-        expect(creator.bolded, [false, true, false]);
+        expect(creator.emphasized, [false, true, false]);
 
         guessedMovie =
             TestUtilities.movie(genre: ["Drama", "Horror", "Adventure"]);
@@ -278,7 +278,7 @@ void main() {
 
         expect(creator.color, TileColor.yellow);
         expect(creator.arrow, '');
-        expect(creator.bolded, [false, false, true]);
+        expect(creator.emphasized, [false, false, true]);
       });
 
       test('two yellow then grey', () async {
@@ -291,7 +291,7 @@ void main() {
 
         expect(creator.color, TileColor.yellow);
         expect(creator.arrow, '');
-        expect(creator.bolded, [true, true, false]);
+        expect(creator.emphasized, [true, true, false]);
 
         guessedMovie =
             TestUtilities.movie(genre: ["Sci-Fi", "Adventure", "Romance"]);
@@ -300,7 +300,7 @@ void main() {
 
         expect(creator.color, TileColor.yellow);
         expect(creator.arrow, '');
-        expect(creator.bolded, [false, true, false]);
+        expect(creator.emphasized, [false, true, false]);
 
         guessedMovie =
             TestUtilities.movie(genre: ["Sci-Fi", "Horror", "Romance"]);
@@ -309,7 +309,7 @@ void main() {
 
         expect(creator.color, TileColor.grey);
         expect(creator.arrow, '');
-        expect(creator.bolded, [false, false, false]);
+        expect(creator.emphasized, [false, false, false]);
       });
     });
   });
