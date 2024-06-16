@@ -1,4 +1,4 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_color.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
 abstract class TileDataCreator<T> {
@@ -15,10 +15,40 @@ abstract class TileDataCreator<T> {
   bool singleUpArrowCondition(T value);
   bool doubleUpArrowCondition(T value);
 
-  bool isComputed = false;
+  String get title;
 
-  Future<void> compute(Movie guessedMovie) async {
+  bool isComputed = false;
+  String content = '';
+
+  final List<bool> emphasized = [];
+
+  Future<TileData> compute(
+    Movie guessedMovie, {
+    TileStatus status = TileStatus.none,
+  }) async {
     isComputed = true;
+
+    TileColor c;
+
+    switch (status) {
+      case TileStatus.none:
+        c = color;
+        break;
+      case TileStatus.win:
+        c = TileColor.green;
+        break;
+      case TileStatus.loss:
+        c = TileColor.red;
+        break;
+    }
+
+    return TileData(
+      arrow: arrow,
+      color: c,
+      emphasized: emphasized,
+      title: title,
+      content: content,
+    );
   }
 
   late T data;

@@ -9,6 +9,8 @@ enum MainViewStatus {
   guessLoading
 }
 
+const userGuessLimit = 10;
+
 @JsonSerializable()
 @FlipCardControllerJsonConverter()
 @BlurredImageJsonConverter()
@@ -17,8 +19,7 @@ class MainViewState extends Equatable {
     this.status = MainViewStatus.playing,
     this.userGuesses,
     this.userGuessesIds,
-    this.remainingGuesses = 10,
-    this.tileData,
+    this.remainingGuesses = userGuessLimit,
     this.cardFlipControllers,
     this.blur,
     this.allowFlip,
@@ -27,10 +28,9 @@ class MainViewState extends Equatable {
   });
 
   final MainViewStatus status;
-  final List<Movie>? userGuesses;
+  final List<TileCollection>? userGuesses;
   final List<int>? userGuessesIds;
   final int remainingGuesses;
-  final Map<int, MovieTileData>? tileData;
   final Map<int, FlipCardController>? cardFlipControllers;
   final Map<int, BlurredImage>? blur;
   final List<bool>? allowFlip;
@@ -39,11 +39,10 @@ class MainViewState extends Equatable {
 
   static MainViewState get empty {
     return const MainViewState(
-      remainingGuesses: 10,
+      remainingGuesses: userGuessLimit,
       userGuesses: [],
       userGuessesIds: [],
       status: MainViewStatus.playing,
-      tileData: {},
       cardFlipControllers: {},
       blur: {},
       allowFlip: [],
@@ -53,11 +52,10 @@ class MainViewState extends Equatable {
   }
 
   MainViewState copyWith({
-    List<Movie>? userGuesses,
+    List<TileCollection>? userGuesses,
     List<int>? userGuessesIds,
     int? remainingGuesses,
     MainViewStatus? status,
-    Map<int, MovieTileData>? tileData,
     Map<int, FlipCardController>? cardFlipControllers,
     Map<int, BlurredImage>? blur,
     List<bool>? allowFlip,
@@ -69,7 +67,6 @@ class MainViewState extends Equatable {
       userGuessesIds: userGuessesIds ?? this.userGuessesIds,
       remainingGuesses: remainingGuesses ?? this.remainingGuesses,
       status: status ?? this.status,
-      tileData: tileData ?? this.tileData,
       cardFlipControllers: cardFlipControllers ?? this.cardFlipControllers,
       blur: blur ?? this.blur,
       allowFlip: allowFlip ?? this.allowFlip,
@@ -89,7 +86,6 @@ class MainViewState extends Equatable {
         userGuesses,
         remainingGuesses,
         userGuessesIds,
-        tileData,
         cardFlipControllers,
         blur,
         allowFlip,

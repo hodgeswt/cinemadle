@@ -1,4 +1,4 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data_creator.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
 class RuntimeCreator extends TileDataCreator<int> {
@@ -7,10 +7,13 @@ class RuntimeCreator extends TileDataCreator<int> {
   });
 
   @override
-  compute(Movie guessedMovie) async {
+  Future<TileData> compute(Movie guessedMovie,
+      {TileStatus status = TileStatus.none}) async {
     data = targetMovie.runtime - guessedMovie.runtime;
 
-    super.compute(guessedMovie);
+    content = '${guessedMovie.runtime} min';
+
+    return super.compute(guessedMovie, status: status);
   }
 
   @override
@@ -70,4 +73,7 @@ class RuntimeCreator extends TileDataCreator<int> {
     //
     return value > 20;
   }
+
+  @override
+  String get title => 'Runtime';
 }

@@ -58,10 +58,6 @@ class _GuessListState extends State<GuessList> {
                             child: MovieCard(
                               allowFlip: state.allowFlip?[i] ?? false,
                               movieData: state.userGuesses![i],
-                              targetMovie: widget.targetMovie,
-                              tileData:
-                                  state.tileData?[state.userGuessesIds![i]] ??
-                                      MovieTileData.all(color: null),
                             ),
                           )
                       ],

@@ -1,4 +1,5 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data_creator.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
+import 'package:cinemadle/src/utilities.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
 class RevenueCreator extends TileDataCreator<int> {
@@ -7,10 +8,13 @@ class RevenueCreator extends TileDataCreator<int> {
   });
 
   @override
-  compute(Movie guessedMovie) async {
+  Future<TileData> compute(Movie guessedMovie,
+      {TileStatus status = TileStatus.none}) async {
     data = targetMovie.revenue - guessedMovie.revenue;
 
-    super.compute(guessedMovie);
+    content = Utilities.formatIntToDollars(guessedMovie.revenue);
+
+    return super.compute(guessedMovie, status: status);
   }
 
   @override
@@ -70,4 +74,7 @@ class RevenueCreator extends TileDataCreator<int> {
     //
     return value > 50000000;
   }
+
+  @override
+  String get title => 'Revenue';
 }

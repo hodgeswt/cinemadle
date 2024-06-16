@@ -1,4 +1,4 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data_creator.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
 import 'package:cinemadle/src/utilities.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
@@ -8,13 +8,16 @@ class ReleaseDateCreator extends TileDataCreator<int> {
   });
 
   @override
-  compute(Movie guessedMovie) async {
+  Future<TileData> compute(Movie guessedMovie,
+      {TileStatus status = TileStatus.none}) async {
     int target = Utilities.parseDate(targetMovie.releaseDate).year;
     int guessed = Utilities.parseDate(guessedMovie.releaseDate).year;
 
     data = target - guessed;
 
-    super.compute(guessedMovie);
+    content = Utilities.formatDate(guessedMovie.releaseDate);
+
+    return super.compute(guessedMovie, status: status);
   }
 
   @override
@@ -74,4 +77,7 @@ class ReleaseDateCreator extends TileDataCreator<int> {
     //
     return value > 5;
   }
+
+  @override
+  String get title => 'Year';
 }

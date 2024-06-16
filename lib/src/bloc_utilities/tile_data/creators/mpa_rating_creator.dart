@@ -1,4 +1,4 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data_creator.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
 import 'package:cinemadle/src/utilities.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
@@ -8,13 +8,16 @@ class MpaRatingCreator extends TileDataCreator<int> {
   });
 
   @override
-  compute(Movie guessedMovie) async {
+  Future<TileData> compute(Movie guessedMovie,
+      {TileStatus status = TileStatus.none}) async {
     int target = Utilities.mapMpaRatingToInt(targetMovie.mpaRating);
     int guessed = Utilities.mapMpaRatingToInt(guessedMovie.mpaRating);
 
     data = target - guessed;
 
-    super.compute(guessedMovie);
+    content = guessedMovie.mpaRating;
+
+    return super.compute(guessedMovie, status: status);
   }
 
   @override
@@ -50,4 +53,7 @@ class MpaRatingCreator extends TileDataCreator<int> {
     // Never show double up arrow
     return false;
   }
+
+  @override
+  String get title => 'Rating';
 }

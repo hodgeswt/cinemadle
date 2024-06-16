@@ -23,11 +23,6 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
   final Movie targetMovie;
   final int uuid;
 
-  final String singleUpArrow = "↑ ";
-  final String doubleUpArrow = "↑↑ ";
-  final String singleDownArrow = "↓ ";
-  final String doubleDownArrow = "↓↓ ";
-
   final TmdbRepository _tmdbRepository;
 
   bool userFlippedCard = false;
@@ -62,19 +57,11 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
       try {
         Movie guess = await _tmdbRepository.getMovie(event.id);
 
-        List<Movie> newGuesses =
-            With.listCopyWith<Movie>(state.userGuesses, guess);
         List<int> newGuessesIds =
             With.listCopyWith(state.userGuessesIds, event.id);
 
-        MainViewStatus newStatus = state.status;
         int newRemainingGuesses =
             state.remainingGuesses - 1 >= 0 ? state.remainingGuesses - 1 : 0;
-
-        MovieTileData tileColors = await _computeTileData(guess);
-
-        Map<int, MovieTileData> newTileColors =
-            With.mapCopyWith(state.tileData, guess.id, tileColors);
 
         Map<int, FlipCardController> newCardFlipControllers = With.mapCopyWith(
             state.cardFlipControllers, guess.id, FlipCardController());
@@ -83,6 +70,7 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
           imageUri: targetMovie.posterPath,
           blur: newRemainingGuesses >= 9 ? 100.0 : newRemainingGuesses * 2,
         ));
+
         Map<int, BlurredImage> newBlur =
             With.mapCopyWith(state.blur, guess.id, img);
 
@@ -92,24 +80,55 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
 
         String newResults = state.results ?? "";
 
+        MainViewStatus newStatus = state.status;
+
         if (newRemainingGuesses == 0 && guess.id != targetMovie.id) {
           newStatus = MainViewStatus.loss;
-          newResults = _buildResults(newTileColors.values, newStatus);
-          newGuesses = newGuesses.prepend(targetMovie);
+        } else if (guess.id == targetMovie.id) {
+          newStatus = MainViewStatus.win;
+        }
+
+        TileStatus tileStatus = TileStatus.none;
+
+        if (newStatus == MainViewStatus.win) {
+          tileStatus = TileStatus.win;
+        } else if (newStatus == MainViewStatus.loss) {
+          tileStatus = TileStatus.loss;
+        }
+
+        TileCollection newGuess = TileCollection(
+          guess,
+          targetMovie,
+          tileStatus == TileStatus.loss ? TileStatus.none : tileStatus,
+        ).setTmdbRepository(_tmdbRepository);
+
+        await newGuess.create();
+
+        List<TileCollection> newGuesses = With.listCopyWith<TileCollection>(
+          state.userGuesses,
+          newGuess,
+        );
+
+        if (newStatus == MainViewStatus.loss) {
+          TileCollection targetTile = TileCollection(
+            targetMovie,
+            targetMovie,
+            tileStatus,
+          ).setTmdbRepository(_tmdbRepository);
+
+          await targetTile.create();
+          newGuesses = newGuesses.prepend(targetTile);
 
           newGuessesIds = newGuessesIds.prepend(targetMovie.id);
           newAllowFlip = List.filled(newAllowFlip.length, false).prepend(true);
 
           newBlur[targetMovie.id] = BlurredImageCreator.instance
               .create(BlurredImageData.zero(targetMovie.posterPath));
-
-          MovieTileData targetColors = await _computeTileData(targetMovie);
-          newTileColors[targetMovie.id] = targetColors;
-        } else if (guess.id == targetMovie.id) {
+        } else if (newStatus == MainViewStatus.win) {
           newStatus = MainViewStatus.win;
           newBlur[targetMovie.id] = BlurredImageCreator.instance
               .create(BlurredImageData.zero(targetMovie.posterPath));
-          newResults = _buildResults(newTileColors.values, newStatus);
+          newResults = _buildResults(newStatus);
         }
 
         emit(
@@ -118,7 +137,6 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
             status: newStatus,
             remainingGuesses: newRemainingGuesses,
             userGuessesIds: newGuessesIds,
-            tileData: newTileColors,
             blur: newBlur,
             cardFlipControllers: newCardFlipControllers,
             allowFlip: newAllowFlip,
@@ -147,91 +165,10 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
     }
   }
 
-  Future<MovieTileData> _computeTileData(Movie movie) async {
-    if (state.status == MainViewStatus.loss) {
-      return MovieTileData.all(color: TileColor.red);
-    }
-
-    if (movie.id == targetMovie.id) {
-      return MovieTileData.all(color: TileColor.green);
-    }
-
-    CastCreator castCreator =
-        CastCreator(targetMovie: targetMovie, tmdbRepository: _tmdbRepository);
-    UserScoreCreator userScoreCreator =
-        UserScoreCreator(targetMovie: targetMovie);
-    MpaRatingCreator mpaRatingCreator =
-        MpaRatingCreator(targetMovie: targetMovie);
-    ReleaseDateCreator releaseDateCreator =
-        ReleaseDateCreator(targetMovie: targetMovie);
-    RevenueCreator revenueCreator = RevenueCreator(targetMovie: targetMovie);
-    RuntimeCreator runtimeCreator = RuntimeCreator(targetMovie: targetMovie);
-    DirectorCreator directorCreator = DirectorCreator(targetMovie: targetMovie);
-    WriterCreator writerCreator = WriterCreator(targetMovie: targetMovie);
-    GenreCreator genreCreator = GenreCreator(targetMovie: targetMovie);
-
-    MovieTileData tileData = MovieTileData();
-
-    await userScoreCreator.compute(movie);
-    tileData.userScore = userScoreCreator.color;
-    tileData.userScoreArrow = userScoreCreator.arrow;
-
-    await mpaRatingCreator.compute(movie);
-    tileData.mpaRating = mpaRatingCreator.color;
-    tileData.mpaRatingArrow = mpaRatingCreator.arrow;
-
-    await releaseDateCreator.compute(movie);
-    tileData.releaseDate = releaseDateCreator.color;
-    tileData.releaseDateArrow = releaseDateCreator.arrow;
-
-    await revenueCreator.compute(movie);
-    tileData.revenue = revenueCreator.color;
-    tileData.revenueArrow = revenueCreator.arrow;
-
-    await runtimeCreator.compute(movie);
-    tileData.runtime = runtimeCreator.color;
-    tileData.runtimeArrow = runtimeCreator.arrow;
-
-    await directorCreator.compute(movie);
-    tileData.director = directorCreator.color;
-
-    await writerCreator.compute(movie);
-    tileData.writer = writerCreator.color;
-
-    await genreCreator.compute(movie);
-    tileData.genre = genreCreator.color;
-    tileData.boldGenre = genreCreator.bolded;
-
-    await castCreator.compute(movie);
-    tileData.firstInCast = castCreator.color;
-    tileData.boldCast = castCreator.bolded;
-
-    return tileData;
-  }
-
-  String _buildResults(
-      Iterable<MovieTileData> tileColors, MainViewStatus status) {
+  String _buildResults(MainViewStatus status) {
     String results = "";
-    for (MovieTileData x in tileColors) {
-      List<TileColor?> colors = [
-        x.userScore,
-        x.mpaRating,
-        x.releaseDate,
-        x.revenue,
-        x.runtime,
-        x.genre,
-        x.director,
-        x.writer,
-        x.firstInCast,
-      ];
-
-      String row = "";
-      for (TileColor? color in colors) {
-        row += resultsColorMap[color ?? TileColor.grey] ?? "⬛";
-      }
-
-      row += "\n";
-      results += row;
+    for (TileCollection tile in state.userGuesses ?? []) {
+      results += tile.results;
     }
 
     if (status == MainViewStatus.win) {

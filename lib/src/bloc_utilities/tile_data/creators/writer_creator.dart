@@ -1,4 +1,4 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data_creator.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
 class WriterCreator extends TileDataCreator<int> {
@@ -7,7 +7,8 @@ class WriterCreator extends TileDataCreator<int> {
   });
 
   @override
-  compute(Movie guessedMovie) async {
+  Future<TileData> compute(Movie guessedMovie,
+      {TileStatus status = TileStatus.none}) async {
     if (targetMovie.writer == guessedMovie.writer) {
       data = 2;
     } else if (targetMovie.director == guessedMovie.writer) {
@@ -16,7 +17,9 @@ class WriterCreator extends TileDataCreator<int> {
       data = 0;
     }
 
-    super.compute(guessedMovie);
+    content = guessedMovie.writer;
+
+    return super.compute(guessedMovie, status: status);
   }
 
   @override
@@ -58,4 +61,7 @@ class WriterCreator extends TileDataCreator<int> {
     // Never show an arrow
     return '';
   }
+
+  @override
+  String get title => 'Writer';
 }

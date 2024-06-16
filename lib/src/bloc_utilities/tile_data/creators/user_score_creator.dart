@@ -1,4 +1,4 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data_creator.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
 class UserScoreCreator extends TileDataCreator<double> {
@@ -13,7 +13,8 @@ class UserScoreCreator extends TileDataCreator<double> {
   }
 
   @override
-  compute(Movie guessedMovie) async {
+  Future<TileData> compute(Movie guessedMovie,
+      {TileStatus status = TileStatus.none}) async {
     // Normal conversion functions were acting
     // weird, so I wrote my own. Rounds to the nearest
     // tenth.
@@ -25,7 +26,9 @@ class UserScoreCreator extends TileDataCreator<double> {
     // same sig figs
     data = _round(target - guessed);
 
-    super.compute(guessedMovie);
+    content = guessedMovie.voteAverage.toString();
+
+    return super.compute(guessedMovie, status: status);
   }
 
   @override
@@ -71,4 +74,7 @@ class UserScoreCreator extends TileDataCreator<double> {
     // Never show double up arrow
     return false;
   }
+
+  @override
+  String get title => 'Score';
 }

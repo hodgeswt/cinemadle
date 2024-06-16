@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:universal_io/io.dart';
 
-import 'bloc_utilities/tile_data/tile_color.dart';
+import 'bloc_utilities/tile_data/tile_collection/tile_color.dart';
 
 class Utilities {
   static Map<TileColor?, BoxDecoration> colorMap = {
     TileColor.yellow: Constants.yellowBox,
     TileColor.green: Constants.greenBox,
     TileColor.grey: Constants.lightBox,
+    TileColor.red: Constants.lightBox,
     null: Constants.lightBox,
   };
 

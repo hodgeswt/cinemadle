@@ -1,3 +1,4 @@
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
 import 'package:cinemadle/src/bloc_utilities/utilities.dart';
 import 'package:cinemadle/src/blocs/main_view/main_view_bloc.dart';
 import 'package:cinemadle/src/constants.dart';
@@ -9,25 +10,18 @@ import 'package:flutter_flip_card/controllers/flip_card_controllers.dart';
 import 'package:flutter_flip_card/flipcard/flip_card.dart';
 import 'package:flutter_flip_card/modal/flip_side.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:tmdb_repository/tmdb_repository.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard({
     super.key,
     required this.movieData,
-    required this.tileData,
-    required this.targetMovie,
     required this.allowFlip,
   });
 
-  final Movie movieData;
-  final Movie targetMovie;
-  final MovieTileData tileData;
+  final TileCollection movieData;
   final bool allowFlip;
 
-  bool get isTarget {
-    return movieData.id == targetMovie.id;
-  }
+  bool get isTarget => movieData.movie.id == movieData.targetMovie.id;
 
   Widget _getBackWidget() {
     return BlocBuilder<MainViewBloc, MainViewState>(
@@ -64,7 +58,8 @@ class MovieCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  state.blur?[movieData.id] ?? const Text("Image not found.")
+                  state.blur?[movieData.movie.id] ??
+                      const Text("Image not found.")
                 ],
               ),
             ),
@@ -74,193 +69,71 @@ class MovieCard extends StatelessWidget {
     );
   }
 
-  RichText _titleBuilder(String title) {
-    return RichText(
-      textAlign: TextAlign.left,
-      text: TextSpan(
-        text: title,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 22,
-        ),
+  Text _titleBuilder(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        color: Constants.lightGrey,
+        fontSize: 12,
       ),
     );
   }
 
-  RichText _contentBuilder({
-    String? content,
-    List<String>? list,
-    List<bool>? bold,
+  List<Widget> _contentBuilder({
+    required TileData tileData,
   }) {
-    if (content?.isNotEmpty ?? false) {
-      return RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          text: content,
-          style: const TextStyle(
+    List<String> splits = tileData.content.split(", ");
+    List<Widget> children = [];
+
+    for (int i = 0; i < splits.length; i++) {
+      bool isEmphasized = tileData.emphasized.getOrDefault(i, false);
+      String prefix = isEmphasized ? "★ " : "";
+
+      children.add(
+        Text(
+          i < splits.length - 1
+              ? "$prefix${splits[i]},"
+              : "$prefix${splits[i]}",
+          textAlign: TextAlign.justify,
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontWeight: isEmphasized ? FontWeight.bold : FontWeight.normal,
+            fontSize: 20,
           ),
-        ),
-      );
-    } else {
-      if (list == null) {
-        return RichText(
-          textAlign: TextAlign.center,
-          text: const TextSpan(
-            text: "",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-            ),
-          ),
-        );
-      }
-
-      double fontSize = list.length > 2 ? 14 : 16;
-
-      return RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          children: List.generate(list.length, (index) {
-            bool isBold = bold?.getOrDefault(index, false) ?? false;
-            String prefix = isBold ? "★ " : "";
-            return TextSpan(
-              text: index < list.length - 1
-                  ? "$prefix${list[index]},\n"
-                  : "$prefix${list[index]}",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: isBold ? fontSize + 1 : fontSize,
-                fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-              ),
-            );
-          }),
         ),
       );
     }
+
+    if (tileData.arrow.isNotEmpty) {
+      children.add(
+        Text(
+          tileData.arrow,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 30,
+          ),
+        ),
+      );
+    }
+
+    return children;
   }
 
   AspectRatio _tileBuilder(int index) {
     double aspectRatio = Utilities.isMobile() ? 0.6 : 1.5;
-    switch (index) {
-      case 0:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Score'),
-            content: _contentBuilder(
-              content: movieData.voteAverage.toString(),
-            ),
-            arrow: tileData.userScoreArrow,
-            color: tileData.userScore,
-          ),
-        );
-      case 1:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Rating'),
-            content: _contentBuilder(
-              content: movieData.mpaRating,
-            ),
-            arrow: tileData.mpaRatingArrow,
-            color: tileData.mpaRating,
-          ),
-        );
-      case 2:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Year'),
-            content: _contentBuilder(
-              content: Utilities.formatDate(movieData.releaseDate),
-            ),
-            arrow: tileData.releaseDateArrow,
-            color: tileData.releaseDate,
-          ),
-        );
-      case 3:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Revenue'),
-            content: _contentBuilder(
-              content: Utilities.formatIntToDollars(movieData.revenue),
-            ),
-            arrow: tileData.revenueArrow,
-            color: tileData.revenue,
-          ),
-        );
-      case 4:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Runtime'),
-            content: _contentBuilder(
-              content: '${movieData.runtime} min',
-            ),
-            arrow: tileData.runtimeArrow,
-            color: tileData.runtime,
-          ),
-        );
-      case 5:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Genre'),
-            content: _contentBuilder(
-              list: movieData.genre,
-              bold: tileData.boldGenre,
-            ),
-            color: tileData.genre,
-          ),
-        );
-      case 6:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Director'),
-            content: _contentBuilder(
-              content: movieData.director,
-            ),
-            color: tileData.director,
-          ),
-        );
-      case 7:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Writer'),
-            content: _contentBuilder(
-              content: movieData.writer,
-            ),
-            color: tileData.writer,
-          ),
-        );
-      case 8:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder('Cast'),
-            content: _contentBuilder(
-              list: movieData.leads,
-              bold: tileData.boldCast,
-            ),
-            color: tileData.firstInCast,
-          ),
-        );
-      default:
-        return AspectRatio(
-          aspectRatio: aspectRatio,
-          child: TextCard(
-            title: _titleBuilder(''),
-            content: _contentBuilder(
-              content: '',
-            ),
-          ),
-        );
-    }
+    TileData data = movieData.tiles[index].tileData;
+
+    return AspectRatio(
+      aspectRatio: aspectRatio,
+      child: TextCard(
+        title: _titleBuilder(data.title),
+        content: _contentBuilder(
+          tileData: data,
+        ),
+        arrow: data.arrow,
+        color: data.color,
+      ),
+    );
   }
 
   Widget _getFrontWidget() {
@@ -302,26 +175,12 @@ class MovieCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: RichText(
-          textAlign: TextAlign.left,
-          text: TextSpan(
-            text: movieData.title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-              fontSize: 32,
-            ),
-            children: <TextSpan>[
-              allowFlip
-                  ? const TextSpan(
-                      text: "\n(flip to see visual clue)",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                      ),
-                    )
-                  : const TextSpan(text: ""),
-            ],
+        child: Text(
+          movieData.movie.title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+            fontSize: 32,
           ),
         ),
       ),
@@ -333,9 +192,9 @@ class MovieCard extends StatelessWidget {
     return BlocBuilder<MainViewBloc, MainViewState>(
       builder: (context, state) {
         return FlipCard(
-          key: Key("${movieData.id}"),
-          controller:
-              state.cardFlipControllers?[movieData.id] ?? FlipCardController(),
+          key: Key("${movieData.movie.id}"),
+          controller: state.cardFlipControllers?[movieData.movie.id] ??
+              FlipCardController(),
           onTapFlipping: allowFlip,
           frontWidget: _getFrontWidget(),
           backWidget: _getBackWidget(),

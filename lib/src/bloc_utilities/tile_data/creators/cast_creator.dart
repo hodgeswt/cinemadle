@@ -1,4 +1,4 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data_creator.dart';
+import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
 import 'package:cinemadle/src/bloc_utilities/utilities.dart';
 import 'package:tmdb_repository/tmdb_repository.dart';
 
@@ -10,11 +10,10 @@ class CastCreator extends TileDataCreator<int> {
 
   final TmdbRepository tmdbRepository;
 
-  final List<bool> _bolded = [];
-
   @override
-  compute(Movie guessedMovie) async {
-    _bolded.clear();
+  Future<TileData> compute(Movie guessedMovie,
+      {TileStatus status = TileStatus.none}) async {
+    emphasized.clear();
 
     if (guessedMovie.leads.equals(targetMovie.leads)) {
       data = 2;
@@ -24,9 +23,9 @@ class CastCreator extends TileDataCreator<int> {
         if (await tmdbRepository.isActorInMovie(actor, targetMovie.id)) {
           data = 1;
           hit = true;
-          _bolded.add(true);
+          emphasized.add(true);
         } else {
-          _bolded.add(false);
+          emphasized.add(false);
         }
       }
 
@@ -35,7 +34,9 @@ class CastCreator extends TileDataCreator<int> {
       }
     }
 
-    super.compute(guessedMovie);
+    content = guessedMovie.leads.join(', ');
+
+    return super.compute(guessedMovie, status: status);
   }
 
   @override
@@ -46,10 +47,6 @@ class CastCreator extends TileDataCreator<int> {
   @override
   bool yellowCondition(int value) {
     return value == 1;
-  }
-
-  List<bool> get bolded {
-    return _bolded;
   }
 
   @override
@@ -81,4 +78,7 @@ class CastCreator extends TileDataCreator<int> {
     // Never show an arrow
     return '';
   }
+
+  @override
+  String get title => 'Cast';
 }

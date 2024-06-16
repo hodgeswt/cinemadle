@@ -1,5 +1,3 @@
-import 'package:cinemadle/src/bloc_utilities/tile_data/tile_color.dart';
-
 class With {
   static List<T> listCopyWith<T>(List<T>? list, T element) {
     return List<T>.from(list ?? []).prepend(element);
@@ -41,10 +39,3 @@ extension Equals<T> on List<T> {
         every((element) => other.contains(element));
   }
 }
-
-Map<TileColor, String> resultsColorMap = {
-  TileColor.yellow: "🟨",
-  TileColor.green: "🟩",
-  TileColor.grey: "⬛",
-  TileColor.red: "⬛",
-};

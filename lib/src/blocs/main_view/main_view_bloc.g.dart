@@ -11,16 +11,13 @@ MainViewState _$MainViewStateFromJson(Map<String, dynamic> json) =>
       status: $enumDecodeNullable(_$MainViewStatusEnumMap, json['status']) ??
           MainViewStatus.playing,
       userGuesses: (json['userGuesses'] as List<dynamic>?)
-          ?.map((e) => Movie.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => TileCollection.fromJson(e as Map<String, dynamic>))
           .toList(),
       userGuessesIds: (json['userGuessesIds'] as List<dynamic>?)
           ?.map((e) => (e as num).toInt())
           .toList(),
-      remainingGuesses: (json['remainingGuesses'] as num?)?.toInt() ?? 10,
-      tileData: (json['tileData'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(
-            int.parse(k), MovieTileData.fromJson(e as Map<String, dynamic>)),
-      ),
+      remainingGuesses:
+          (json['remainingGuesses'] as num?)?.toInt() ?? userGuessLimit,
       cardFlipControllers:
           (json['cardFlipControllers'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(int.parse(k),
@@ -42,7 +39,6 @@ Map<String, dynamic> _$MainViewStateToJson(MainViewState instance) =>
       'userGuesses': instance.userGuesses,
       'userGuessesIds': instance.userGuessesIds,
       'remainingGuesses': instance.remainingGuesses,
-      'tileData': instance.tileData?.map((k, e) => MapEntry(k.toString(), e)),
       'cardFlipControllers': instance.cardFlipControllers?.map((k, e) =>
           MapEntry(
               k.toString(), const FlipCardControllerJsonConverter().toJson(e))),
