@@ -1,3 +1,14 @@
+Cinemadle v0.3.6
+
+Additions:
+
+- Share sheet now populates on first-guess win
+- Information view now renders full-width
+- Release notes now show release date and time in EST
+
+
+-------------------
+
 Cinemadle v0.3.5
 
 Additions:
