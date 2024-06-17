@@ -31,7 +31,17 @@ class GenreCreator extends TileDataCreator<int> {
       }
     }
 
-    content = guessedMovie.genre.uniformPadding().join('\n');
+    List<String> genres = [];
+
+    for (int i = 0; i < guessedMovie.genre.length; i++) {
+      if (emphasized.getOrDefault(i, false)) {
+        genres.add('★ ${guessedMovie.genre[i]}');
+      } else {
+        genres.add(guessedMovie.genre[i]);
+      }
+    }
+
+    content = genres.uniformPadding().join('\n');
 
     return super.compute(guessedMovie, status: status);
   }

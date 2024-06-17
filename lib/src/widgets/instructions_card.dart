@@ -27,7 +27,7 @@ class InstructionsCard extends StatelessWidget {
                     title,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: Constants.mediumFont,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -36,7 +36,7 @@ class InstructionsCard extends StatelessWidget {
                     text,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: Constants.smallFont,
                     ),
                   ),
                 ],

@@ -1,5 +1,4 @@
 import 'package:cinemadle/src/bloc_utilities/tile_data/tile_data.dart';
-import 'package:cinemadle/src/bloc_utilities/utilities.dart';
 import 'package:cinemadle/src/blocs/main_view/main_view_bloc.dart';
 import 'package:cinemadle/src/constants.dart';
 import 'package:cinemadle/src/utilities.dart';
@@ -27,7 +26,7 @@ class MovieCard extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            width: Utilities.widthCalculator(MediaQuery.of(context).size.width),
+            width: MediaQuery.of(context).size.width,
             decoration: Constants.mediumGradientBox(
               hasBorder: isTarget,
               isWin: state.status,
@@ -50,7 +49,7 @@ class MovieCard extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.white,
-                            fontSize: 32,
+                            fontSize: Constants.bigFont,
                           ),
                         ),
                       ),
@@ -72,7 +71,7 @@ class MovieCard extends StatelessWidget {
       title,
       style: TextStyle(
         color: Constants.lightGrey,
-        fontSize: 12,
+        fontSize: Constants.tinyFont,
       ),
     );
   }
@@ -84,19 +83,13 @@ class MovieCard extends StatelessWidget {
     List<Widget> children = [];
 
     for (int i = 0; i < splits.length; i++) {
-      bool isEmphasized = tileData.emphasized.getOrDefault(i, false);
-      String prefix = isEmphasized ? "★ " : "";
-
       children.add(
         Text(
-          i < splits.length - 1
-              ? "$prefix${splits[i]},"
-              : "$prefix${splits[i]}",
+          i < splits.length - 1 ? "${splits[i]}," : splits[i],
           textAlign: TextAlign.justify,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
-            fontWeight: isEmphasized ? FontWeight.bold : FontWeight.normal,
-            fontSize: 20,
+            fontSize: Constants.mediumFont,
           ),
         ),
       );
@@ -108,7 +101,7 @@ class MovieCard extends StatelessWidget {
           tileData.arrow,
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 30,
+            fontSize: Constants.bigFont,
           ),
         ),
       );
@@ -182,7 +175,7 @@ class MovieCard extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
-                  fontSize: 32,
+                  fontSize: Constants.bigFont,
                 ),
               ),
             ),
@@ -193,7 +186,7 @@ class MovieCard extends StatelessWidget {
                   'flip for visual clue',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: Constants.smallFont,
                   ),
                 ),
               ),

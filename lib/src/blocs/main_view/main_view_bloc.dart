@@ -165,13 +165,8 @@ class MainViewBloc extends HydratedBloc<MainViewEvent, MainViewState> {
   String _buildResults(MainViewStatus status, List<TileCollection> guesses) {
     String results = "";
 
-    int i = 0;
-    for (TileCollection tile in guesses) {
-      if (i >= MainViewState.userGuessLimit) {
-        break;
-      }
-      results += tile.results;
-      i++;
+    for (int i = guesses.length - 1; i >= 0; i--) {
+      results += guesses[i].results;
     }
 
     if (status == MainViewStatus.win) {

@@ -29,7 +29,7 @@ class HeaderCard extends StatelessWidget {
                   child: Text(
                     text,
                     style: const TextStyle(
-                      fontSize: 30.0,
+                      fontSize: Constants.bigFont,
                       color: Colors.white,
                     ),
                   ),

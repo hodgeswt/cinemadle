@@ -47,9 +47,9 @@ flutter:
       fonts:
         - asset: fonts/NotoColorEmoji-Regular.ttf
           weight: 400
-    - family: RobotoMono
+    - family: UbuntuMono
       fonts:
-        - asset: fonts/RobotoMono-Bold.ttf
+        - asset: fonts/UbuntuMono-Bold.ttf
           weight: 700
-        - asset: fonts/RobotoMono-Light.ttf
+        - asset: fonts/UbuntuMono-Regular.ttf
           weight: 400

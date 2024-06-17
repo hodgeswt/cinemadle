@@ -28,7 +28,7 @@ class CinemadleAppBar extends StatelessWidget implements PreferredSizeWidget {
                 "Cinemadle",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: Constants.mediumFont,
                 ),
               ),
               InkWell(

@@ -34,7 +34,17 @@ class CastCreator extends TileDataCreator<int> {
       }
     }
 
-    content = guessedMovie.leads.uniformPadding().join('\n');
+    List<String> names = [];
+
+    for (int i = 0; i < guessedMovie.leads.length; i++) {
+      if (emphasized.getOrDefault(i, false)) {
+        names.add('★ ${guessedMovie.leads[i]}');
+      } else {
+        names.add(guessedMovie.leads[i]);
+      }
+    }
+
+    content = names.uniformPadding().join('\n');
 
     return super.compute(guessedMovie, status: status);
   }

@@ -11,6 +11,11 @@ class Constants {
   static const Color secondary = Color(0xFFFF9E2D);
   static const Color secondaryLight = Color(0xFFFFD29D);
 
+  static const double bigFont = 40;
+  static const double mediumFont = 25;
+  static const double smallFont = 20;
+  static const double tinyFont = 16;
+
   static BoxDecoration primaryGradientBox({
     bool hasCornerRadius = true,
     bool hasBoxShadow = true,
@@ -94,11 +99,14 @@ class Constants {
     return null;
   }
 
-  static BoxDecoration mediumGradientBox(
-      {bool hasBorder = false, MainViewStatus? isWin}) {
+  static BoxDecoration mediumGradientBox({
+    bool hasBorderRadius = true,
+    bool hasBorder = false,
+    MainViewStatus? isWin,
+  }) {
     return BoxDecoration(
-      border: _getBorder(hasBorder, isWin),
-      borderRadius: BorderRadius.circular(15),
+      borderRadius: hasBorderRadius ? BorderRadius.circular(15) : null,
+      border: hasBorder ? _getBorder(hasBorder, isWin) : null,
       boxShadow: const [
         BoxShadow(
           color: Color.fromRGBO(0, 0, 0, 0.5),
@@ -107,13 +115,9 @@ class Constants {
         ),
       ],
       gradient: const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        transform: GradientRotation(71 * 3.1415927 / 180),
-        colors: [
-          Color(0xFF8C8C8C),
-          Color(0xFF4D4D4D)
-        ], // Adjusted darker colors
+        begin: Alignment.centerLeft,
+        end: Alignment.centerRight,
+        colors: [Color(0xFF6E6E6E), darkGrey],
       ),
     );
   }

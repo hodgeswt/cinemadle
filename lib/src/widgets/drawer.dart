@@ -58,7 +58,7 @@ Widget drawer(BuildContext context, Views activePage) {
                   'Cinemadle',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
+                    fontSize: Constants.mediumFont,
                   ),
                 ),
               ),

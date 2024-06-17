@@ -41,7 +41,7 @@ class InformationView extends StatelessWidget {
                   "Release Notes",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 30.0,
+                    fontSize: Constants.bigFont,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -58,7 +58,7 @@ class InformationView extends StatelessWidget {
                       child: Text(
                         snapshot.data!,
                         style: const TextStyle(
-                          fontSize: 16.0,
+                          fontSize: Constants.smallFont,
                           color: Colors.white,
                         ),
                       ),
@@ -87,7 +87,7 @@ class InformationView extends StatelessWidget {
                   "This product uses the TMDB API but is not endorsed or certified by TMDB.",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 12.0,
+                    fontSize: Constants.tinyFont,
                     color: Colors.white,
                   ),
                 ),

@@ -103,7 +103,7 @@ class _GuessBoxState extends State<GuessBox> {
     return TypeAheadField<String>(
       decorationBuilder: (context, child) {
         return Container(
-          decoration: Constants.mediumGradientBox(),
+          decoration: Constants.darkGradientBox(),
           child: child,
         );
       },

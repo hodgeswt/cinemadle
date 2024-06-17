@@ -31,7 +31,7 @@ class CinemadleAppView extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Constants.lightGrey),
         useMaterial3: true,
-        fontFamily: 'RobotoMono',
+        fontFamily: 'UbuntuMono',
       ),
       home: LoadingView(),
     );
