@@ -1,3 +1,17 @@
+Cinemadle v0.3.7
+06/17/2024 19:59:06 EST
+
+Additions:
+
+- Share sheet now shows guesses in descending order
+- Font size adjustments
+- Font is now UbuntuMono
+- Gradient adjustments
+- Bugfixes for emphasized guesses
+
+
+-------------------
+
 Cinemadle v0.3.6
 06/16/2024 19:48:02 EST
 
