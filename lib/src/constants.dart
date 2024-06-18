@@ -69,11 +69,7 @@ class Constants {
           blurRadius: 4,
         ),
       ],
-      gradient: const LinearGradient(
-        begin: Alignment.centerLeft,
-        end: Alignment.centerRight,
-        colors: [Color(0xFF6E6E6E), darkGrey],
-      ),
+      color: const Color(0xFF6E6E6E),
     );
   }
 
@@ -114,11 +110,7 @@ class Constants {
           blurRadius: 4,
         ),
       ],
-      gradient: const LinearGradient(
-        begin: Alignment.centerLeft,
-        end: Alignment.centerRight,
-        colors: [Color(0xFF6E6E6E), darkGrey],
-      ),
+      color: const Color(0xFF6E6E6E),
     );
   }
 
