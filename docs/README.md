@@ -4,8 +4,11 @@ This folder contains all of the documentation
 for Cinemadle, including project plans, design
 documents, and user manuals.
 
-## [Project Plan](./project_plan/project_plan.md)
+## [Project Plan](./project_plan/README.md)
 
-## [Requirements](./requirements/requirements.md)
+## [High-Level Requirements](./requirements/README.md)
 
-## [Design](./design/design.md)
+- [Instructions Requirements](./requirements/instructions_requirements.md)
+- [Gameplay Requirements](./requirements/gameplay_requirements.md)
+
+## [Design](./design/README.md)

@@ -5,7 +5,7 @@
 1. Minimal business logic will be implemented in the frontend
    to reduce the footprint of the system and improve performance.
 1. The frontend for the system will be developed using
-   Vue.js and TailwindCSS.
+   React.js and TailwindCSS.
 1. The backend for the system will be developed using
    Golang and Gearbox.
 1. The backend for the system will communicate with
@@ -67,7 +67,8 @@ The backend will consist of four main components:
 1. The API, which will handle requests from the frontend
 1. The movie selector, which will select a movie for the user to guess
 1. The hint generator, which will generate hints based on a guessed movie
-1. The repository, which will communicate with TheMovieDB.org API to retrieve movie data
+1. The repository, which will communicate with TheMovieDB.org API to retrieve
+   movie data
 
 Each of these should be decoupled from the others to allow for ease of testing,
 maintenance, and future development.

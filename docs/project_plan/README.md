@@ -27,7 +27,7 @@ and an increased feature set.
 
 Cinemadle v3 will be developed using the following technologies:
 
-- Vue.js and TailwindCSS for the frontend
+- React.js and TailwindCSS for the frontend
 - Golang using Gearbox for the backend
 
 Cinemadle will be hosted on a cloud server and will be accessible via a web browser.
