@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemadleCore", "CinemadleCore.csproj", "{3796F74E-C8EE-4721-B58C-4D19BD4309F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3796F74E-C8EE-4721-B58C-4D19BD4309F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3796F74E-C8EE-4721-B58C-4D19BD4309F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3796F74E-C8EE-4721-B58C-4D19BD4309F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3796F74E-C8EE-4721-B58C-4D19BD4309F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E01EAC4-B708-4E04-B71C-878FD9CFA11A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E01EAC4-B708-4E04-B71C-878FD9CFA11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E01EAC4-B708-4E04-B71C-878FD9CFA11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E01EAC4-B708-4E04-B71C-878FD9CFA11A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
